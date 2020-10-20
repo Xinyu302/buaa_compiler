@@ -1,0 +1,3 @@
+"E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\syntaxAnalysis.dir/objects.a
+C:\Env\MinGW64\mingw64\bin\ar.exe cr CMakeFiles\syntaxAnalysis.dir/objects.a @CMakeFiles\syntaxAnalysis.dir\objects1.rsp
+C:\Env\MinGW64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\syntaxAnalysis.dir/objects.a -Wl,--no-whole-archive  -o syntaxAnalysis.exe -Wl,--out-implib,libsyntaxAnalysis.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\syntaxAnalysis.dir\linklibs.rsp
