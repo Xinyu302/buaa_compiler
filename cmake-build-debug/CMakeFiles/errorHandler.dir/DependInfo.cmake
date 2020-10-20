@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj"
   "C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj"
   "C:/Users/yxy/CLionProjects/errorHandler/ParseToken.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseToken.cpp.obj"
   "C:/Users/yxy/CLionProjects/errorHandler/Token.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/Token.cpp.obj"

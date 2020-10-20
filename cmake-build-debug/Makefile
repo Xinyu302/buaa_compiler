@@ -142,6 +142,33 @@ errorHandler/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/build
 .PHONY : errorHandler/fast
 
+ErrorInfo.obj: ErrorInfo.cpp.obj
+
+.PHONY : ErrorInfo.obj
+
+# target to build an object file
+ErrorInfo.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj
+.PHONY : ErrorInfo.cpp.obj
+
+ErrorInfo.i: ErrorInfo.cpp.i
+
+.PHONY : ErrorInfo.i
+
+# target to preprocess a source file
+ErrorInfo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.i
+.PHONY : ErrorInfo.cpp.i
+
+ErrorInfo.s: ErrorInfo.cpp.s
+
+.PHONY : ErrorInfo.s
+
+# target to generate assembly for a file
+ErrorInfo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.s
+.PHONY : ErrorInfo.cpp.s
+
 ParseSyntax.obj: ParseSyntax.cpp.obj
 
 .PHONY : ParseSyntax.obj
@@ -259,6 +286,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... errorHandler
+	@echo ... ErrorInfo.obj
+	@echo ... ErrorInfo.i
+	@echo ... ErrorInfo.s
 	@echo ... ParseSyntax.obj
 	@echo ... ParseSyntax.i
 	@echo ... ParseSyntax.s

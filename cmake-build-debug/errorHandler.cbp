@@ -80,6 +80,15 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.cpp">
+			<Option target="errorHandler"/>
+		</Unit>
+		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h">
+			<Option target="errorHandler"/>
+		</Unit>
+		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/OutputControl.h">
+			<Option target="errorHandler"/>
+		</Unit>
 		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
