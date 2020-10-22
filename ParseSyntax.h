@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Token.h"
+#include "ErrorInfo.h"
 bool Handle_FACTOR(bool show);
 bool Handle_RETURN_FUNC_CALL(bool show);
 bool Handle_STATEMENT(bool);
@@ -14,11 +15,12 @@ bool HandleMAIN(bool show);
 class ParseSyntax
 {
 public:
-	ParseSyntax(std::vector<Token>& TokenVec);
+	ParseSyntax(std::vector<Token>& _TokenVec,std::vector<ErrorInfo>& _ErrorInfoVec);
 	void printAllTokens();
 	void parse();
 	std::vector<Token>& getTokens();
 private:
 	std::vector<Token>& TokenVec;
+    std::vector<ErrorInfo>& ErrorInfoVec
 };
 

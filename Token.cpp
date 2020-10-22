@@ -225,9 +225,10 @@ Token::Token()
 	this->TokenStr = "";
 }
 
-Token::Token(std::string TokenStr,int type)
+Token::Token(std::string TokenStr,int type,int line)
 {
 	this->TokenStr = TokenStr;
+	this->line = line;
 	if (type == 0)
 	{
 		handleLetters(TokenStr);

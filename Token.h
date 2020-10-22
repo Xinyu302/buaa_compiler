@@ -48,7 +48,7 @@ public:
 	};
 	
 	Token();
-	Token(std::string str,int type);
+	Token(std::string str,int type,int line);
 	std::string TokenPrintStr();
 	Token::TokenTypeIndex getIndex();
 	std::string getTokenStr();
@@ -56,6 +56,7 @@ public:
 private:
 	std::string TokenStr;
 	TokenTypeIndex index;
+	int line;
 	void handleLenOne(std::string& s);
 	void handleLetters(std::string& s);
 	void handleLenTwo(std::string& str);

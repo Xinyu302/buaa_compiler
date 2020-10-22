@@ -6,14 +6,15 @@
 #include "ParseToken.h"
 #include "Token.h"
 #include "ParseSyntax.h"
+#include "ErrorInfo.h"
 
 int main()
 {
 	std::vector<Token> TokenVec;
-	ParseToken parser(TokenVec);
+	std::vector<ErrorInfo> ErrorInfoVec;
+	ParseToken parser(TokenVec,ErrorInfoVec);
 	parser.Parse();
-	std::vector<Token>& Tokens = parser.getTokenVec();
-	ParseSyntax parseSyntax(TokenVec);
+	ParseSyntax parseSyntax(TokenVec,ErrorInfoVec);
 	parseSyntax.parse();
 	return 0;
 

@@ -4,9 +4,9 @@
 #include <set>
 #define Tokens (*TokenVecPointer)
 // 运用递归下降的方法分析语法
-ParseSyntax::ParseSyntax(std::vector<Token>& TokenVec):TokenVec(TokenVec){}
+ParseSyntax::ParseSyntax(std::vector<Token>& _TokenVec,std::vector<ErrorInfo>& _ErrorInfoVec):TokenVec(TokenVec),ErrorInfoVec(_ErrorInfoVec){}
 int nowLoc = 0;
-int end;
+
 std::set<std::string> voidFunc, nonVoidFunc;
 std::vector<Token>* TokenVecPointer;
 std::string output;
@@ -29,8 +29,8 @@ inline bool typeAssert(Token::TokenTypeIndex index)
 
 bool typeEnsure(Token::TokenTypeIndex index)
 {
-	bool b;
-	if (b = typeAssert(index))
+	bool b = typeAssert(index);
+	if (b)
 	{
 		output += Tokens[nowLoc].TokenPrintStr();
 		//std::cout << Tokens[nowLoc].TokenPrintStr();
@@ -409,50 +409,54 @@ bool Handle_CHAR(bool show)
 {
 	return typeEnsure(Token::CHARCON);
 }
-//<因子>   ::= <标识符>｜<标识符>'['<表达式>']'|'('<表达式>')'｜<整数>|<字符>｜<有返回值函数调用语句> 
+//＜因子＞    :: = ＜标识符＞｜＜标识符＞'['＜表达式＞']' | ＜标识符＞'['＜表达式＞']''['＜表达式＞']' | '('＜表达式＞')'｜＜整数＞ | ＜字符＞｜＜有返回值函数调用语句＞
 bool Handle_FACTOR(bool show)
 {
-	bool flag = false;
-	if (typeAssert(nowLoc,Token::IDENFR))
-	{	
-		flag = true;
-		if (typeAssert(nowLoc+1, Token::LBRACK))
-		{
-			Handle_IDENFR(show);
-			if (typeAssert(nowLoc + 3, Token::LBRACK))
-			Handle_LBRACK_EXP_RBRACK(show,true);
-			else 
-			{
-				Handle_LBRACK_EXP_RBRACK(show);
-			}
-		} 
-		else if (typeAssert(nowLoc+1, Token::LPARENT))
-		{
-			Handle_RETURN_FUNC_CALL(show);
-		}
-		else
-		{
-			Handle_IDENFR(show);
-		}
-	}
-	else if (Handle_LPARENT_EXP_RPARENT(show))
-	{
-		flag = true;
-	}
-	else if (Handle_INTCON(show))
-	{
-		flag = true;
-	}
-	else if (Handle_CHARCON(show))
-	{
-		flag = true;
-	}
-	if (flag)
-	{
-		output += "<因子>";
-		output += '\n';
-	}
-	return flag;
+    bool flag = false;
+    if (typeAssert(nowLoc,Token::IDENFR))
+    {
+        //std::string varName = Tokens[nowLoc].getTokenStr();
+        flag = true;
+        if (typeAssert(nowLoc+1, Token::LBRACK))
+        {
+            Handle_IDENFR(show);
+            typeEnsure(Token::LBRACK);
+            Handle_EXPRESSION(show);
+            typeEnsure(Token::RBRACK);
+            if (typeAssert(nowLoc, Token::LBRACK))
+            {
+                typeEnsure(Token::LBRACK);
+                Handle_EXPRESSION(show);
+                typeEnsure(Token::RBRACK);
+            }
+        }
+        else if (typeAssert(nowLoc+1, Token::LPARENT))
+        {
+            Handle_RETURN_FUNC_CALL(show);
+        }
+        else
+        {
+            Handle_IDENFR(show);
+        }
+    }
+    else if (Handle_LPARENT_EXP_RPARENT(show))
+    {
+        flag = true;
+    }
+    else if (Handle_INTCON(show))
+    {
+        flag = true;
+    }
+    else if (Handle_CHARCON(show))
+    {
+        flag = true;
+    }
+    if (flag)
+    {
+        output += "<因子>";
+        output += '\n';
+    }
+    return flag;
 
 }
 //<值参数表>  ::= <表达式>{,<表达式>}｜<空>
@@ -544,38 +548,38 @@ bool Handle_COMPLEX_STATE(bool show)
 //<有返回值函数定义> ::=  <声明头部>'('<参数表>')' '{'<复合语句>'}'
 bool Handle_RETURN_FUNC_DEFINE(bool show)
 {
-	if (!Handle_DECLARE_HEADER(show)) return false;
-	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-	if (!typeEnsure(Token::LPARENT)) return false;
-	if (!Handle_PARA_LIST(show)) return false;
-	if (!typeEnsure(Token::RPARENT)) return false;
-	if (!typeEnsure(Token::LBRACE)) return false;
-	if (!Handle_COMPLEX_STATE(show)) return false;
-	if (!typeEnsure(Token::RBRACE)) return false;
-	nonVoidFunc.insert(idName);
-	output += "<有返回值函数定义>";
-	output += '\n';
-	return true;
+    if (!Handle_DECLARE_HEADER(show)) return false;
+    const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+    nonVoidFunc.insert(idName);
+    if (!typeEnsure(Token::LPARENT)) return false;
+    if (!Handle_PARA_LIST(show)) return false;
+    if (!typeEnsure(Token::RPARENT)) return false;
+    if (!typeEnsure(Token::LBRACE)) return false;
+    if (!Handle_COMPLEX_STATE(show)) return false;
+    if (!typeEnsure(Token::RBRACE)) return false;
+    output += "<有返回值函数定义>";
+    output += '\n';
+    return true;
 }
 
 //<无返回值函数定义> :: = void<标识符>'('<参数表>')''{'<复合语句>'}'
 bool Handle_VOID_FUNC_DEFINE(bool show)
 {
-	if (!typeAssert(nowLoc, Token::VOIDTK)) return false;
-	if (!typeAssert(nowLoc+1, Token::IDENFR)) return false;
-	if (!typeEnsure(Token::VOIDTK)) return false;
-	if (!typeEnsure(Token::IDENFR)) return false;
-	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-	if (!typeEnsure(Token::LPARENT)) return false;
-	if (!Handle_PARA_LIST(show)) return false;
-	if (!typeEnsure(Token::RPARENT)) return false;
-	if (!typeEnsure(Token::LBRACE)) return false;
-	if (!Handle_COMPLEX_STATE(show)) return false;
-	if (!typeEnsure(Token::RBRACE)) return false;
-	voidFunc.insert(idName);
-	output += "<无返回值函数定义>";
-	output += '\n';
-	return true;
+    if (!typeAssert(nowLoc, Token::VOIDTK)) return false;
+    if (!typeAssert(nowLoc+1, Token::IDENFR)) return false;
+    if (!typeEnsure(Token::VOIDTK)) return false;
+    if (!typeEnsure(Token::IDENFR)) return false;
+    const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+    voidFunc.insert(idName);
+    if (!typeEnsure(Token::LPARENT)) return false;
+    if (!Handle_PARA_LIST(show)) return false;
+    if (!typeEnsure(Token::RPARENT)) return false;
+    if (!typeEnsure(Token::LBRACE)) return false;
+    if (!Handle_COMPLEX_STATE(show)) return false;
+    if (!typeEnsure(Token::RBRACE)) return false;
+    output += "<无返回值函数定义>";
+    output += '\n';
+    return true;
 }
 //<返回语句>  ::=  return['('<表达式>')']   
 bool Handle_RETURN_STATE(bool show)
@@ -896,16 +900,9 @@ bool HandleMAIN(bool show)
 
 void ParseSyntax::parse()
 {
-	end = this->TokenVec.size();
 	TokenVecPointer = &this->TokenVec;
 	//printf("%d %d\n", this->TokenVec.size(), TokenVec.size());
 	Handle_PROGRAM(false);
-	FILE* writeTo;
-	writeTo = fopen("output.txt", "w");
-	for (int i = 0; i < output.size(); i++)
-	{
-		fprintf(writeTo, "%c", output[i]);
-	}
 }
 
 std::vector<Token>& ParseSyntax::getTokens()
