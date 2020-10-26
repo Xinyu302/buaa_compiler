@@ -6,16 +6,17 @@
 #include "ParseToken.h"
 #include "Token.h"
 #include "ParseSyntax.h"
+#include "ErrorOutputControl.h"
 #include "ErrorInfo.h"
+FILE *outputError = fopen("error.txt","w");
 
 int main()
 {
 	std::vector<Token> TokenVec;
-	std::vector<ErrorInfo> ErrorInfoVec;
-	ParseToken parser(TokenVec,ErrorInfoVec);
+	ParseToken parser(TokenVec);
 	parser.Parse();
-	ParseSyntax parseSyntax(TokenVec,ErrorInfoVec);
-	parseSyntax.parse();
+	ParseSyntax parseSyntax(TokenVec);
+    parseSyntax.parse();
 	return 0;
 
 }

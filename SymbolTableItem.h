@@ -6,30 +6,45 @@
 #include <string>
 #include <vector>
 class SymbolTableItem {
-enum ItemReturnType
-{
-    VOID,
-    INT,
-    CHAR
-};
-enum ItemClassType
-{
-    VAR,
-    CONST,
-    FUNC,
-    ARRAY
-};
 public:
-    SymbolTableItem(std::string name, ItemClassType classType, ItemReturnType returnType);
+    SymbolTableItem();
+
+    enum ItemReturnType
+    {
+        VOID,
+        INT,
+        CHAR
+    };
+    enum ItemClassType
+    {
+        VAR,
+        CONST,
+        FUNC
+    };
 
     SymbolTableItem(std::string name, ItemClassType classType, ItemReturnType returnType,
-                    std::vector<ItemReturnType> paraListTypes);
+                                     std::vector<ItemReturnType> paraListTypes):name(name),classType(classType),returnType(returnType),paraListTypes(paraListTypes){}
 
     SymbolTableItem(std::string name, ItemClassType classType, ItemReturnType returnType,
-                    int vec1);
+                                     int dimension = 0, int x = 0, int y = 0) : name(name), classType(classType),
+                                                                                returnType(returnType),
+                                                                                dimension(dimension), vec1(x),
+                                                                                vec2(y) {}
 
-    SymbolTableItem(std::string name, ItemClassType classType, ItemReturnType returnType,
-                    int vec1,int vec2);
+    bool compareParaList(const std::vector<ItemReturnType>& paraListTypeIn) const;
+    bool compareParaListNum(const std::vector<ItemReturnType>& paraListTypeIn) const;
+
+    bool compareName(const std::string& nameIn) const;
+
+    ItemReturnType& getReturnType()
+    {
+        return returnType;
+    }
+
+    ItemClassType& getClassType()
+    {
+        return classType;
+    }
 private:
     std::string name;
     ItemClassType classType;

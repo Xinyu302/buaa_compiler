@@ -1,4 +1,5 @@
 #include "ParseToken.h"
+#include "ErrorOutputControl.h"
 #include "ErrorInfo.h"
 #include <cstdio>
 #define LETTERS 0
@@ -35,10 +36,19 @@ void clearToken()
     type = 0;
 }
 
+bool isChar(char c)
+{
+    return isLetter(c) || isdigit(c) || c == '+' || c == '-' || c == '*' || c == '/';
+}
+
+bool isStringChar(char c)
+{
+    return (c >= 35 && c <= 126) || (c == 32) || (c == 33);
+}
+
 void ParseToken::errorA()
 {
-    ErrorInfo e(line,ErrorInfo::CHAR_WRONG);
-    ErrorInfoVec.push_back(e);
+    error(line, ErrorInfo::CHAR_WRONG);
 }
 
 void getNextChar()
@@ -86,15 +96,19 @@ void ParseToken::Parse()
         else if (nowChar == '\'')
         {
             getNextChar();
-            if (isLetter(nowChar))
+            bool notR = true;
+            if (isChar(nowChar))
             {
                 TokenStr += nowChar;
             }
             else
             {
+                if (nowChar == '\'') notR = false;
                 errorA();
             }
-            getNextChar();
+            if (notR) {
+                getNextChar();
+            }
             if (nowChar != '\'') {
                 printf("error");
             }
@@ -108,7 +122,7 @@ void ParseToken::Parse()
                 errorA();
             }
             while (nowChar != '\"') {
-                if (isLetter(nowChar))
+                if (isStringChar(nowChar))
                 {
                     TokenStr += nowChar;
                 }
@@ -159,4 +173,4 @@ void ParseToken::Parse()
     }
 }
 
-ParseToken::ParseToken(std::vector<Token>& _TokenVec,std::vector<ErrorInfo> _ErrorInfoVec): TokenVec(_TokenVec), ErrorInfoVec(_ErrorInfoVec){}
+ParseToken::ParseToken(std::vector<Token>& _TokenVec): TokenVec(_TokenVec){}

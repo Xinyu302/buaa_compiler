@@ -128,18 +128,18 @@ CMakeFiles/errorHandler.dir/ParseToken.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/ParseToken.cpp.s"
 	C:\Env\MinGW64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\yxy\CLionProjects\errorHandler\ParseToken.cpp -o CMakeFiles\errorHandler.dir\ParseToken.cpp.s
 
-CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj: CMakeFiles/errorHandler.dir/flags.make
-CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj: ../ErrorInfo.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj"
-	C:\Env\MinGW64\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\errorHandler.dir\ErrorInfo.cpp.obj -c C:\Users\yxy\CLionProjects\errorHandler\ErrorInfo.cpp
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj: CMakeFiles/errorHandler.dir/flags.make
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj: ../SymbolTableItem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
+	C:\Env\MinGW64\mingw64\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\errorHandler.dir\SymbolTableItem.cpp.obj -c C:\Users\yxy\CLionProjects\errorHandler\SymbolTableItem.cpp
 
-CMakeFiles/errorHandler.dir/ErrorInfo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/ErrorInfo.cpp.i"
-	C:\Env\MinGW64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\yxy\CLionProjects\errorHandler\ErrorInfo.cpp > CMakeFiles\errorHandler.dir\ErrorInfo.cpp.i
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i"
+	C:\Env\MinGW64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\yxy\CLionProjects\errorHandler\SymbolTableItem.cpp > CMakeFiles\errorHandler.dir\SymbolTableItem.cpp.i
 
-CMakeFiles/errorHandler.dir/ErrorInfo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/ErrorInfo.cpp.s"
-	C:\Env\MinGW64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\yxy\CLionProjects\errorHandler\ErrorInfo.cpp -o CMakeFiles\errorHandler.dir\ErrorInfo.cpp.s
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s"
+	C:\Env\MinGW64\mingw64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\yxy\CLionProjects\errorHandler\SymbolTableItem.cpp -o CMakeFiles\errorHandler.dir\SymbolTableItem.cpp.s
 
 # Object files for target errorHandler
 errorHandler_OBJECTS = \
@@ -147,7 +147,7 @@ errorHandler_OBJECTS = \
 "CMakeFiles/errorHandler.dir/Token.cpp.obj" \
 "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj" \
 "CMakeFiles/errorHandler.dir/ParseToken.cpp.obj" \
-"CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj"
+"CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
 
 # External object files for target errorHandler
 errorHandler_EXTERNAL_OBJECTS =
@@ -156,7 +156,7 @@ errorHandler.exe: CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.obj
 errorHandler.exe: CMakeFiles/errorHandler.dir/Token.cpp.obj
 errorHandler.exe: CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj
 errorHandler.exe: CMakeFiles/errorHandler.dir/ParseToken.cpp.obj
-errorHandler.exe: CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj
+errorHandler.exe: CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj
 errorHandler.exe: CMakeFiles/errorHandler.dir/build.make
 errorHandler.exe: CMakeFiles/errorHandler.dir/linklibs.rsp
 errorHandler.exe: CMakeFiles/errorHandler.dir/objects1.rsp

@@ -142,33 +142,6 @@ errorHandler/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/build
 .PHONY : errorHandler/fast
 
-ErrorInfo.obj: ErrorInfo.cpp.obj
-
-.PHONY : ErrorInfo.obj
-
-# target to build an object file
-ErrorInfo.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj
-.PHONY : ErrorInfo.cpp.obj
-
-ErrorInfo.i: ErrorInfo.cpp.i
-
-.PHONY : ErrorInfo.i
-
-# target to preprocess a source file
-ErrorInfo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.i
-.PHONY : ErrorInfo.cpp.i
-
-ErrorInfo.s: ErrorInfo.cpp.s
-
-.PHONY : ErrorInfo.s
-
-# target to generate assembly for a file
-ErrorInfo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ErrorInfo.cpp.s
-.PHONY : ErrorInfo.cpp.s
-
 ParseSyntax.obj: ParseSyntax.cpp.obj
 
 .PHONY : ParseSyntax.obj
@@ -222,6 +195,33 @@ ParseToken.s: ParseToken.cpp.s
 ParseToken.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/ParseToken.cpp.s
 .PHONY : ParseToken.cpp.s
+
+SymbolTableItem.obj: SymbolTableItem.cpp.obj
+
+.PHONY : SymbolTableItem.obj
+
+# target to build an object file
+SymbolTableItem.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj
+.PHONY : SymbolTableItem.cpp.obj
+
+SymbolTableItem.i: SymbolTableItem.cpp.i
+
+.PHONY : SymbolTableItem.i
+
+# target to preprocess a source file
+SymbolTableItem.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i
+.PHONY : SymbolTableItem.cpp.i
+
+SymbolTableItem.s: SymbolTableItem.cpp.s
+
+.PHONY : SymbolTableItem.s
+
+# target to generate assembly for a file
+SymbolTableItem.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s
+.PHONY : SymbolTableItem.cpp.s
 
 Token.obj: Token.cpp.obj
 
@@ -286,15 +286,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... errorHandler
-	@echo ... ErrorInfo.obj
-	@echo ... ErrorInfo.i
-	@echo ... ErrorInfo.s
 	@echo ... ParseSyntax.obj
 	@echo ... ParseSyntax.i
 	@echo ... ParseSyntax.s
 	@echo ... ParseToken.obj
 	@echo ... ParseToken.i
 	@echo ... ParseToken.s
+	@echo ... SymbolTableItem.obj
+	@echo ... SymbolTableItem.i
+	@echo ... SymbolTableItem.s
 	@echo ... Token.obj
 	@echo ... Token.i
 	@echo ... Token.s

@@ -6,7 +6,7 @@ class ParseToken
 {
 public:
 	void Parse();
-	ParseToken(std::vector<Token>& _TokenVec,std::vector<ErrorInfo> _ErrorInfoVEC);
+	ParseToken(std::vector<Token>& _TokenVec);
 
 	std::vector<Token>& getTokenVec()
 	{
@@ -14,7 +14,6 @@ public:
 	}
 private:
 	std::vector<Token>& TokenVec;
-	std::vector<ErrorInfo>& ErrorInfoVec;
     void errorA();
 };
 

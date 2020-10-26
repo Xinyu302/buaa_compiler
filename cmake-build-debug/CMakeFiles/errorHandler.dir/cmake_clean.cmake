@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/errorHandler.dir/ErrorInfo.cpp.obj"
   "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj"
   "CMakeFiles/errorHandler.dir/ParseToken.cpp.obj"
+  "CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
   "CMakeFiles/errorHandler.dir/Token.cpp.obj"
   "CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.obj"
   "errorHandler.exe"

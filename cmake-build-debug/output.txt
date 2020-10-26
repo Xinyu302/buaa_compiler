@@ -1,288 +1,11 @@
-INTTK int
-IDENFR a
-COMMA ,
-IDENFR b
-<变量定义无初始化>
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR a
-LBRACK [
-INTCON 4
-<无符号整数>
-RBRACK ]
-LBRACK [
-INTCON 2
-<无符号整数>
-RBRACK ]
-ASSIGN =
-LBRACE {
-LBRACE {
-INTCON 1
-<无符号整数>
-<整数>
-<常量>
-COMMA ,
-INTCON 0
-<无符号整数>
-<整数>
-<常量>
-RBRACE }
-COMMA ,
-LBRACE {
-INTCON 0
-<无符号整数>
-<整数>
-<常量>
-COMMA ,
-INTCON 1
-<无符号整数>
-<整数>
-<常量>
-RBRACE }
-COMMA ,
-LBRACE {
-MINU -
-INTCON 1
-<无符号整数>
-<整数>
-<常量>
-COMMA ,
-INTCON 0
-<无符号整数>
-<整数>
-<常量>
-RBRACE }
-COMMA ,
-LBRACE {
-INTCON 0
-<无符号整数>
-<整数>
-<常量>
-COMMA ,
-MINU -
-INTCON 1
-<无符号整数>
-<整数>
-<常量>
-RBRACE }
-RBRACE }
-<变量定义及初始化>
-<变量定义>
-SEMICN ;
-<变量说明>
-INTTK int
-IDENFR b
-<声明头部>
-LPARENT (
-<参数表>
-RPARENT )
-LBRACE {
-RETURNTK return
-LPARENT (
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-RPARENT )
-<返回语句>
-SEMICN ;
-<语句>
-<语句列>
-<复合语句>
-RBRACE }
-<有返回值函数定义>
 VOIDTK void
 MAINTK main
 LPARENT (
 RPARENT )
 LBRACE {
-CHARTK char
-IDENFR c
-<变量定义无初始化>
-<变量定义>
-SEMICN ;
-INTTK int
-IDENFR a
-COMMA ,
-IDENFR b
-<变量定义无初始化>
-<变量定义>
-SEMICN ;
-<变量说明>
-PRINTFTK printf
-LPARENT (
-STRCON 18231169
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-SCANFTK scanf
-LPARENT (
-IDENFR a
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
-SCANFTK scanf
-LPARENT (
-IDENFR c
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
-SCANFTK scanf
-LPARENT (
-IDENFR b
-RPARENT )
-<读语句>
-SEMICN ;
-<语句>
-SWITCHTK switch
-LPARENT (
-IDENFR c
-<因子>
-<项>
-<表达式>
-RPARENT )
-LBRACE {
-CASETK case
-CHARCON +
-<常量>
-COLON :
-PRINTFTK printf
-LPARENT (
-IDENFR a
-<因子>
-<项>
-PLUS +
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<情况子语句>
-CASETK case
-CHARCON -
-<常量>
-COLON :
-PRINTFTK printf
-LPARENT (
-IDENFR a
-<因子>
-<项>
-MINU -
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<情况子语句>
-CASETK case
-CHARCON *
-<常量>
-COLON :
-PRINTFTK printf
-LPARENT (
-IDENFR a
-<因子>
-MULT *
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<情况子语句>
-CASETK case
-CHARCON /
-<常量>
-COLON :
-PRINTFTK printf
-LPARENT (
-IDENFR a
-<因子>
-DIV /
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<情况子语句>
-<情况表>
-DEFAULTTK default
-COLON :
-PRINTFTK printf
-LPARENT (
-STRCON error!
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<缺省>
-RBRACE }
-<情况语句>
-<语句>
-SWITCHTK switch
-LPARENT (
-IDENFR a
-<因子>
-<项>
-<表达式>
-RPARENT )
-LBRACE {
-CASETK case
-INTCON 1
-<无符号整数>
-<整数>
-<常量>
-COLON :
-PRINTFTK printf
-LPARENT (
-INTCON 1
-<无符号整数>
-<整数>
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<情况子语句>
-<情况表>
-DEFAULTTK default
-COLON :
-PRINTFTK printf
-LPARENT (
-STRCON a is not 1!
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
-<语句>
-<缺省>
-RBRACE }
-<情况语句>
-<语句>
 FORTK for
 LPARENT (
-IDENFR a
+IDENFR i
 ASSIGN =
 INTCON 0
 <无符号整数>
@@ -291,12 +14,12 @@ INTCON 0
 <项>
 <表达式>
 SEMICN ;
-IDENFR a
+IDENFR i
 <因子>
 <项>
 <表达式>
 LSS <
-INTCON 6
+INTCON 10
 <无符号整数>
 <整数>
 <因子>
@@ -304,44 +27,25 @@ INTCON 6
 <表达式>
 <条件>
 SEMICN ;
-IDENFR a
+IDENFR i
 ASSIGN =
-IDENFR a
+IDENFR i
 PLUS +
 INTCON 1
 <无符号整数>
 <步长>
 RPARENT )
 LBRACE {
-SCANFTK scanf
-LPARENT (
-IDENFR b
-RPARENT )
-<读语句>
 SEMICN ;
 <语句>
-PRINTFTK printf
-LPARENT (
-IDENFR b
-<因子>
-<项>
-<表达式>
-RPARENT )
-<写语句>
+SEMICN ;
+<语句>
 SEMICN ;
 <语句>
 <语句列>
 RBRACE }
 <语句>
 <循环语句>
-<语句>
-PRINTFTK printf
-LPARENT (
-STRCON file3 over!
-<字符串>
-RPARENT )
-<写语句>
-SEMICN ;
 <语句>
 <语句列>
 <复合语句>

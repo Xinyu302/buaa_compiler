@@ -6,9 +6,21 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h
+string
+-
+
+C:/Users/yxy/CLionProjects/errorHandler/ErrorOutputControl.h
+cstdio
+-
+
 C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp
 ParseSyntax.h
 C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.h
+SymbolTableItem.h
+C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.h
+ErrorOutputControl.h
+C:/Users/yxy/CLionProjects/errorHandler/ErrorOutputControl.h
 iostream
 -
 vector
@@ -21,23 +33,13 @@ vector
 -
 Token.h
 C:/Users/yxy/CLionProjects/errorHandler/Token.h
+ErrorInfo.h
+C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h
 
-C:/Users/yxy/CLionProjects/errorHandler/ParseToken.cpp
-ParseToken.h
-C:/Users/yxy/CLionProjects/errorHandler/ParseToken.h
-cstdio
+C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.h
+string
 -
-
-C:/Users/yxy/CLionProjects/errorHandler/ParseToken.h
-Token.h
-C:/Users/yxy/CLionProjects/errorHandler/Token.h
 vector
--
-
-C:/Users/yxy/CLionProjects/errorHandler/Token.cpp
-Token.h
-C:/Users/yxy/CLionProjects/errorHandler/Token.h
-iostream
 -
 
 C:/Users/yxy/CLionProjects/errorHandler/Token.h
@@ -45,16 +47,4 @@ iostream
 -
 string
 -
-
-C:/Users/yxy/CLionProjects/errorHandler/symbolAnalysis.cpp
-iostream
--
-vector
--
-ParseToken.h
-C:/Users/yxy/CLionProjects/errorHandler/ParseToken.h
-Token.h
-C:/Users/yxy/CLionProjects/errorHandler/Token.h
-ParseSyntax.h
-C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.h
 

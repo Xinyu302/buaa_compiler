@@ -52,6 +52,7 @@ public:
 	std::string TokenPrintStr();
 	Token::TokenTypeIndex getIndex();
 	std::string getTokenStr();
+	int& getLine();
 	
 private:
 	std::string TokenStr;

@@ -276,3 +276,8 @@ std::string Token::getTokenStr()
 {
 	return this->TokenStr;
 }
+
+int& Token::getLine()
+{
+    return this->line;
+}
