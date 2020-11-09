@@ -4,7 +4,6 @@
 
 #include "SymbolTableItem.h"
 #include <string>
-#include <algorithm>
 
 bool SymbolTableItem::compareParaListNum(const std::vector<ItemReturnType> &paraListTypeIn) const {
     int n1 = paraListTypes.size();

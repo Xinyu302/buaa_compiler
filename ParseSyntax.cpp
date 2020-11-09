@@ -3,7 +3,7 @@
 #include "ErrorOutputControl.h"
 #include <iostream>
 #include <vector>
-#include <set>
+
 #define Tokens (*TokenVecPointer)
 const int INNER = 1;
 const int OUTER = 0;
@@ -328,20 +328,7 @@ bool Handle_TYPE_IDENFR(bool show)
 	}
 	return false;
 }
-/*
-bool Handle_LBRACK_UINT_RBRACK(bool show)
-{
-	if (typeEnsure(Token::LBRACK))
-	{
-		if (Handle_UNSIGNED_INTCON(show))
-		{
-			return typeEnsure(Token::RBRACK);
-		}
-		return false;
-	}
-	return false;
-}
- */
+
 //＜变量定义＞ ::= ＜变量定义无初始化＞|＜变量定义及初始化＞
 bool assert_VAR_DEFINE_WITH_INIT()
 {
@@ -349,8 +336,12 @@ bool assert_VAR_DEFINE_WITH_INIT()
 	int loc = nowLoc;
 	if (!(typeAssert(loc,Token::INTTK) || typeAssert(loc,Token::CHARTK))) return false;
 	loc++;
+	int&& line = getLastLine();
 	if (!typeAssert(loc++, Token::IDENFR)) return false;
 	while (!typeAssert(loc,Token::SEMICN)) {
+	    if (line != getLastLine()) {
+            break;
+	    }
         if (typeAssert(loc,Token::ASSIGN)) return true;
         loc++;
 	}
@@ -397,22 +388,10 @@ bool Handle_VAR_DEFINE_NO_INIT(bool show)
                     error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
                 }
                 vec2 = atoi(Tokens[nowLoc - 2].getTokenStr().c_str());
-                /*
-                if (findSymbolTableItem(isInner,idName))
-                {
-                    error(line,ErrorInfo::NAME_REDEFINED);
-                }
-                 */
                 insertIntoSymbolTableVar(isInner,idName,index,2,vec1,vec2);
 			}
 			else
             {
-			    /*
-                if (findSymbolTableItem(isInner,idName))
-                {
-                    error(line,ErrorInfo::NAME_REDEFINED);
-                }
-                */
                 insertIntoSymbolTableVar(isInner,idName,index,1,vec1);
             }
 		}
@@ -655,27 +634,6 @@ bool Handle_EXPRESSION(bool show,int& expType)
 	output += '\n';
 	return true;
 }
-/*
-bool Handle_LBRACK_EXP_RBRACK(bool show,bool twice)
-{
-	if (!typeEnsure(Token::LBRACK)) return false;
-	if (!Handle_EXPRESSION(show)) return false;
-	if (!typeEnsure(Token::RBRACK)) return false;
-	if (!typeEnsure(Token::LBRACK)) return false;
-	if (!Handle_EXPRESSION(show)) return false;
-	if (!typeEnsure(Token::RBRACK)) return false;
-	return true;
-}
- */
-/*
-//'['<表达式>']'
-bool Handle_LBRACK_EXP_RBRACK(bool show)
-{
-	if (!typeEnsure(Token::LBRACK)) return false;
-	if (!Handle_EXPRESSION(show)) return false;
-	return typeEnsure(Token::RBRACK);
-}
-*/
 //'('<表达式>')'
 bool Handle_LPARENT_EXP_RPARENT(bool show,int& exp_type)
 {
@@ -1432,9 +1390,4 @@ void ParseSyntax::parse()
     {
         fprintf(writeTo, "%c", output[i]);
     }
-}
-
-std::vector<Token>& ParseSyntax::getTokens()
-{
-	return this->TokenVec;
 }
