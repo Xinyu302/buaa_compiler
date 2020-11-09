@@ -3,6 +3,7 @@
 #include "ErrorOutputControl.h"
 #include <iostream>
 #include <vector>
+#include <map>
 
 #define Tokens (*TokenVecPointer)
 const int INNER = 1;
@@ -24,6 +25,8 @@ bool FUNC_HAS_RETURN;
 std::vector<Token>* TokenVecPointer;
 std::vector<SymbolTableItem> OuterSymbolTable;
 std::vector<SymbolTableItem> InnerSymbolTable;
+std::map<std::string, std::vector<SymbolTableItem>> allInnerSymbolTable;
+std::vector<std::string> allStringList;
 SymbolTableItem *symbolTableItemPtr;
 
 int getLastLine()
@@ -134,8 +137,9 @@ bool findSymbolTableItem(const std::string& name)
     return findSymbolTableItem(OUTER,name);
 }
 
-void clearInnerSymbolTable()
+void clearInnerSymbolTable(const std::string& idName)
 {
+    allInnerSymbolTable[idName] = InnerSymbolTable;
     InnerSymbolTable.clear();
 }
 
@@ -236,6 +240,7 @@ bool Handle_STRCON(bool show)
 {
 	if (typeEnsure(Token::STRCON))
 	{
+	    allStringList.push_back(Tokens[nowLoc-1].getTokenStr());
 		output += "<字符串>";
 		output += '\n';
 		return true;
@@ -918,7 +923,8 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     output += "<有返回值函数定义>";
     output += '\n';
     isInner = OUTER;
-    clearInnerSymbolTable();
+
+    clearInnerSymbolTable(idName);
     return true;
 }
 
@@ -953,7 +959,7 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     output += "<无返回值函数定义>";
     output += '\n';
     isInner = false;
-    clearInnerSymbolTable();
+    clearInnerSymbolTable(idName);
     return true;
 }
 //<返回语句>  ::=  return['('<表达式>')']   

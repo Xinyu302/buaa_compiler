@@ -5,6 +5,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
+#include "Token.h"
+
 class SymbolTableItem {
 public:
     SymbolTableItem();
@@ -54,4 +57,7 @@ private:
     int vec1,vec2;
 };
 
+extern std::vector<Token>* TokenVecPointer;
+extern std::vector<SymbolTableItem> OuterSymbolTable;
+extern std::map<std::string, std::vector<SymbolTableItem>> allInnerSymbolTable;
 
