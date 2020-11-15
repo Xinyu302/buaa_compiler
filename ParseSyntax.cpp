@@ -1,7 +1,6 @@
 #include "ParseSyntax.h"
 #include "SymbolTableItem.h"
 #include "ErrorOutputControl.h"
-#include <iostream>
 #include <vector>
 #include <map>
 
@@ -17,146 +16,74 @@ const int EXP_CHAR = 2;
 const int EXP_ERROR = 3;
 // 运用递归下降的方法分析语法
 ParseSyntax::ParseSyntax(std::vector<Token>& _TokenVec):TokenVec(_TokenVec){}
+int nothing;
 int nowLoc = 0;
 int isInner = 0;
 int FUNC_TYPE;
 bool FUNC_HAS_RETURN;
 
+extern std::vector<MidCode*> midCodeVec;
+
+FunctionSymbolTable* curFuncTable = new FunctionSymbolTable("main");
+std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 std::vector<Token>* TokenVecPointer;
-std::vector<SymbolTableItem> OuterSymbolTable;
-std::vector<SymbolTableItem> InnerSymbolTable;
-std::map<std::string, std::vector<SymbolTableItem>> allInnerSymbolTable;
-std::vector<std::string> allStringList;
+
+SyntaxSymbolTable symbolTable;
 SymbolTableItem *symbolTableItemPtr;
 
-int getLastLine()
+std::map<std::string,std::string> stringMap;
+
+bool notFindSymbolTableItem() {
+    return symbolTableItemPtr == nullptr;
+}
+
+void setInner(int Inner) {
+    symbolTable.setInner(Inner);
+    isInner = Inner;
+}
+
+std::string getNextStringId() {
+    static int num = 0;
+    static const std::string tmpStringPrefix = "string";
+    char tmpNo[20];
+    snprintf(tmpNo,20,"%d",num++);
+//    itoa(num++,tmpNo,10);
+    std::string s = tmpStringPrefix + tmpNo;
+    return s;
+}
+
+std::string getNextTmpValId() {
+    static int valId = 0;
+    static const std::string tmpPrefix = "@temp";
+    char tmpNo[20];
+    snprintf(tmpNo,20,"%d",valId++);
+    std::string s = tmpPrefix + tmpNo;
+    curFuncTable->appendTempVar(s);
+    return s;
+}
+
+inline int getLastLine()
 {
     return Tokens[nowLoc - 1].getLine();
 }
 
-void InsertPtrIntoTable(int inner, const SymbolTableItem *itemPtr) {
-    if (inner == INNER)
-    {
-        InnerSymbolTable.push_back(*itemPtr);
-    }
-    else
-    {
-        OuterSymbolTable.push_back(*itemPtr);
-    }
-}
-
-bool insertIntoSymbolTableVar(int inner, const std::string& name, Token::TokenTypeIndex index, int dimension = 0, int x = 0, int y = 0)
-{
-    SymbolTableItem* itemPtr;
-    if (index == Token::INTTK)
-    {
-        itemPtr = new SymbolTableItem(name,SymbolTableItem::VAR,SymbolTableItem::INT,dimension,x,y);
-    }
-    else if (index == Token::CHARTK)
-    {
-        itemPtr = new SymbolTableItem(name,SymbolTableItem::VAR,SymbolTableItem::CHAR,dimension,x,y);
-    }
-    InsertPtrIntoTable(inner, itemPtr);
-    delete itemPtr;
-    return true;
-}
-
-bool insertIntoSymbolTableConst(int inner, const std::string& name, Token::TokenTypeIndex index)
-{
-    SymbolTableItem* itemPtr;
-    if (index == Token::INTTK)
-    {
-        itemPtr = new SymbolTableItem(name,SymbolTableItem::CONST,SymbolTableItem::INT);
-    }
-    else if (index == Token::CHARTK)
-    {
-        itemPtr = new SymbolTableItem(name, SymbolTableItem::CONST, SymbolTableItem::CHAR);
-    }
-    InsertPtrIntoTable(inner, itemPtr);
-    delete itemPtr;
-    return true;
-}
-
-bool insertIntoSymbolTableFunc(int inner, const std::string& name, Token::TokenTypeIndex index,const std::vector<SymbolTableItem::ItemReturnType>& s)
-{
-    SymbolTableItem* itemPtr;
-    if (index == Token::INTTK)
-    {
-        itemPtr = new SymbolTableItem(name,SymbolTableItem::FUNC,SymbolTableItem::INT,s);
-    }
-    else if (index == Token::CHARTK)
-    {
-        itemPtr = new SymbolTableItem(name, SymbolTableItem::FUNC, SymbolTableItem::CHAR,s);
-    }
-    else if (index == Token::VOIDTK)
-    {
-        itemPtr = new SymbolTableItem(name, SymbolTableItem::FUNC, SymbolTableItem::VOID,s);
-    }
-    InsertPtrIntoTable(inner, itemPtr);
-    delete itemPtr;
-    return true;
-}
-
-bool findSymbolTableItem(int inner, const std::string& name)
-{
-    if (inner == INNER)
-    {
-        for (int i = InnerSymbolTable.size() - 1; i >= 0; i--) {
-            if (InnerSymbolTable[i].compareName(name) == true)
-            {
-                symbolTableItemPtr = &(InnerSymbolTable[i]);
-                return true;
-            }
-        }
-        return false;
-    }
-    else
-    {
-        for (int i = OuterSymbolTable.size() - 1; i >= 0; i--) {
-            if (OuterSymbolTable[i].compareName(name) == true)
-            {
-                symbolTableItemPtr = &(OuterSymbolTable[i]);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-bool defineCheckMulti(const std::string& name) {
-    return findSymbolTableItem(isInner,name);
-}
-
-bool findSymbolTableItem(const std::string& name)
-{
-    if (isInner)
-    {
-        if (findSymbolTableItem(INNER,name) || findSymbolTableItem(OUTER,name)) return true;
-        return false;
-    }
-    return findSymbolTableItem(OUTER,name);
+inline bool defineCheckMulti(const std::string& name) {
+    return (symbolTable.defineCheckMulti(isInner,name));
 }
 
 void clearInnerSymbolTable(const std::string& idName)
 {
-    allInnerSymbolTable[idName] = InnerSymbolTable;
-    InnerSymbolTable.clear();
+    symbolTable.clearInnerSymbolTable(idName);
 }
 
 bool indexMatchedIntOrChar(Token::TokenTypeIndex& index, int& intOrChar)
 {
-    if (index == Token::INTTK && intOrChar == EXP_INT || index == Token::CHARTK && intOrChar == EXP_CHAR) return true;
+    if ((index == Token::INTTK && intOrChar == EXP_INT) || (index == Token::CHARTK && intOrChar == EXP_CHAR)) return true;
     return false;
 }
 
 std::string output;
 
-void ParseSyntax::printAllTokens()
-{
-	for (int i = 0; i < TokenVec.size(); i++) {
-		std::cout << TokenVec[i].TokenPrintStr();
-	}
-}
 // 断言类型，如果得到满意答案loc++
 inline bool typeAssert(int loc, Token::TokenTypeIndex index)
 {
@@ -174,6 +101,7 @@ bool typeEnsure(Token::TokenTypeIndex index)
 	if (b)
 	{
 		output += Tokens[nowLoc].TokenPrintStr();
+//		std::cout << Tokens[nowLoc].TokenPrintStr() << std::endl;
 		nowLoc++;
 	}
 	return b;
@@ -181,27 +109,31 @@ bool typeEnsure(Token::TokenTypeIndex index)
 
 
 // <加法运算符>::= +｜-
-bool Handle_PLUS(bool show = 0)
+bool Handle_PLUS(bool show,Token::TokenTypeIndex& index)
 {
 	if (typeEnsure(Token::PLUS))
 	{
+	    index = Token::PLUS;
 		return true;
 	}
 	if (typeEnsure(Token::MINU))
 	{
+	    index = Token::MINU;
 		return true;
 	}
 	return false;
 }
 // <乘法运算符> ::= *｜/
-bool Handle_MULT(bool show)
+bool Handle_MULT(bool show,Token::TokenTypeIndex& index)
 {
 	if (typeEnsure(Token::MULT))
 	{
+	    index = Token::MULT;
 		return true;
 	}
 	if (typeEnsure(Token::DIV))
 	{
+	    index = Token::DIV;
 		return true;
 	}
 	return false;
@@ -236,11 +168,12 @@ bool Handle_CMP(bool show)
 	return false;
 }
 // <字符串>  ::=  "｛十进制编码为32,33,35-126的ASCII字符｝"
-bool Handle_STRCON(bool show)
+bool Handle_STRCON(bool show,std::string & strName)
 {
 	if (typeEnsure(Token::STRCON))
 	{
-	    allStringList.push_back(Tokens[nowLoc-1].getTokenStr());
+	    strName = getNextStringId();
+	    stringMap[strName] = Tokens[nowLoc-1].getTokenStr();
 		output += "<字符串>";
 		output += '\n';
 		return true;
@@ -248,10 +181,11 @@ bool Handle_STRCON(bool show)
 	return false;
 }
 // <无符号整数> ::= <非零数字>｛<数字>｝| 0
-bool Handle_UNSIGNED_INTCON(bool show)
+bool Handle_UNSIGNED_INTCON(bool show,int& value=nothing)
 {
 	if (typeEnsure(Token::INTCON))
 	{
+	    value = atoi(Tokens[nowLoc - 1].getTokenStr().c_str());
 		output += "<无符号整数>";
 		output += '\n';
 		return true;
@@ -259,11 +193,17 @@ bool Handle_UNSIGNED_INTCON(bool show)
 	return false;
 }
 // <整数> ::= ［＋｜－］<无符号整数>
-bool Handle_INTCON(bool show)
+bool Handle_INTCON(bool show,int &value=nothing)
 {
-	Handle_PLUS();
-	if (Handle_UNSIGNED_INTCON(show))
+    bool minus = false;
+    Token::TokenTypeIndex index = Token::NIL;
+	Handle_PLUS(show,index);
+	if (index == Token::MINU) {
+	    minus = true;
+	}
+	if (Handle_UNSIGNED_INTCON(show,value))
 	{
+        if (minus) value = -value;
 		output += "<整数>";
 		output += '\n';
 		return true;
@@ -276,14 +216,13 @@ bool Handle_IDENFR(bool show)
 	return typeEnsure(Token::IDENFR);
 }
 
-bool Handle_CHARCON(bool show)
+bool Handle_CHARCON(bool show,int& value=nothing)
 {
-	return typeEnsure(Token::CHARCON);
-}
-
-bool Handle_CONSTTK(bool show)
-{
-	return typeEnsure(Token::CONSTTK);
+	if (typeEnsure(Token::CHARCON)) {
+	    value = Tokens[nowLoc - 1].getTokenStr()[0];
+        return true;
+	}
+    return false;
 }
 
 //<声明头部>  ::=  int<标识符>|char<标识符>
@@ -306,16 +245,16 @@ bool Handle_DECLARE_HEADER(bool show,int& funcType)
 	}
 	return false;
 }
-bool Handle_CONST_INT_OR_CHAR(bool show,int& const_or_char)
+bool Handle_CONST_INT_OR_CHAR(bool show,int& const_or_char,int &value=nothing)
 {
-	if (Handle_INTCON(show))
+	if (Handle_INTCON(show,value))
 	{
 	    const_or_char = EXP_INT;
 		output += "<常量>";
 		output += '\n';
 		return true;
 	}
-	else if (Handle_CHARCON(show))
+	else if (Handle_CHARCON(show,value))
     {
         const_or_char = EXP_CHAR;
         output += "<常量>";
@@ -341,7 +280,7 @@ bool assert_VAR_DEFINE_WITH_INIT()
 	int loc = nowLoc;
 	if (!(typeAssert(loc,Token::INTTK) || typeAssert(loc,Token::CHARTK))) return false;
 	loc++;
-	int&& line = getLastLine();
+	int line = getLastLine();
 	if (!typeAssert(loc++, Token::IDENFR)) return false;
 	while (!typeAssert(loc,Token::SEMICN)) {
 	    if (line != getLastLine()) {
@@ -379,7 +318,8 @@ bool Handle_VAR_DEFINE_NO_INIT(bool show)
 	    if (defineCheckMulti(idName)) {
 	        error(getLastLine(),ErrorInfo::NAME_REDEFINED);
 	    }
-		if (typeEnsure(Token::LBRACK))
+        curFuncTable->appendLocalVar(idName);
+        if (typeEnsure(Token::LBRACK))
 		{
 			if (!Handle_UNSIGNED_INTCON(show)) return false;
 			if (!typeEnsure(Token::RBRACK)) {
@@ -393,22 +333,16 @@ bool Handle_VAR_DEFINE_NO_INIT(bool show)
                     error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
                 }
                 vec2 = atoi(Tokens[nowLoc - 2].getTokenStr().c_str());
-                insertIntoSymbolTableVar(isInner,idName,index,2,vec1,vec2);
+                symbolTable.insertIntoSymbolTableVar(isInner,idName,index,2,vec1,vec2);
 			}
 			else
             {
-                insertIntoSymbolTableVar(isInner,idName,index,1,vec1);
+                symbolTable.insertIntoSymbolTableVar(isInner,idName,index,1,vec1);
             }
 		}
 		else
         {
-		    /*
-		    if (findSymbolTableItem(isInner,idName))
-            {
-		        error(line,ErrorInfo::NAME_REDEFINED);
-            }
-            */
-		    insertIntoSymbolTableVar(isInner,idName,index);
+		    symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         }
 		if (!typeEnsure(Token::COMMA)) break;
 	}
@@ -427,6 +361,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
     const std::string idName = Tokens[nowLoc - 1].getTokenStr();
 	int& line = Tokens[nowLoc - 1].getLine();
 	Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
+	curFuncTable->appendLocalVar(idName);
 	int vec1,vec2;
 	bool hadError = false;
 	if (typeEnsure(Token::LBRACK))
@@ -478,7 +413,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
                 {
                     error(line,ErrorInfo::NAME_REDEFINED);
                 }
-                insertIntoSymbolTableVar(isInner,idName,index,vec1,vec2);
+                symbolTable.insertIntoSymbolTableVar(isInner,idName,index,vec1,vec2);
             }
 		}
 		else if (typeEnsure(Token::ASSIGN))
@@ -502,7 +437,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
             {
                 error(line,ErrorInfo::NAME_REDEFINED);
             }
-            insertIntoSymbolTableVar(isInner,idName,index,vec1);
+            symbolTable.insertIntoSymbolTableVar(isInner,idName,index,vec1);
 			flag = typeEnsure(Token::RBRACE);
 		}
 	}
@@ -512,12 +447,14 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
         {
             error(line,ErrorInfo::NAME_REDEFINED);
         }
-        insertIntoSymbolTableVar(isInner,idName,index);
+        symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         int int_or_char = EXP_UNKNOWN;
-		flag = Handle_CONST_INT_OR_CHAR(show,int_or_char);
+        int value;
+		flag = Handle_CONST_INT_OR_CHAR(show,int_or_char,value);
         if (!indexMatchedIntOrChar(index,int_or_char)) {
             error(getLastLine(),ErrorInfo::CONST_TYPE_WRONG);
         }
+        MidCodeFactory(MidCode::ASSIGN,idName,value);
 	}
 	if (flag)
 	{
@@ -558,7 +495,7 @@ bool Handle_VAR_EXPLAIN(bool show)
 	bool flag = false;
 	while (Handle_VAR_DEFINE(show))
 	{
-	    int& line = Tokens[nowLoc - 1].getLine();
+	    int line = Tokens[nowLoc - 1].getLine();
         if (!typeEnsure(Token::SEMICN))
         {
             error(line,ErrorInfo::SEMICN_SHOULD_OCCUR);
@@ -580,17 +517,18 @@ bool Handle_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& pa
         const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
         int& line = Tokens[nowLoc - 1].getLine();
         Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
-        if (findSymbolTableItem(isInner,idName))
+        SymbolTableItem::ItemReturnType type = (index == Token::INTTK) ? SymbolTableItem::INT : SymbolTableItem::CHAR;
+        if (defineCheckMulti(idName))
         {
-            insertIntoSymbolTableVar(isInner,idName,index);
+            symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
             error(line,ErrorInfo::NAME_REDEFINED);
         }
         else
         {
-            insertIntoSymbolTableVar(isInner,idName,index);
+            symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         }
 //        insertIntoSymbolTableVar(isInner, idName, index);
-        paras.push_back(InnerSymbolTable.back().getReturnType());
+        paras.push_back(type);
 		typeEnsure(Token::COMMA);
 	}
 	output += "<参数表>";
@@ -598,52 +536,83 @@ bool Handle_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& pa
 	return true;
 }
 //<项>    ::= <因子>{<乘法运算符><因子>}
-bool Handle_TERM(bool show,int& isChar)
+bool Handle_TERM(bool show,int& isChar,std::string &varName)
 {
     int charOrNot = EXP_UNKNOWN;
     bool b = false;
     bool e = false;
-	if (!Handle_FACTOR(show, charOrNot)) return false;
+    std::string varNameTop;
+    std::string varName2;
+    Token::TokenTypeIndex index = Token::NIL;
+	if (!Handle_FACTOR(show, charOrNot,varNameTop)) return false;
     if (charOrNot == EXP_ERROR) e = true;
-	while (Handle_MULT(show) && Handle_FACTOR(show, charOrNot)) {
+	while (Handle_MULT(show,index) && Handle_FACTOR(show, charOrNot,varName2)) {
+        std::string nextTmp = getNextTmpValId();
+        if (index == Token::MULT) MidCodeFactory(MidCode::MULTI,nextTmp,varNameTop,varName2);
+        if (index == Token::DIV) MidCodeFactory(MidCode::DIV,nextTmp,varNameTop,varName2);
+        varNameTop = nextTmp;
 	    if (charOrNot == EXP_ERROR) e = true;
 	    b = true;
 	}
     isChar = e ? EXP_ERROR : (b) ? EXP_INT : charOrNot;
+	varName = varNameTop;
 	output += "<项>";
 	output += '\n';
 	return true;
 }
 //<表达式>::=［＋｜－］<项>{<加法运算符><项>}//[+|-]只作用于第一个<项>
-bool Handle_EXPRESSION(bool show,int& expType)
+bool Handle_EXPRESSION(bool show,int& expType,std::string& VarName)
 {
     int isChar = EXP_UNKNOWN;
     bool b = false;
     bool e = false;
-	if (Handle_PLUS(show)) {
+    bool zeroFront = false;
+    std::string varNameTop;
+    std::string varName2;
+    Token::TokenTypeIndex index;
+	if (Handle_PLUS(show,index)) {
 	    isChar = EXP_INT;
+	    if (index == Token::MINU) {
+            std::string tmpVal = getNextTmpValId();
+            MidCodeFactory(MidCode::ASSIGN,tmpVal,0);
+            varNameTop = tmpVal;
+            zeroFront = true;
+	    }
         b = true;
 	}
-	if (!Handle_TERM(show,isChar)) return false;
+	if (zeroFront) {
+        if (!Handle_TERM(show,isChar,varName2)) return false;
+        std::string nextTmp = getNextTmpValId();
+        MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
+        varNameTop = nextTmp;
+	} else {
+        if (!Handle_TERM(show,isChar,varNameTop)) return false;
+	}
 	if (isChar == EXP_ERROR) {
 	    e = true;
 	}
-	while (Handle_PLUS(show) && Handle_TERM(show,isChar)) {
+	while (Handle_PLUS(show,index) && Handle_TERM(show,isChar,varName2)) {
+	    std::string nextTmp = getNextTmpValId();
+	    if (index == Token::PLUS) MidCodeFactory(MidCode::PLUS,nextTmp,varNameTop,varName2);
+	    if (index == Token::MINU) MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
+	    varNameTop = nextTmp;
         if (isChar == EXP_ERROR) {
             e = true;
         }
 	    b = true;
 	}
+	VarName = varNameTop;
 	expType = e ? EXP_ERROR : (b) ? EXP_INT: isChar;
 	output += "<表达式>";
 	output += '\n';
 	return true;
 }
+
 //'('<表达式>')'
-bool Handle_LPARENT_EXP_RPARENT(bool show,int& exp_type)
+bool Handle_LPARENT_EXP_RPARENT(bool show,int& exp_type,std::string& varName)
 {
 	if (!typeEnsure(Token::LPARENT)) return false;
-	if (!Handle_EXPRESSION(show,exp_type)) {
+	if (!Handle_EXPRESSION(show,exp_type,varName)) {
         exp_type = EXP_ERROR;
 	}
 	if (!typeEnsure(Token::RPARENT)) {
@@ -651,16 +620,12 @@ bool Handle_LPARENT_EXP_RPARENT(bool show,int& exp_type)
 	}
     return true;
 }
-//<字符>::=  '<加法运算符>'｜'<乘法运算符>'｜'<字母>'｜'<数字>'
-bool Handle_CHAR(bool show)
-{
-	return typeEnsure(Token::CHARCON);
-}
 
 //＜因子＞    :: = ＜标识符＞｜＜标识符＞'['＜表达式＞']' | ＜标识符＞'['＜表达式＞']''['＜表达式＞']' | '('＜表达式＞')'｜＜整数＞ | ＜字符＞｜＜有返回值函数调用语句＞
-bool Handle_FACTOR(bool show,int& ischar)
+bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
 {
     bool flag = false;
+    int value;
     if (typeAssert(nowLoc,Token::IDENFR))
     {
         flag = true;
@@ -668,17 +633,18 @@ bool Handle_FACTOR(bool show,int& ischar)
         {
             Handle_IDENFR(show);
             const std::string idName = Tokens[nowLoc - 1].getTokenStr();
-            if (!findSymbolTableItem(idName)) {
-                error(getLastLine(),ErrorInfo::NAME_UNDEFINED);
+            symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+            if (notFindSymbolTableItem()) {
+                error(getLastLine(), ErrorInfo::NAME_UNDEFINED);
                 ischar = EXP_ERROR;
-            }
-            else {
+            } else {
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::INT) ischar = EXP_INT;
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::CHAR) ischar = EXP_CHAR;
             }
             typeEnsure(Token::LBRACK);
             int exp_type = EXP_UNKNOWN;
-            Handle_EXPRESSION(show,exp_type);
+            std::string expName;
+            Handle_EXPRESSION(show,exp_type,expName);
             if (exp_type != EXP_INT) {error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);}
             if (!typeEnsure(Token::RBRACK)) {
                 error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
@@ -686,7 +652,7 @@ bool Handle_FACTOR(bool show,int& ischar)
             if (typeAssert(nowLoc, Token::LBRACK))
             {
                 typeEnsure(Token::LBRACK);
-                Handle_EXPRESSION(show,exp_type);
+                Handle_EXPRESSION(show,exp_type,expName);
                 if (exp_type != EXP_INT) {error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);}
                 if (!typeEnsure(Token::RBRACK)) {
                     error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
@@ -702,7 +668,8 @@ bool Handle_FACTOR(bool show,int& ischar)
         {
             Handle_IDENFR(show);
             const std::string idName = Tokens[nowLoc - 1].getTokenStr();
-            if (!findSymbolTableItem(idName)) {
+            symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+            if (notFindSymbolTableItem()) {
                 ischar = EXP_ERROR;
                 error(getLastLine(),ErrorInfo::NAME_UNDEFINED);
             }
@@ -710,23 +677,31 @@ bool Handle_FACTOR(bool show,int& ischar)
             {
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::INT) ischar = EXP_INT;
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::CHAR) ischar = EXP_CHAR;
+                varName = idName;
             }
         }
     }
-    else if (Handle_LPARENT_EXP_RPARENT(show,ischar))
+    else if (Handle_LPARENT_EXP_RPARENT(show,ischar,varName))
     {
         ischar = EXP_INT;
         flag = true;
     }
-    else if (Handle_INTCON(show))
+    else if (Handle_INTCON(show,value))
     {
         flag = true;
         ischar = EXP_INT;
+        std::string tmpVal = getNextTmpValId();
+        const std::string &num = Tokens[nowLoc - 1].getTokenStr();
+        varName = tmpVal;
+        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
     }
-    else if (Handle_CHARCON(show))
+    else if (Handle_CHARCON(show,value))
     {
         flag = true;
         ischar = EXP_CHAR;
+        std::string tmpVal = getNextTmpValId();
+        varName = tmpVal;
+        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
     }
     if (flag)
     {
@@ -740,13 +715,14 @@ bool Handle_FACTOR(bool show,int& ischar)
 bool Handle_VAL_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& paras,bool& should_cmp_paras)
 {
     int exp_type;
-	if (Handle_EXPRESSION(show,exp_type))
+    std::string varName;
+	if (Handle_EXPRESSION(show,exp_type,varName))
     {
 	    if (exp_type == EXP_INT) paras.push_back(SymbolTableItem::INT);
 	    else if (exp_type == EXP_CHAR) paras.push_back(SymbolTableItem::CHAR);
 	    else if (exp_type == EXP_ERROR) should_cmp_paras = false;
     }
-	while (typeEnsure(Token::COMMA) && Handle_EXPRESSION(show,exp_type))
+	while (typeEnsure(Token::COMMA) && Handle_EXPRESSION(show,exp_type,varName))
     {
         if (exp_type == EXP_INT) paras.push_back(SymbolTableItem::INT);
         else if (exp_type == EXP_CHAR) paras.push_back(SymbolTableItem::CHAR);
@@ -762,8 +738,8 @@ bool Handle_RETURN_FUNC_CALL(bool show,int& ischar)
     bool should_cmp_paras = true;
 	if (!Handle_IDENFR(show)) return false;
 	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-	findSymbolTableItem(idName);
-    SymbolTableItem * localPtr = symbolTableItemPtr;
+//	findSymbolTableItem(idName);
+    SymbolTableItem * localPtr = symbolTable.findSymbolTableItem(idName);
 	if (localPtr->getReturnType() == SymbolTableItem::INT) ischar = EXP_INT;
     if (localPtr->getReturnType() == SymbolTableItem::CHAR) ischar = EXP_CHAR;
 	if (!typeEnsure(Token::LPARENT)) return false;
@@ -795,8 +771,7 @@ bool Handle_VOID_FUNC_CALL(bool show)
     bool should_cmp_paras = true;
 	if (!Handle_IDENFR(show)) return false;
 	const std::string & idName = Tokens[nowLoc - 1].getTokenStr();
-    findSymbolTableItem(idName);
-    SymbolTableItem * localPtr = symbolTableItemPtr;
+    SymbolTableItem * localPtr = symbolTable.findSymbolTableItem(idName);
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_VAL_PARA_LIST(show,paras,should_cmp_paras)) return false;
@@ -856,24 +831,29 @@ bool Handle_CONST_DEFINE(bool show)
         }
         else
         {
-            insertIntoSymbolTableConst(isInner,idName,index);
+            symbolTable.insertIntoSymbolTableConst(isInner,idName,index);
         }
+        curFuncTable->appendConst(idName);
 		if (!typeEnsure(Token::ASSIGN)) return false;
-		if (!Handle_INTCON(show)&&!Handle_CHARCON(show)) return false;
+		int value;
+		if (!Handle_INTCON(show,value)&&!Handle_CHARCON(show,value)) return false;
+		MidCodeFactory(MidCode::ASSIGN,idName,value);
 		while (typeEnsure(Token::COMMA))
 		{
 			if (!Handle_IDENFR(show)) return false;
             const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+            curFuncTable->appendConst(idName);
             if (defineCheckMulti(idName))
             {
                 error(getLastLine(),ErrorInfo::NAME_REDEFINED);
             }
             else
             {
-                insertIntoSymbolTableConst(isInner,idName,index);
+                symbolTable.insertIntoSymbolTableConst(isInner,idName,index);
             }
             if (!typeEnsure(Token::ASSIGN)) return false;
-			if (!Handle_INTCON(show) && !Handle_CHARCON(show)) return false;
+			if (!Handle_INTCON(show,value) && !Handle_CHARCON(show,value)) return false;
+            MidCodeFactory(MidCode::ASSIGN,idName,value);
 		}
 	}
 	output += "<常量定义>";
@@ -898,18 +878,18 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
 {
     FUNC_HAS_RETURN = false;
     if (!Handle_DECLARE_HEADER(show,FUNC_TYPE)) return false;
-    isInner = INNER;
+    setInner(INNER);
     const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
     int& line = Tokens[nowLoc - 1].getLine();
     Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
     if (!typeEnsure(Token::LPARENT)) return false;
     if (!Handle_PARA_LIST(show,paras)) return false;
-    if (findSymbolTableItem(OUTER,idName)) {
+    if (symbolTable.findSymbolTableItem(OUTER,idName) != nullptr) {
         error(line,ErrorInfo::NAME_REDEFINED);
     }
     else {
-        insertIntoSymbolTableFunc(OUTER,idName,index,paras);
+        symbolTable.insertIntoSymbolTableFunc(OUTER,idName,index,paras);
     }
     if (!typeEnsure(Token::RPARENT)) {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
@@ -922,7 +902,7 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     }
     output += "<有返回值函数定义>";
     output += '\n';
-    isInner = OUTER;
+    setInner(OUTER);
 
     clearInnerSymbolTable(idName);
     return true;
@@ -935,20 +915,20 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     if (!typeAssert(nowLoc+1, Token::IDENFR)) return false;
     if (!typeEnsure(Token::VOIDTK)) return false;
     if (!typeEnsure(Token::IDENFR)) return false;
+    setInner(INNER);
     FUNC_TYPE = FUNC_VOID;
     const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
     int line = Tokens[nowLoc - 1].getLine();
-    isInner = true;
     if (!typeEnsure(Token::LPARENT)) return false;
     std::vector<SymbolTableItem::ItemReturnType> paras;
     if (!Handle_PARA_LIST(show,paras)) return false;
-    if (findSymbolTableItem(OUTER,idName))
+    if (symbolTable.findSymbolTableItem(OUTER,idName) != nullptr)
     {
         error(line,ErrorInfo::NAME_REDEFINED);
     }
     else
     {
-        insertIntoSymbolTableFunc(OUTER,idName,Token::VOIDTK,paras);
+        symbolTable.insertIntoSymbolTableFunc(OUTER,idName,Token::VOIDTK,paras);
     }
     if (!typeEnsure(Token::RPARENT)) {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
@@ -958,17 +938,18 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     if (!typeEnsure(Token::RBRACE)) return false;
     output += "<无返回值函数定义>";
     output += '\n';
-    isInner = false;
+    setInner(OUTER);
     clearInnerSymbolTable(idName);
     return true;
 }
 //<返回语句>  ::=  return['('<表达式>')']   
 bool Handle_RETURN_STATE(bool show)
 {
+    std::string expName;
 	if (!typeEnsure(Token::RETURNTK)) return false;
 	FUNC_HAS_RETURN = true;
 	int exp_type = EXP_UNKNOWN;
-	Handle_LPARENT_EXP_RPARENT(show,exp_type);
+	Handle_LPARENT_EXP_RPARENT(show,exp_type,expName);
     if (exp_type != FUNC_TYPE)
     {
         if (FUNC_TYPE == FUNC_VOID)
@@ -989,18 +970,30 @@ bool Handle_RETURN_STATE(bool show)
 bool Handle_PRINTF_STATE(bool show)
 {
     int type = 0;
+    std::string typeString;
+    std::string expName;
+    std::string strName;
     if (!typeEnsure(Token::PRINTFTK)) return false;
 	if (!typeEnsure(Token::LPARENT)) return false;
-	if (Handle_STRCON(show))
+	if (Handle_STRCON(show,strName))
 	{
+	    const std::string& stringTmp = Tokens[nowLoc - 1].getTokenStr();
 		if (typeEnsure(Token::COMMA))
 		{
-			if (!Handle_EXPRESSION(show,type)) return false;
+			if (!Handle_EXPRESSION(show,type,expName)) return false;
+			typeString = (type == EXP_INT) ? "INT" : "CHAR";
+            MidCodeFactory(MidCode::WRITE,expName,typeString,strName);
 		}
+		else
+        {
+            MidCodeFactory(MidCode::WRITE,"","",strName);
+        }
 	}
 	else
 	{
-		if (!Handle_EXPRESSION(show,type)) return false;
+		if (!Handle_EXPRESSION(show,type,expName)) return false;
+        typeString = (type == EXP_INT) ? "INT" : "CHAR";
+        MidCodeFactory(MidCode::WRITE,expName,typeString);
 	}
 	
 	if (typeEnsure(Token::RPARENT))
@@ -1020,8 +1013,9 @@ bool Handle_SCANF_STATE(bool show)
 	if (!typeEnsure(Token::SCANFTK)) return false;
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_IDENFR(show)) return false;
-    const std::string idName = Tokens[nowLoc - 1].getTokenStr();
-    if (!findSymbolTableItem(idName))
+    const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+    symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+    if (notFindSymbolTableItem())
     {
         error(getLastLine(), ErrorInfo::NAME_UNDEFINED);
     }
@@ -1031,8 +1025,11 @@ bool Handle_SCANF_STATE(bool show)
             error(getLastLine(), ErrorInfo::CONST_VALUE_CHANGED);
         }
     }
-	if (typeEnsure(Token::RPARENT))
+    auto index = symbolTableItemPtr->getReturnType();
+    std::string typeString = (index == SymbolTableItem::INT) ? "INT" :"CHAR";
+    if (typeEnsure(Token::RPARENT))
 	{
+        MidCodeFactory(MidCode::SCAN,idName,typeString);
 		output += "<读语句>";
 		output += '\n';
 		return true;
@@ -1056,10 +1053,12 @@ bool Handle_CONDITION(bool show)
 {
     int typeL = EXP_UNKNOWN;
     int typeR = EXP_UNKNOWN;
-	if (Handle_EXPRESSION(show,typeL))
+    std::string expL;
+    std::string expR;
+	if (Handle_EXPRESSION(show,typeL,expL))
 	{
 		Handle_CMP(show);
-		Handle_EXPRESSION(show,typeR);
+		Handle_EXPRESSION(show,typeR,expR);
 		if (typeL != EXP_INT || typeR != EXP_INT)
         {
 		    error(getLastLine(),ErrorInfo::TYPE_JUDGE_WRONG);
@@ -1083,9 +1082,10 @@ bool Handle_STEP(bool show)
 bool Handle_CONDITION_STATE(bool show)
 {
     bool default_missed = false;
+    std::string expName;
     int exp_type = EXP_UNKNOWN;
 	if (!typeEnsure(Token::SWITCHTK)) return false;
-	if (!Handle_LPARENT_EXP_RPARENT(show,exp_type)) return false;
+	if (!Handle_LPARENT_EXP_RPARENT(show,exp_type,expName)) return false;
 	if (!typeEnsure(Token::LBRACE)) return false;
 	if (!Handle_CONDITON_TABLE(show,exp_type)) return false;
 	if (!Handle_DEFAULT(show)) { default_missed = true; }
@@ -1167,25 +1167,30 @@ bool Handle_ASSIGN_STATE(bool show)
 {
 	bool flag = false;
 	int type;
+	std::string expName;
 	if (Handle_IDENFR(show))
 	{
 	    int& line = Tokens[nowLoc - 1].getLine();
 	    const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-	    if (!findSymbolTableItem(idName))
+	    symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+	    if (notFindSymbolTableItem())
         {
 	        error(line,ErrorInfo::NAME_UNDEFINED);
         }
+	    // 常数赋值
 	    if (symbolTableItemPtr->getClassType() == SymbolTableItem::CONST)
         {
 	        error(line,ErrorInfo::CONST_VALUE_CHANGED);
         }
+
 		if (typeEnsure(Token::ASSIGN))
 		{
-			flag = Handle_EXPRESSION(show,type);
+			flag = Handle_EXPRESSION(show,type,expName);
+			MidCodeFactory(MidCode::ASSIGN,idName,expName);
 		}
 		else if (typeEnsure(Token::LBRACK))
 		{
-			if (!Handle_EXPRESSION(show,type)) return false;
+			if (!Handle_EXPRESSION(show,type,expName)) return false;
 			if (type != EXP_INT) {
 			    error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);
 			}
@@ -1194,11 +1199,11 @@ bool Handle_ASSIGN_STATE(bool show)
             }
 			if (typeEnsure(Token::ASSIGN))
 			{
-				flag = Handle_EXPRESSION(show,type);
+				flag = Handle_EXPRESSION(show,type,expName);
 			}
 			else if (typeEnsure(Token::LBRACK))
 			{
-				if (!Handle_EXPRESSION(show,type)) return false;
+				if (!Handle_EXPRESSION(show,type,expName)) return false;
                 if (type != EXP_INT) {
                     error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);
                 }
@@ -1207,7 +1212,7 @@ bool Handle_ASSIGN_STATE(bool show)
                 }
 				if (typeEnsure(Token::ASSIGN))
 				{
-					flag = Handle_EXPRESSION(show,type);
+					flag = Handle_EXPRESSION(show,type,expName);
 				}
 			}
 			else return false;
@@ -1225,14 +1230,16 @@ bool Handle_ASSIGN_STATE(bool show)
 bool Handle_FOR_STATE_PARENT(bool show) 
 {
     int type;
+    std::string expName;
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_IDENFR(show)) return false;
 	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-	if (!findSymbolTableItem(idName)) {
+    symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+    if (notFindSymbolTableItem()){
 	    error(getLastLine(),ErrorInfo::NAME_UNDEFINED);
 	}
 	if (!typeEnsure(Token::ASSIGN)) return false;
-	if (!Handle_EXPRESSION(show,type)) return false;
+	if (!Handle_EXPRESSION(show,type,expName)) return false;
 	if (!typeEnsure(Token::SEMICN)) {
 	    error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
 	}
@@ -1243,7 +1250,8 @@ bool Handle_FOR_STATE_PARENT(bool show)
 	if (!Handle_IDENFR(show)) return false;
 	if (!typeEnsure(Token::ASSIGN)) return false;
 	if (!Handle_IDENFR(show)) return false;
-	if (!Handle_PLUS(show)) return false;
+	Token::TokenTypeIndex index;
+	if (!Handle_PLUS(show,index)) return false;
 	if (!Handle_STEP(show)) return false;
 	
 	if (typeEnsure(Token::RPARENT))
@@ -1312,7 +1320,8 @@ bool Handle_STATEMENT(bool show)
 	{
 		flag = true;
 		const std::string& idName = Tokens[nowLoc].getTokenStr();
-		if (!findSymbolTableItem(idName)) {
+        symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
+        if (notFindSymbolTableItem()) {
 		    typeEnsure(Token::IDENFR);
             error(getLastLine(),ErrorInfo::NAME_UNDEFINED);
 		    while (!typeAssert(nowLoc,Token::SEMICN)) nowLoc++;
@@ -1365,8 +1374,9 @@ bool Handle_PROGRAM(bool show)
 /*处理主函数main*/
 bool Handle_MAIN(bool show)
 {
-    isInner = INNER;
+    setInner(INNER);
     FUNC_TYPE = FUNC_VOID;
+    FunctionSymbolTableMap["main"] = curFuncTable;
     if (!typeEnsure(Token::VOIDTK)) return false;
 	if (!typeEnsure(Token::MAINTK)) return false;
 	if (!typeEnsure(Token::LPARENT)) return false;
@@ -1382,18 +1392,18 @@ bool Handle_MAIN(bool show)
 		output += '\n';
 		return true;
 	}
+    setInner(OUTER);
 	return false;
 }
 
 void ParseSyntax::parse()
 {
 	TokenVecPointer = &this->TokenVec;
-//	printf("%d %d\n", this->TokenVec.size(), TokenVec.size());
 	Handle_PROGRAM(false);
-    FILE* writeTo;
-    writeTo = fopen("output.txt", "w");
-    for (int i = 0; i < output.size(); i++)
-    {
-        fprintf(writeTo, "%c", output[i]);
-    }
+//    FILE* writeTo;
+//    writeTo = fopen("output.txt", "w");
+//    for (int i = 0; i < output.size(); i++)
+//    {
+//        fprintf(writeTo, "%c", output[i]);
+//    }
 }

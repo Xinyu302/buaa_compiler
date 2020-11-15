@@ -1,13 +1,11 @@
 ﻿// symbolAnalysis.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
 #include <vector>
 #include "ParseToken.h"
-#include "Token.h"
 #include "ParseSyntax.h"
 #include "ErrorOutputControl.h"
-#include "ErrorInfo.h"
+#include "MipsCode.h"
 FILE *outputError = fopen("error.txt","w");
 
 int main()
@@ -17,6 +15,7 @@ int main()
 	parser.Parse();
 	ParseSyntax parseSyntax(TokenVec);
     parseSyntax.parse();
+    printMipsCode();
 	return 0;
 
 }

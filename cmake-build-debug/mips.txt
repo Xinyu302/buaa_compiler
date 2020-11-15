@@ -1,0 +1,7 @@
+.data
+stringEnter:	.asciiz	"\n"
+.text
+li	$t0,	4
+subu	$sp,	$sp,	$t0
+li	$t0,	10
+sw	$t0,	0($sp)

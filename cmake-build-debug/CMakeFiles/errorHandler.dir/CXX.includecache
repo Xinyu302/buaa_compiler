@@ -6,43 +6,55 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h
+D:/SexyYxy/errorHandler/ErrorInfo.h
 string
 -
 
-C:/Users/yxy/CLionProjects/errorHandler/ErrorOutputControl.h
+D:/SexyYxy/errorHandler/ErrorOutputControl.h
 cstdio
 -
 
-C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp
-ParseSyntax.h
-C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.h
-SymbolTableItem.h
-C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.h
-ErrorOutputControl.h
-C:/Users/yxy/CLionProjects/errorHandler/ErrorOutputControl.h
-iostream
--
+D:/SexyYxy/errorHandler/MidCode.h
 vector
 -
-set
+string
 -
 
-C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.h
+D:/SexyYxy/errorHandler/ParseSyntax.cpp
+ParseSyntax.h
+D:/SexyYxy/errorHandler/ParseSyntax.h
+SymbolTableItem.h
+D:/SexyYxy/errorHandler/SymbolTableItem.h
+ErrorOutputControl.h
+D:/SexyYxy/errorHandler/ErrorOutputControl.h
+vector
+-
+map
+-
+
+D:/SexyYxy/errorHandler/ParseSyntax.h
 vector
 -
 Token.h
-C:/Users/yxy/CLionProjects/errorHandler/Token.h
+D:/SexyYxy/errorHandler/Token.h
 ErrorInfo.h
-C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h
+D:/SexyYxy/errorHandler/ErrorInfo.h
+stdlib.h
+-
 
-C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.h
+D:/SexyYxy/errorHandler/SymbolTableItem.h
 string
 -
 vector
 -
+map
+-
+Token.h
+D:/SexyYxy/errorHandler/Token.h
+MidCode.h
+D:/SexyYxy/errorHandler/MidCode.h
 
-C:/Users/yxy/CLionProjects/errorHandler/Token.h
+D:/SexyYxy/errorHandler/Token.h
 iostream
 -
 string

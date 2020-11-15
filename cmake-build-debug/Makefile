@@ -58,19 +58,19 @@ cmake_force:
 SHELL = cmd.exe
 
 # The CMake executable.
-CMAKE_COMMAND = "E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe"
+CMAKE_COMMAND = "C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe"
 
 # The command to remove a file.
-RM = "E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f
+RM = "C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\yxy\CLionProjects\errorHandler
+CMAKE_SOURCE_DIR = D:\SexyYxy\errorHandler
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug
+CMAKE_BINARY_DIR = D:\SexyYxy\errorHandler\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -78,7 +78,7 @@ CMAKE_BINARY_DIR = C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	"E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
+	"C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available."
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -89,7 +89,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	"C:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -99,9 +99,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug\CMakeFiles C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\SexyYxy\errorHandler\cmake-build-debug\CMakeFiles D:\SexyYxy\errorHandler\cmake-build-debug\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\yxy\CLionProjects\errorHandler\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\SexyYxy\errorHandler\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -141,6 +141,60 @@ errorHandler: cmake_check_build_system
 errorHandler/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/build
 .PHONY : errorHandler/fast
+
+MidCode.obj: MidCode.cpp.obj
+
+.PHONY : MidCode.obj
+
+# target to build an object file
+MidCode.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MidCode.cpp.obj
+.PHONY : MidCode.cpp.obj
+
+MidCode.i: MidCode.cpp.i
+
+.PHONY : MidCode.i
+
+# target to preprocess a source file
+MidCode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MidCode.cpp.i
+.PHONY : MidCode.cpp.i
+
+MidCode.s: MidCode.cpp.s
+
+.PHONY : MidCode.s
+
+# target to generate assembly for a file
+MidCode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MidCode.cpp.s
+.PHONY : MidCode.cpp.s
+
+MipsCode.obj: MipsCode.cpp.obj
+
+.PHONY : MipsCode.obj
+
+# target to build an object file
+MipsCode.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MipsCode.cpp.obj
+.PHONY : MipsCode.cpp.obj
+
+MipsCode.i: MipsCode.cpp.i
+
+.PHONY : MipsCode.i
+
+# target to preprocess a source file
+MipsCode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MipsCode.cpp.i
+.PHONY : MipsCode.cpp.i
+
+MipsCode.s: MipsCode.cpp.s
+
+.PHONY : MipsCode.s
+
+# target to generate assembly for a file
+MipsCode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/MipsCode.cpp.s
+.PHONY : MipsCode.cpp.s
 
 ParseSyntax.obj: ParseSyntax.cpp.obj
 
@@ -286,6 +340,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... errorHandler
+	@echo ... MidCode.obj
+	@echo ... MidCode.i
+	@echo ... MidCode.s
+	@echo ... MipsCode.obj
+	@echo ... MipsCode.i
+	@echo ... MipsCode.s
 	@echo ... ParseSyntax.obj
 	@echo ... ParseSyntax.i
 	@echo ... ParseSyntax.s

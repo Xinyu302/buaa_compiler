@@ -196,6 +196,7 @@ void Token::handleLetters(std::string& s)
 	else 
 	{
 		this->index = Token::IDENFR;
+        this->TokenStr = str;
 	}
 }
 

@@ -1,7 +1,12 @@
 
-	void main()
-	{
-	for (i = 0; i < 10; i = i+ 1){
-	;;;
-	}
-	}
+void print1(int x)
+{
+    ;;;;;
+}
+
+
+
+void main()
+{
+    print1(10);
+}

@@ -30,7 +30,36 @@ bool SymbolTableItem::compareName(const std::string &nameIn) const {
     return true;
 }
 
-SymbolTableItem::SymbolTableItem() {
+SymbolTableItem::SymbolTableItem() {}
 
+FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {}
+
+void FunctionSymbolTable::appendConst(const std::string &name) {
+    if (varInfo.find(name) != varInfo.end())
+        varInfo[name].type = CONST;
+    else varInfo[name] = itemInfo(CONST,4*varNum++);
+}
+
+void FunctionSymbolTable::appendTempVar(const std::string &name) {
+    varInfo[name] = itemInfo(TEMPVAR,4*varNum++);
+}
+
+void FunctionSymbolTable::appendLocalVar(const std::string &name) {
+    if (varInfo.find(name) != varInfo.end())
+    varInfo[name].type = LOCALVAR;
+    else
+        varInfo[name] = itemInfo(LOCALVAR,4*varNum++);
+}
+
+void FunctionSymbolTable::appendGlobalVar(const std::string &name) {
+    varInfo[name] = itemInfo(GLOBALVAR,4*varNum++);
+}
+
+int FunctionSymbolTable::getOffset(const std::string& name) {
+    return varInfo[name].offset;
+}
+
+int FunctionSymbolTable::getSubOffset() {
+    return 4 * this->varNum;
 }
 

@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/errorHandler.dir/MidCode.cpp.obj"
+  "CMakeFiles/errorHandler.dir/MipsCode.cpp.obj"
   "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj"
   "CMakeFiles/errorHandler.dir/ParseToken.cpp.obj"
   "CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
