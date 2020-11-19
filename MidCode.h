@@ -5,6 +5,8 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "SymbolTableItem.h"
+
 class MidCode {
 public:
     enum MidCodeOperator {
@@ -171,4 +173,6 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
     return newMidCodePtr;
 }
 
+extern FunctionSymbolTable* curFuncTable;
+extern std::vector<MidCode*>* curMidCodeVec;
 //extern std::vector<MidCode*> midCodeVec;

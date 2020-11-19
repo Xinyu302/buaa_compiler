@@ -24,8 +24,10 @@ bool FUNC_HAS_RETURN;
 
 extern std::vector<MidCode*> midCodeVec;
 
-FunctionSymbolTable* curFuncTable = new FunctionSymbolTable("main");
+FunctionSymbolTable* curFuncTable;
+std::vector<MidCode*>* curMidCodeVec;
 std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
+std::map<std::string,std::vector<MidCode*>*> FunctionMidCodeMap;
 std::vector<Token>* TokenVecPointer;
 
 SyntaxSymbolTable symbolTable;
@@ -35,6 +37,13 @@ std::map<std::string,std::string> stringMap;
 
 bool notFindSymbolTableItem() {
     return symbolTableItemPtr == nullptr;
+}
+
+inline void changeFuncArea(const std::string& funcName) {
+    curFuncTable = new FunctionSymbolTable(funcName);
+    FunctionSymbolTableMap[funcName] = curFuncTable;
+    curMidCodeVec = new std::vector<MidCode*>;
+    FunctionMidCodeMap[funcName] = curMidCodeVec;
 }
 
 void setInner(int Inner) {
@@ -1364,6 +1373,7 @@ bool Handle_PROGRAM(bool show)
     isInner = OUTER;
 	Handle_CONST_EXPLAIN(show);
 	Handle_VAR_EXPLAIN(show);
+	changeFuncArea("#glocal");
 	while (Handle_RETURN_FUNC_DEFINE(show) || Handle_VOID_FUNC_DEFINE(show));
 	if (!Handle_MAIN(show)) return false;
 	output += "<程序>";
@@ -1375,6 +1385,7 @@ bool Handle_MAIN(bool show)
 {
     setInner(INNER);
     FUNC_TYPE = FUNC_VOID;
+    changeFuncArea("main");
     FunctionSymbolTableMap["main"] = curFuncTable;
     if (!typeEnsure(Token::VOIDTK)) return false;
 	if (!typeEnsure(Token::MAINTK)) return false;

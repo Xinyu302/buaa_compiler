@@ -6,7 +6,7 @@
 #include <iostream>
 #include "MidCode.h"
 std::ofstream midout("midcode.txt");
-std::vector<MidCode*> midCodeVec;
+
 
 MidCode::MidCode(MidCode::MidCodeOperator midCodeOperator,MidCodeClass midCodeClass) {
     this->midCodeOperator = midCodeOperator;
@@ -105,7 +105,7 @@ WriteMidCode::WriteType WriteMidCode::getWriteType() {
 }
 
 void push2Vec(MidCode* midCode) {
-    midCodeVec.push_back(midCode);
+    curMidCodeVec->push_back(midCode);
 }
 
 
