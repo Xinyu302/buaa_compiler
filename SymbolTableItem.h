@@ -72,26 +72,27 @@ public:
         itemInfo(itemType _type,int _offset):type(_type),offset(_offset){}
         itemInfo(){}
     };
-
     FunctionSymbolTable(const std::string& name);
-    void appendConst(const std::string& name);
+
+    void appendConst(const std::string& name,int value);
     void appendTempVar(const std::string& name);
     void appendLocalVar(const std::string& name);
     void appendGlobalVar(const std::string& name);
     int getOffset(const std::string& name);
     int getSubOffset();
+    bool isConstValue(const std::string& name,int &value);
 
 private:
     int varNum;
     std::string funcName;
     std::map<std::string,itemInfo> varInfo;
+    std::map<std::string,int> constPool;
 };
+
 
 class SyntaxSymbolTable {
 public:
-    SyntaxSymbolTable() {
-
-    }
+    SyntaxSymbolTable() {}
 
     ~SyntaxSymbolTable() {
     }

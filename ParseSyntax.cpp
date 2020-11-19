@@ -25,9 +25,12 @@ bool FUNC_HAS_RETURN;
 extern std::vector<MidCode*> midCodeVec;
 
 FunctionSymbolTable* curFuncTable;
+FunctionSymbolTable* globalSymbolTable;
 std::vector<MidCode*>* curMidCodeVec;
 std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 std::map<std::string,std::vector<MidCode*>*> FunctionMidCodeMap;
+std::vector<std::vector<MidCode*>*> FunctionMidCodeVec;
+
 std::vector<Token>* TokenVecPointer;
 
 SyntaxSymbolTable symbolTable;
@@ -44,6 +47,7 @@ inline void changeFuncArea(const std::string& funcName) {
     FunctionSymbolTableMap[funcName] = curFuncTable;
     curMidCodeVec = new std::vector<MidCode*>;
     FunctionMidCodeMap[funcName] = curMidCodeVec;
+    FunctionMidCodeVec.push_back(curMidCodeVec);
 }
 
 void setInner(int Inner) {
@@ -66,8 +70,18 @@ std::string getNextTmpValId() {
     char tmpNo[20];
     snprintf(tmpNo,20,"%d",valId++);
     std::string s = tmpPrefix + tmpNo;
-    curFuncTable->appendTempVar(s);
     return s;
+}
+
+std::string applyTmpId() {
+    const std::string& tmpId = getNextStringId();
+    curFuncTable->appendTempVar(tmpId);
+    return tmpId;
+}
+std::string applyTmpId(int value) {
+    const std::string& tmpId = getNextStringId();
+    curFuncTable->appendConst(tmpId,value);
+    return tmpId;
 }
 
 inline int getLastLine()
@@ -551,13 +565,29 @@ bool Handle_TERM(bool show,int& isChar,std::string &varName)
     bool e = false;
     std::string varNameTop;
     std::string varName2;
+    int valueTop = 0;
+    int value2 = 0;
     Token::TokenTypeIndex index = Token::NIL;
 	if (!Handle_FACTOR(show, charOrNot,varNameTop)) return false;
     if (charOrNot == EXP_ERROR) e = true;
 	while (Handle_MULT(show,index) && Handle_FACTOR(show, charOrNot,varName2)) {
-        std::string nextTmp = getNextTmpValId();
-        if (index == Token::MULT) MidCodeFactory(MidCode::MULTI,nextTmp,varNameTop,varName2);
-        if (index == Token::DIV) MidCodeFactory(MidCode::DIV,nextTmp,varNameTop,varName2);
+	    std::string nextTmp;
+	    valueTop = value2 = -1;
+	    if (curFuncTable->isConstValue(varNameTop,valueTop) && curFuncTable->isConstValue(varName2,value2)) {
+            if (index == Token::MULT) nextTmp = applyTmpId(valueTop * value2);
+            if (index == Token::DIV) nextTmp = applyTmpId(valueTop / value2);
+        }
+	    else if ((valueTop == 0 || value2 == 0) && index == Token::MULT || (valueTop == 0 && index == Token::DIV)) {
+	        nextTmp = applyTmpId(0);
+	    }
+	    else if ((valueTop == 1 || value2 == 1) && index == Token::MULT) {
+	        nextTmp = (valueTop == 1) ? varName2 : varNameTop;
+	    }
+	    else {
+	        nextTmp = applyTmpId();
+            if (index == Token::MULT) MidCodeFactory(MidCode::MULTI,nextTmp,varNameTop,varName2);
+            if (index == Token::DIV) MidCodeFactory(MidCode::DIV,nextTmp,varNameTop,varName2);
+	    }
         varNameTop = nextTmp;
 	    if (charOrNot == EXP_ERROR) e = true;
 	    b = true;
@@ -577,21 +607,26 @@ bool Handle_EXPRESSION(bool show,int& expType,std::string& VarName)
     bool zeroFront = false;
     std::string varNameTop;
     std::string varName2;
+    int valueTop = 0;
+    int value2 = 0;
     Token::TokenTypeIndex index;
 	if (Handle_PLUS(show,index)) {
 	    isChar = EXP_INT;
 	    if (index == Token::MINU) {
-            std::string tmpVal = getNextTmpValId();
-            MidCodeFactory(MidCode::ASSIGN,tmpVal,0);
+            std::string tmpVal = applyTmpId(0);
+            valueTop = 0;
             varNameTop = tmpVal;
             zeroFront = true;
 	    }
         b = true;
 	}
 	if (zeroFront) {
+	    std::string nextTmp;
         if (!Handle_TERM(show,isChar,varName2)) return false;
-        std::string nextTmp = getNextTmpValId();
-        MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
+        if (curFuncTable->isConstValue(varName2,value2)) {
+            nextTmp = applyTmpId(-value2);
+        }
+//        MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
         varNameTop = nextTmp;
 	} else {
         if (!Handle_TERM(show,isChar,varNameTop)) return false;
@@ -600,10 +635,28 @@ bool Handle_EXPRESSION(bool show,int& expType,std::string& VarName)
 	    e = true;
 	}
 	while (Handle_PLUS(show,index) && Handle_TERM(show,isChar,varName2)) {
-	    std::string nextTmp = getNextTmpValId();
-	    if (index == Token::PLUS) MidCodeFactory(MidCode::PLUS,nextTmp,varNameTop,varName2);
-	    if (index == Token::MINU) MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
-	    varNameTop = nextTmp;
+        std::string nextTmp;
+        valueTop = value2 = -1;
+        if (curFuncTable->isConstValue(varNameTop,valueTop) && curFuncTable->isConstValue(varName2,value2)) {
+            if (index == Token::PLUS) nextTmp = applyTmpId(valueTop + value2);
+            if (index == Token::MINU) nextTmp = applyTmpId(valueTop - value2);
+        }
+        else if ((valueTop == 0 || value2 == 0) && index == Token::PLUS) {
+            nextTmp = (valueTop == 0) ? varName2 : varNameTop;
+        }
+        else if ((value2 == 0) && index == Token::MINU) {
+            nextTmp = varNameTop;
+        }
+        else {
+            nextTmp = applyTmpId();
+            if (index == Token::PLUS) MidCodeFactory(MidCode::PLUS,nextTmp,varNameTop,varName2);
+            if (index == Token::MINU) MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
+        }
+        varNameTop = nextTmp;
+//	    std::string nextTmp = getNextTmpValId();
+//	    if (index == Token::PLUS) MidCodeFactory(MidCode::PLUS,nextTmp,varNameTop,varName2);
+//	    if (index == Token::MINU) MidCodeFactory(MidCode::MINUS,nextTmp,varNameTop,varName2);
+//	    varNameTop = nextTmp;
         if (isChar == EXP_ERROR) {
             e = true;
         }
@@ -640,7 +693,7 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
         if (typeAssert(nowLoc+1, Token::LBRACK))
         {
             Handle_IDENFR(show);
-            const std::string idName = Tokens[nowLoc - 1].getTokenStr();
+            const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
             symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
             if (notFindSymbolTableItem()) {
                 error(getLastLine(), ErrorInfo::NAME_UNDEFINED);
@@ -698,18 +751,17 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
     {
         flag = true;
         ischar = EXP_INT;
-        std::string tmpVal = getNextTmpValId();
-        const std::string &num = Tokens[nowLoc - 1].getTokenStr();
+        std::string tmpVal = applyTmpId(value);
         varName = tmpVal;
-        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
+//        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
     }
     else if (Handle_CHARCON(show,value))
     {
         flag = true;
         ischar = EXP_CHAR;
-        std::string tmpVal = getNextTmpValId();
+        std::string tmpVal = applyTmpId(value);
         varName = tmpVal;
-        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
+//        MidCodeFactory(MidCode::ASSIGN,tmpVal,value);
     }
     if (flag)
     {
@@ -841,16 +893,16 @@ bool Handle_CONST_DEFINE(bool show)
         {
             symbolTable.insertIntoSymbolTableConst(isInner,idName,index);
         }
-        curFuncTable->appendConst(idName);
+
 		if (!typeEnsure(Token::ASSIGN)) return false;
 		int value;
 		if (!Handle_INTCON(show,value)&&!Handle_CHARCON(show,value)) return false;
-		MidCodeFactory(MidCode::ASSIGN,idName,value);
+        curFuncTable->appendConst(idName,value);
+//		MidCodeFactory(MidCode::ASSIGN,idName,value);
 		while (typeEnsure(Token::COMMA))
 		{
 			if (!Handle_IDENFR(show)) return false;
             const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-            curFuncTable->appendConst(idName);
             if (defineCheckMulti(idName))
             {
                 error(getLastLine(),ErrorInfo::NAME_REDEFINED);
@@ -861,7 +913,8 @@ bool Handle_CONST_DEFINE(bool show)
             }
             if (!typeEnsure(Token::ASSIGN)) return false;
 			if (!Handle_INTCON(show,value) && !Handle_CHARCON(show,value)) return false;
-            MidCodeFactory(MidCode::ASSIGN,idName,value);
+            curFuncTable->appendConst(idName,value);
+//            MidCodeFactory(MidCode::ASSIGN,idName,value);
 		}
 	}
 	output += "<常量定义>";
@@ -890,6 +943,7 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
     int& line = Tokens[nowLoc - 1].getLine();
     Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
+    changeFuncArea(idName);
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
     if (!typeEnsure(Token::LPARENT)) return false;
     if (!Handle_PARA_LIST(show,paras)) return false;
@@ -927,6 +981,7 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     FUNC_TYPE = FUNC_VOID;
     const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
     int line = Tokens[nowLoc - 1].getLine();
+    changeFuncArea(idName);
     if (!typeEnsure(Token::LPARENT)) return false;
     std::vector<SymbolTableItem::ItemReturnType> paras;
     if (!Handle_PARA_LIST(show,paras)) return false;
@@ -1374,6 +1429,7 @@ bool Handle_PROGRAM(bool show)
 	Handle_CONST_EXPLAIN(show);
 	Handle_VAR_EXPLAIN(show);
 	changeFuncArea("#glocal");
+	globalSymbolTable = curFuncTable;
 	while (Handle_RETURN_FUNC_DEFINE(show) || Handle_VOID_FUNC_DEFINE(show));
 	if (!Handle_MAIN(show)) return false;
 	output += "<程序>";

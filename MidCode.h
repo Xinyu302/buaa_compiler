@@ -53,7 +53,7 @@ public:
         return midCodeOperator;
     }
 
-    virtual void printMidCode(){};
+    virtual void displayMidCode() = 0;
 private:
     MidCodeOperator midCodeOperator;
     MidCodeClass midCodeClass;
@@ -62,7 +62,7 @@ private:
 class CalMidCode: public MidCode {
 public:
     CalMidCode(MidCodeOperator midCodeOperator, const std::string& left, const std::string& right, const std::string& result);
-    void printMidCode() override;
+    void displayMidCode() override;
 
     std::string left;
     std::string right;
@@ -77,7 +77,7 @@ public:
     };
     AssignMidCode(MidCodeOperator codeOperator,const std::string& result,const std::string left);
     AssignMidCode(MidCodeOperator codeOperator,const std::string& result,const int& left);
-    void printMidCode() override;
+    void displayMidCode() override;
     AssignType getAssignType();
 
     AssignType assignType;
@@ -93,7 +93,7 @@ public:
         INT
     };
     ReadMidCode(MidCodeOperator midCodeOperator,const std::string &result,const std::string &readType);
-    void printMidCode() override;
+    void displayMidCode() override;
     ReadType getReadType();
 
     ReadType readType;
@@ -107,7 +107,7 @@ public:
         INT
     };
 
-    void printMidCode() override;
+    void displayMidCode() override;
     WriteType getWriteType();
     WriteMidCode(MidCodeOperator midCodeOperator ,const std::string& num,const std::string& writeType,const std::string& str);
 
@@ -117,9 +117,25 @@ public:
 };
 
 class LabelMidCode : public MidCode {
-    LabelMidCode(MidCodeOperator midCodeOperator,const std::string& lable);
     std::string label;
+public:
+    LabelMidCode(MidCodeOperator midCodeOperator,const std::string& label);
+
+    void displayMidCode() override;
 };
+
+class CompareMidCode : public MidCode {
+public:
+    bool result;
+
+    std::string left;
+    std::string right;
+    CompareMidCode(MidCode::MidCodeOperator midCodeOperator,const std::string& left,const std::string& right);
+
+    void displayMidCode() override;
+
+};
+
 
 void push2Vec(MidCode* midCode);
 
@@ -150,6 +166,19 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new WriteMidCode(midCodeOperator, result, left, right);
             break;
         }
+        case MidCode::LABEL:
+        {
+            newMidCodePtr = new LabelMidCode(midCodeOperator, result);
+        }
+        case MidCode::EQL:
+        case MidCode::NEQ:
+        case MidCode::GRE:
+        case MidCode::GEQ:
+        case MidCode::LEQ:
+        case MidCode::LSS:
+        {
+
+        }
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
     }
@@ -173,6 +202,5 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
     return newMidCodePtr;
 }
 
-extern FunctionSymbolTable* curFuncTable;
-extern std::vector<MidCode*>* curMidCodeVec;
+
 //extern std::vector<MidCode*> midCodeVec;

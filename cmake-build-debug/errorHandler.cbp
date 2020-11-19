@@ -122,6 +122,12 @@
 		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Token.h">
 			<Option target="errorHandler"/>
 		</Unit>
+		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Utils.cpp">
+			<Option target="errorHandler"/>
+		</Unit>
+		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Utils.h">
+			<Option target="errorHandler"/>
+		</Unit>
 		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/symbolAnalysis.cpp">
 			<Option target="errorHandler"/>
 		</Unit>

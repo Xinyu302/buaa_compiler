@@ -304,6 +304,33 @@ Token.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/Token.cpp.s
 .PHONY : Token.cpp.s
 
+Utils.obj: Utils.cpp.obj
+
+.PHONY : Utils.obj
+
+# target to build an object file
+Utils.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/Utils.cpp.obj
+.PHONY : Utils.cpp.obj
+
+Utils.i: Utils.cpp.i
+
+.PHONY : Utils.i
+
+# target to preprocess a source file
+Utils.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/Utils.cpp.i
+.PHONY : Utils.cpp.i
+
+Utils.s: Utils.cpp.s
+
+.PHONY : Utils.s
+
+# target to generate assembly for a file
+Utils.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\errorHandler.dir\build.make CMakeFiles/errorHandler.dir/Utils.cpp.s
+.PHONY : Utils.cpp.s
+
 symbolAnalysis.obj: symbolAnalysis.cpp.obj
 
 .PHONY : symbolAnalysis.obj
@@ -358,6 +385,9 @@ help:
 	@echo ... Token.obj
 	@echo ... Token.i
 	@echo ... Token.s
+	@echo ... Utils.obj
+	@echo ... Utils.i
+	@echo ... Utils.s
 	@echo ... symbolAnalysis.obj
 	@echo ... symbolAnalysis.i
 	@echo ... symbolAnalysis.s

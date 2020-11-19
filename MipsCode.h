@@ -11,7 +11,8 @@ extern std::vector<Token>* TokenVecPointer;
 extern std::vector<SymbolTableItem> OuterSymbolTable;
 extern std::map<std::string, std::vector<SymbolTableItem>> allInnerSymbolTable;
 
-extern std::vector<MidCode*> midCodeVec;
+extern FunctionSymbolTable* curFuncTable;
+extern std::vector<MidCode*>* curMidCodeVec;
 extern std::map<std::string,std::string> stringMap;
 
 class MipsCode {
@@ -96,7 +97,7 @@ private:
 
 class JTypeMipsCode: public MipsCode {
 public:
-    JTypeMipsCode
+    JTypeMipsCode();
 private:
     mipsOperation operatoration; // 操作
     std::string to;

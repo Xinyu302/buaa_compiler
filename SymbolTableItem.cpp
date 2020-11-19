@@ -30,14 +30,18 @@ bool SymbolTableItem::compareName(const std::string &nameIn) const {
     return true;
 }
 
+extern FunctionSymbolTable* globalSymbolTable;
+
 SymbolTableItem::SymbolTableItem() {}
 
 FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {}
 
-void FunctionSymbolTable::appendConst(const std::string &name) {
+void FunctionSymbolTable::appendConst(const std::string &name,int value) {
     if (varInfo.find(name) != varInfo.end())
         varInfo[name].type = CONST;
-    else varInfo[name] = itemInfo(CONST,4*varNum++);
+    else {
+        varInfo[name] = itemInfo(CONST,value);
+    }
 }
 
 void FunctionSymbolTable::appendTempVar(const std::string &name) {
@@ -61,5 +65,16 @@ int FunctionSymbolTable::getOffset(const std::string& name) {
 
 int FunctionSymbolTable::getSubOffset() {
     return 4 * this->varNum;
+}
+
+bool FunctionSymbolTable::isConstValue(const std::string& name, int &value) {
+    auto it = varInfo.find(name);
+    if (it != varInfo.end() && (it->second).type == CONST) {
+        value = it->second.offset;
+        return true;
+    } else if ((it->second).type != CONST) {
+        return false;
+    }
+    return globalSymbolTable->isConstValue(name,value);
 }
 

@@ -5,6 +5,8 @@
 #include "MipsCode.h"
 #include <vector>
 #include <fstream>
+#define midCodeVec (*curMidCodeVec)
+extern FunctionSymbolTable* globalSymbolTable;
 
 std::vector<std::string> mipsResult;
 std::ofstream mipstream("mips.txt");
@@ -183,9 +185,7 @@ void genText() {
     mipscodes.push_back(".text");
     enterFunc("main");
     for (int i = 0; i < midCodeVec.size();i++) {
-        midCodeVec[i]->printMidCode();
-    }
-    for (int i = 0; i < midCodeVec.size();i++) {
+        midCodeVec[i]->displayMidCode();
         switch (midCodeVec[i]->getMidCodeClass()) {
             case MidCode::CALMIDCODE:
             {

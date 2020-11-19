@@ -6,7 +6,8 @@
 #include <iostream>
 #include "MidCode.h"
 std::ofstream midout("midcode.txt");
-
+extern FunctionSymbolTable* curFuncTable;
+extern std::vector<MidCode*>* curMidCodeVec;
 
 MidCode::MidCode(MidCode::MidCodeOperator midCodeOperator,MidCodeClass midCodeClass) {
     this->midCodeOperator = midCodeOperator;
@@ -27,7 +28,7 @@ AssignMidCode::AssignMidCode(MidCode::MidCodeOperator codeOperator, const std::s
     this->assignType = IMMEDIATE;
 }
 
-void AssignMidCode::printMidCode() {
+void AssignMidCode::displayMidCode() {
     midout <<  this->result << "=";
     if (this->assignType == IMMEDIATE)
     {
@@ -50,7 +51,7 @@ ReadMidCode::ReadMidCode(MidCodeOperator midCodeOperator, const std::string &res
     this->readType = (readType == "INT") ? INT : CHAR;
 }
 
-void ReadMidCode::printMidCode() {
+void ReadMidCode::displayMidCode() {
     midout << "read" << "\t" << result << std::endl;;
 }
 
@@ -65,7 +66,7 @@ CalMidCode::CalMidCode(MidCode::MidCodeOperator midCodeOperator, const std::stri
     this->right = right;
 }
 
-void CalMidCode::printMidCode() {
+void CalMidCode::displayMidCode() {
     char c;
     switch (this->getMidCodeOperator()) {
         case MidCode::PLUS: {
@@ -96,7 +97,7 @@ WriteMidCode::WriteMidCode(MidCode::MidCodeOperator midCodeOperator, const std::
     this->rightWriteType = (writeType == "INT") ? INT : CHAR;
 }
 
-void WriteMidCode::printMidCode() {
+void WriteMidCode::displayMidCode() {
     midout << "write" << "\t" << str << "\t" << num << std::endl;
 }
 
@@ -109,6 +110,20 @@ void push2Vec(MidCode* midCode) {
 }
 
 
-LabelMidCode::LabelMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &lable) : MidCode(midCodeOperator) {
+LabelMidCode::LabelMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &label) : MidCode(midCodeOperator, LABELMIDCODE) {
+    this->label = label;
+}
 
+void LabelMidCode::displayMidCode() {
+    midout << this->label << ":" << std::endl;
+}
+
+CompareMidCode::CompareMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &left,
+                               const std::string &right):MidCode(midCodeOperator,COMPAREMIDCODE) {
+    this->left = left;
+    this->right = right;
+}
+
+void CompareMidCode::displayMidCode() {
+//    midout <<
 }

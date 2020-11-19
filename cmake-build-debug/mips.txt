@@ -1,7 +1,11 @@
 .data
 stringEnter:	.asciiz	"\n"
 .text
-li	$t0,	4
+li	$t0,	0
 subu	$sp,	$sp,	$t0
-li	$t0,	10
-sw	$t0,	0($sp)
+lw	$a0,	16($sp)
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
