@@ -109,4 +109,6 @@ void push2Vec(MidCode* midCode) {
 }
 
 
+LabelMidCode::LabelMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &lable) : MidCode(midCodeOperator) {
 
+}

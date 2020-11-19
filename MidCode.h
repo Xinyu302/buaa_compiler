@@ -36,7 +36,9 @@ public:
         CALMIDCODE,
         ASSIGNMIDCODE,
         WRITEMIDCODE,
-        READMIDCODE
+        READMIDCODE,
+        LABELMIDCODE,
+        COMPAREMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -111,6 +113,12 @@ public:
     std::string num;
     std::string str;
 };
+
+class LabelMidCode : public MidCode {
+    LabelMidCode(MidCodeOperator midCodeOperator,const std::string& lable);
+    std::string label;
+};
+
 void push2Vec(MidCode* midCode);
 
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result="",const std::string& left="",const std::string& right="")

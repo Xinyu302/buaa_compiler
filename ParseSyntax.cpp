@@ -47,7 +47,6 @@ std::string getNextStringId() {
     static const std::string tmpStringPrefix = "string";
     char tmpNo[20];
     snprintf(tmpNo,20,"%d",num++);
-//    itoa(num++,tmpNo,10);
     std::string s = tmpStringPrefix + tmpNo;
     return s;
 }

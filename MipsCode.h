@@ -51,17 +51,55 @@ public:
         globlSeg,  //.globl
         label,  //产生标号
     };
-
-    void genMipsFromMidCode();  //中间代码生成mips
+    MipsCode(mipsOperation operation,const std::string &rd,const std::string &rs,const std::string& rt);
+    MipsCode(mipsOperation operation,const std::string &rt,const std::string &rs,const int &imm);
+    MipsCode(mipsOperation operation,const std::string rd);
+    virtual void genMipsFromMidCode(){}  //中间代码生成mips
     void printMipsCode();  //输出mips语句
     void loadValue(const std::string& name, const std::string& regName, bool gene, int& va, bool& get, bool assign);  //取变量name的值到寄存器regName，后边的参数主要涉及到对常值的处理方式
     void storeValue(const std::string &name, const std::string &regName);  //将regName的值存储到name的空间中
 private:
     mipsOperation operatoration; // 操作
-    std::string result;     // 结果
-    std::string left;     // 左操作数
-    std::string right;     // 右操作数
-    int immediate;     // 立即数
+};
+
+class RTypeMipsCode: public MipsCode {
+public:
+    RTypeMipsCode(mipsOperation operation,const std::string &rd,const std::string &rs,const std::string& rt);
+    void genMipsFromMidCode() override;
+private:
+    mipsOperation operatoration; // 操作
+    std::string rd;     // 结果
+    std::string rs;     // 左操作数
+    std::string rt;     // 右操作数
+};
+
+class ITypeMipsCode: public MipsCode {
+public:
+    ITypeMipsCode(mipsOperation operation,const std::string &rs,const std::string &rt,const int &imm);
+private:
+    mipsOperation operatoration; // 操作
+    std::string rs;     // 结果
+    std::string rt;     // 左操作数
+    int imm;     // 右操作数
+};
+
+class BLabelTypeMipsCode: public MipsCode {
+public:
+    BLabelTypeMipsCode(mipsOperation operation,const std::string &rs,const std::string &rt,const std::string label) ;
+    BLabelTypeMipsCode(mipsOperation operation,const std::string &rs,const std::string label);
+    void genMipsFromMidCode() override;
+private:
+    std::string rs;     // 左操作数
+    std::string rt;     // 右操作数
+    std::string label;
+};
+
+class JTypeMipsCode: public MipsCode {
+public:
+    JTypeMipsCode
+private:
+    mipsOperation operatoration; // 操作
+    std::string to;
 };
 void genMips();
 void genData();
