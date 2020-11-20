@@ -66,6 +66,10 @@ public:
         GLOBALVAR,
         TEMPVAR
     };
+    enum varLocation {
+        GLOBAL,
+        LOCAL
+    };
     struct itemInfo{
         itemType type;
         int offset;

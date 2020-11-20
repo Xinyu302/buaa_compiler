@@ -1,6 +1,17 @@
-const int c = 12;
-int cs = 1;
-void main() {
-int a = 0;
-printf(c - (1+1+2+-3*4));
+
+const int _num1 = 1;
+const char a = 'a';
+int num2 = 2;
+char b= 'b';
+
+void main(){
+    const int num3 = 3;
+    const char c = 'c';
+    int num4 = 10000;
+    int d = 1;
+
+    int result;
+    char result1;
+    d=1000000*b/1;
+    printf("%d\n",d);
 }

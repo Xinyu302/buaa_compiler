@@ -179,6 +179,7 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
         case MidCode::LABEL:
         {
             newMidCodePtr = new LabelMidCode(midCodeOperator, result);
+            break;
         }
         case MidCode::EQL:
         case MidCode::NEQ:

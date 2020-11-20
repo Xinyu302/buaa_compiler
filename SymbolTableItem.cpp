@@ -60,7 +60,11 @@ void FunctionSymbolTable::appendGlobalVar(const std::string &name) {
 }
 
 int FunctionSymbolTable::getOffset(const std::string& name) {
-    return varInfo[name].offset;
+    auto it = varInfo.find(name);
+    if (it != varInfo.end()) {
+        return varInfo[name].offset;
+    }
+    return -1;
 }
 
 int FunctionSymbolTable::getSubOffset() {

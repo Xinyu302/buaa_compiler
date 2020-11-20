@@ -5,13 +5,14 @@
 #include "MipsCode.h"
 #include <vector>
 #include <fstream>
-#define midCodeVec (*curMidCodeVec)
+#define midCodeVec (*nowMidCodeVec)
 
 extern FunctionSymbolTable* globalSymbolTable;
-extern FunctionSymbolTable* curFuncTable;
-extern std::vector<MidCode*>* curMidCodeVec;
+//extern FunctionSymbolTable* nowFuncSymbolTable;
+std::vector<MidCode*>* nowMidCodeVec;
 extern std::vector<std::vector<MidCode*>*> FunctionMidCodeVec;
 extern std::map<std::string,std::string> stringMap;
+extern std::vector<std::string> FunctionNames;
 
 std::vector<std::string> mipsResult;
 std::ofstream mipstream("mips.txt");
@@ -71,12 +72,33 @@ inline void genMove(const std::string& regTo,const std::string& regFrom) {
 
 inline void genMoveVarToMem(const std::string& name,const std::string& reg) {
     int offset = nowFuncSymbolTable->getOffset(name);
-    genSw(reg,"$sp",offset);
+    if (nowFuncSymbolTable == globalSymbolTable) {
+        genSw(reg, "$gp", offset);
+        return;
+    }
+    if (offset < 0) {
+        offset = globalSymbolTable->getOffset(name);
+        genSw(reg, "$gp", offset);
+    }
+    else {
+        genSw(reg,"$sp",offset);
+    }
+
 }
 
 inline void genFetchVarFromMem(const std::string& name,const std::string& reg) {
     int offset = nowFuncSymbolTable->getOffset(name);
-    genLw(reg,"$sp",offset);
+    if (nowFuncSymbolTable == globalSymbolTable) {
+        genLw(reg, "$gp", offset);
+        return;
+    }
+    if (offset < 0) {
+        offset = globalSymbolTable->getOffset(name);
+        genLw(reg, "$gp", offset);
+    }
+    else {
+        genLw(reg,"$sp",offset);
+    }
 }
 
 inline void genThreeRegInstr(const std::string& instr,const std::string& result,const std::string& reg1,const std::string& reg2) {
@@ -88,9 +110,16 @@ inline void genTwoRegInstr(const std::string &instr, const std::string &reg1, co
 }
 
 inline void enterFunc(const std::string& funcName) {
+//    nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
-    genLi("$t0",nowFuncSymbolTable->getSubOffset());
-    genThreeRegInstr("subu","$sp","$sp","$t0");
+    mipscodes.push_back(funcName + ":");
+    if (nowFuncSymbolTable == globalSymbolTable) {
+        ;;
+    }
+    else {
+        genLi("$t0",nowFuncSymbolTable->getSubOffset());
+        genThreeRegInstr("subu","$sp","$sp","$t0");
+    }
 }
 
 void genCalMips(CalMidCode* calMidCode) {
@@ -98,8 +127,28 @@ void genCalMips(CalMidCode* calMidCode) {
                                                                               {MidCode::MINUS, "subu"},
                                                                               {MidCode::MULTI, "mult"},
                                                                               {MidCode::DIV,   "div"}};
-    genFetchVarFromMem(calMidCode->left,"$t1");
-    genFetchVarFromMem(calMidCode->right,"$t2");
+    int value1 = 0;
+    int value2 = 0;
+    if (nowFuncSymbolTable->isConstValue(calMidCode->left,value1)) {
+        genLi("$t1", value1);
+    } else {
+        genFetchVarFromMem(calMidCode->left,"$t1");
+    }
+    if (nowFuncSymbolTable->isConstValue(calMidCode->right,value2)) {
+        if (calMidCode->getMidCodeOperator() == MidCode::PLUS) {
+            genThreeRegInstr("addi","$t0","$t1",int2string(value2));
+            goto genCalMipsEnd;
+        }
+        else if (calMidCode->getMidCodeOperator() == MidCode::MINUS) {
+            genThreeRegInstr("addi","$t0","$t1",int2string(-value2));
+            goto genCalMipsEnd;
+        } else {
+            genLi("$t2", value2);
+        }
+    }
+    else {
+        genFetchVarFromMem(calMidCode->right, "$t2");
+    }
     if (calMidCode->getMidCodeOperator() == MidCode::PLUS || calMidCode->getMidCodeOperator() == MidCode::MINUS) {
         genThreeRegInstr(op2string[calMidCode->getMidCodeOperator()],"$t0","$t1","$t2");
     }
@@ -107,6 +156,7 @@ void genCalMips(CalMidCode* calMidCode) {
         genTwoRegInstr(op2string[calMidCode->getMidCodeOperator()],"$t1","$t2");
         mipscodes.push_back("mflo" + tab + "$t0");
     }
+    genCalMipsEnd:
     genMoveVarToMem(calMidCode->result,"$t0");
 }
 
@@ -131,8 +181,20 @@ void genEnter() {
     mipscodes.push_back("la"+tab+"$a0,"+tab+"stringEnter");
     genSyscallByNum(4);
 }
+
 void genLabel(LabelMidCode* labelMidCode) {
     mipscodes.push_back(labelMidCode->label + ":");
+}
+
+void genJump(JumpMidCode* jumpMidCode) {
+    std::string op;
+    if (jumpMidCode->getMidCodeOperator() == MidCode::JAL) {
+        op = "jal";
+    }
+    else if (jumpMidCode->getMidCodeOperator() == MidCode::J) {
+        op = "j";
+    }
+    mipscodes.push_back(op + tab + jumpMidCode->label);
 }
 
 void genPrintMips(WriteMidCode* writeMidCode) {
@@ -197,9 +259,9 @@ void genData() {
 
 void genText() {
     mipscodes.push_back(".text");
-    enterFunc("main");
     for (int i = 0; i < FunctionMidCodeVec.size();i++) {
-        curMidCodeVec = FunctionMidCodeVec[i];
+        nowMidCodeVec = FunctionMidCodeVec[i];
+        enterFunc(FunctionNames[i]);
         for (int j = 0; j < midCodeVec.size();j++) {
             midCodeVec[j]->displayMidCode();
             switch (midCodeVec[j]->getMidCodeClass()) {
@@ -226,6 +288,12 @@ void genText() {
                 case MidCode::LABELMIDCODE:
                 {
                     genLabel((LabelMidCode*)midCodeVec[j]);
+                    break;
+                }
+                case MidCode::JUMPMIDCODE:
+                {
+                    genJump((JumpMidCode *) midCodeVec[j]);
+                    break;
                 }
                 default:
                     fprintf(stderr,"fuck!,dipatch wrong on %d",midCodeVec[i]->getMidCodeClass());

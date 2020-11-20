@@ -1,4 +1,9 @@
-cs=1
-J	main:
-a=0
-write		@temp9
+num2=2
+b=98
+J	main
+num4=10000
+d=1
+@temp1=	@temp0	*	b
+@temp3=	@temp1	/	@temp2
+d=@temp3
+write	string0	d
