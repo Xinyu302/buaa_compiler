@@ -14,7 +14,6 @@ extern std::vector<std::vector<MidCode*>*> FunctionMidCodeVec;
 extern std::map<std::string,std::string> stringMap;
 extern std::vector<std::string> FunctionNames;
 
-std::vector<std::string> mipsResult;
 std::ofstream mipstream("mips.txt");
 std::vector<std::string> mipscodes;
 const std::string syscall = "syscall";

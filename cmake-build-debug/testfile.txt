@@ -4,6 +4,13 @@ const char a = 'a';
 int num2 = 2;
 char b= 'b';
 
+int fuck() {
+    int b = 1;
+    char c = 1;
+    b = 1;
+    num2 = -1;
+    return ((c));
+}
 void main(){
     const int num3 = 3;
     const char c = 'c';

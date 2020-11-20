@@ -8,6 +8,17 @@ sw	$t0,	0($gp)
 li	$t0,	98
 sw	$t0,	4($gp)
 j	main
+fuck:
+li	$t0,	8
+subu	$sp,	$sp,	$t0
+li	$t0,	1
+sw	$t0,	0($sp)
+li	$t0,	1
+sw	$t0,	4($sp)
+li	$t0,	1
+sw	$t0,	0($sp)
+li	$t0,	-1
+sw	$t0,	0($gp)
 main:
 li	$t0,	24
 subu	$sp,	$sp,	$t0

@@ -1,6 +1,7 @@
 #include "ParseSyntax.h"
 #include "SymbolTableItem.h"
 #include "ErrorOutputControl.h"
+#include "Utils.h"
 #include <vector>
 #include <map>
 
@@ -58,29 +59,12 @@ void setInner(int Inner) {
     isInner = Inner;
 }
 
-std::string getNextStringId() {
-    static int num = 0;
-    static const std::string tmpStringPrefix = "string";
-    char tmpNo[20];
-    snprintf(tmpNo,20,"%d",num++);
-    std::string s = tmpStringPrefix + tmpNo;
-    return s;
-}
-
-std::string getNextTmpValId() {
-    static int valId = 0;
-    static const std::string tmpPrefix = "@temp";
-    char tmpNo[20];
-    snprintf(tmpNo,20,"%d",valId++);
-    std::string s = tmpPrefix + tmpNo;
-    return s;
-}
-
 std::string applyTmpId() {
     const std::string& tmpId = getNextTmpValId();
     curFuncTable->appendTempVar(tmpId);
     return tmpId;
 }
+
 std::string applyTmpId(int value) {
     const std::string& tmpId = getNextTmpValId();
     curFuncTable->appendConst(tmpId,value);
