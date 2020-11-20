@@ -127,3 +127,11 @@ CompareMidCode::CompareMidCode(MidCode::MidCodeOperator midCodeOperator, const s
 void CompareMidCode::displayMidCode() {
 //    midout <<
 }
+
+JumpMidCode::JumpMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &label) : MidCode(midCodeOperator,JUMPMIDCODE) {
+    this->label = label;
+}
+
+void JumpMidCode::displayMidCode() {
+    midout << label << ":" << std::endl;
+}

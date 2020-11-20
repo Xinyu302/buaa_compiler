@@ -46,6 +46,7 @@ inline void changeFuncArea(const std::string& funcName) {
     curFuncTable = new FunctionSymbolTable(funcName);
     FunctionSymbolTableMap[funcName] = curFuncTable;
     curMidCodeVec = new std::vector<MidCode*>;
+    MidCodeFactory(MidCode::LABEL,funcName);
     FunctionMidCodeMap[funcName] = curMidCodeVec;
     FunctionMidCodeVec.push_back(curMidCodeVec);
 }
@@ -57,7 +58,7 @@ void setInner(int Inner) {
 
 std::string getNextStringId() {
     static int num = 0;
-    static const std::string tmpStringPrefix = "string";
+    static const std::string tmpStringPrefix = "#string";
     char tmpNo[20];
     snprintf(tmpNo,20,"%d",num++);
     std::string s = tmpStringPrefix + tmpNo;
@@ -74,12 +75,12 @@ std::string getNextTmpValId() {
 }
 
 std::string applyTmpId() {
-    const std::string& tmpId = getNextStringId();
+    const std::string& tmpId = getNextTmpValId();
     curFuncTable->appendTempVar(tmpId);
     return tmpId;
 }
 std::string applyTmpId(int value) {
-    const std::string& tmpId = getNextStringId();
+    const std::string& tmpId = getNextTmpValId();
     curFuncTable->appendConst(tmpId,value);
     return tmpId;
 }
@@ -1426,10 +1427,11 @@ bool Handle_STATEMENT(bool show)
 bool Handle_PROGRAM(bool show)
 {
     isInner = OUTER;
+    changeFuncArea("#glocal");
+    globalSymbolTable = curFuncTable;
 	Handle_CONST_EXPLAIN(show);
 	Handle_VAR_EXPLAIN(show);
-	changeFuncArea("#glocal");
-	globalSymbolTable = curFuncTable;
+	MidCodeFactory(MidCode::J,"main"); // jump to main
 	while (Handle_RETURN_FUNC_DEFINE(show) || Handle_VOID_FUNC_DEFINE(show));
 	if (!Handle_MAIN(show)) return false;
 	output += "<程序>";
@@ -1442,7 +1444,7 @@ bool Handle_MAIN(bool show)
     setInner(INNER);
     FUNC_TYPE = FUNC_VOID;
     changeFuncArea("main");
-    FunctionSymbolTableMap["main"] = curFuncTable;
+//    FunctionSymbolTableMap["main"] = curFuncTable;
     if (!typeEnsure(Token::VOIDTK)) return false;
 	if (!typeEnsure(Token::MAINTK)) return false;
 	if (!typeEnsure(Token::LPARENT)) return false;

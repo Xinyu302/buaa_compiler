@@ -6,7 +6,12 @@
 #include <vector>
 #include <fstream>
 #define midCodeVec (*curMidCodeVec)
+
 extern FunctionSymbolTable* globalSymbolTable;
+extern FunctionSymbolTable* curFuncTable;
+extern std::vector<MidCode*>* curMidCodeVec;
+extern std::vector<std::vector<MidCode*>*> FunctionMidCodeVec;
+extern std::map<std::string,std::string> stringMap;
 
 std::vector<std::string> mipsResult;
 std::ofstream mipstream("mips.txt");
@@ -126,6 +131,9 @@ void genEnter() {
     mipscodes.push_back("la"+tab+"$a0,"+tab+"stringEnter");
     genSyscallByNum(4);
 }
+void genLabel(LabelMidCode* labelMidCode) {
+    mipscodes.push_back(labelMidCode->label + ":");
+}
 
 void genPrintMips(WriteMidCode* writeMidCode) {
     if ((writeMidCode->str).length()) {
@@ -133,7 +141,13 @@ void genPrintMips(WriteMidCode* writeMidCode) {
         genSyscallByNum(4);
     }
     if ((writeMidCode->num).length()) {
-        genFetchVarFromMem(writeMidCode->num,"$a0");
+        int value;
+        if (nowFuncSymbolTable->isConstValue(writeMidCode->num,value)) {
+            genLi("$a0",value);
+        }
+        else {
+            genFetchVarFromMem(writeMidCode->num,"$a0");
+        }
         if (writeMidCode->getWriteType() == WriteMidCode::INT) {
             genSyscallByNum(1);
         }
@@ -184,33 +198,41 @@ void genData() {
 void genText() {
     mipscodes.push_back(".text");
     enterFunc("main");
-    for (int i = 0; i < midCodeVec.size();i++) {
-        midCodeVec[i]->displayMidCode();
-        switch (midCodeVec[i]->getMidCodeClass()) {
-            case MidCode::CALMIDCODE:
-            {
-                genCalMips((CalMidCode *)(midCodeVec[i]));
-                break;
+    for (int i = 0; i < FunctionMidCodeVec.size();i++) {
+        curMidCodeVec = FunctionMidCodeVec[i];
+        for (int j = 0; j < midCodeVec.size();j++) {
+            midCodeVec[j]->displayMidCode();
+            switch (midCodeVec[j]->getMidCodeClass()) {
+                case MidCode::CALMIDCODE:
+                {
+                    genCalMips((CalMidCode *)(midCodeVec[j]));
+                    break;
+                }
+                case MidCode::READMIDCODE:
+                {
+                    genScanMips((ReadMidCode *)(midCodeVec[j]));
+                    break;
+                }
+                case MidCode::WRITEMIDCODE:
+                {
+                    genPrintMips((WriteMidCode *)(midCodeVec[j]));
+                    break;
+                }
+                case MidCode::ASSIGNMIDCODE:
+                {
+                    genAssignMips((AssignMidCode *)(midCodeVec[j]));
+                    break;
+                }
+                case MidCode::LABELMIDCODE:
+                {
+                    genLabel((LabelMidCode*)midCodeVec[j]);
+                }
+                default:
+                    fprintf(stderr,"fuck!,dipatch wrong on %d",midCodeVec[i]->getMidCodeClass());
             }
-            case MidCode::READMIDCODE:
-            {
-                genScanMips((ReadMidCode *)(midCodeVec[i]));
-                break;
-            }
-            case MidCode::WRITEMIDCODE:
-            {
-                genPrintMips((WriteMidCode *)(midCodeVec[i]));
-                break;
-            }
-            case MidCode::ASSIGNMIDCODE:
-            {
-                genAssignMips((AssignMidCode *)(midCodeVec[i]));
-                break;
-            }
-            default:
-                fprintf(stderr,"fuck!,dipatch wrong");
         }
     }
+
 
 }
 

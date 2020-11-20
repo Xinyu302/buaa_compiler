@@ -32,7 +32,9 @@ public:
         VAR,
         CONST,
         BNZ,
-        BZ
+        BZ,
+        J,
+        JAL
     };
     enum MidCodeClass{
         CALMIDCODE,
@@ -40,7 +42,8 @@ public:
         WRITEMIDCODE,
         READMIDCODE,
         LABELMIDCODE,
-        COMPAREMIDCODE
+        COMPAREMIDCODE,
+        JUMPMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -117,11 +120,11 @@ public:
 };
 
 class LabelMidCode : public MidCode {
-    std::string label;
 public:
     LabelMidCode(MidCodeOperator midCodeOperator,const std::string& label);
 
     void displayMidCode() override;
+    std::string label;
 };
 
 class CompareMidCode : public MidCode {
@@ -134,6 +137,13 @@ public:
 
     void displayMidCode() override;
 
+};
+
+class JumpMidCode : public MidCode {
+public:
+    JumpMidCode(MidCodeOperator midCodeOperator, const std::string &label);
+    std::string label;
+    void displayMidCode() override;
 };
 
 
@@ -178,6 +188,12 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
         case MidCode::LSS:
         {
 
+        }
+        case MidCode::J:
+        case MidCode::JAL:
+        {
+            newMidCodePtr = new JumpMidCode(midCodeOperator, result);
+            break;
         }
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");

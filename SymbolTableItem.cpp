@@ -69,11 +69,13 @@ int FunctionSymbolTable::getSubOffset() {
 
 bool FunctionSymbolTable::isConstValue(const std::string& name, int &value) {
     auto it = varInfo.find(name);
-    if (it != varInfo.end() && (it->second).type == CONST) {
-        value = it->second.offset;
-        return true;
-    } else if ((it->second).type != CONST) {
-        return false;
+    if (it != varInfo.end()) {
+        if ((it->second).type == CONST) {
+            value = it->second.offset;
+            return true;
+        } else {
+            return false;
+        }
     }
     return globalSymbolTable->isConstValue(name,value);
 }

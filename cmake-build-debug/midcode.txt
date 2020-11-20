@@ -1,1 +1,5 @@
-write		string8
+#glocal:
+main:
+main:
+a=0
+write		@temp9
