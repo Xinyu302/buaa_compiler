@@ -133,5 +133,19 @@ JumpMidCode::JumpMidCode(MidCode::MidCodeOperator midCodeOperator, const std::st
 }
 
 void JumpMidCode::displayMidCode() {
-    midout << label << ":" << std::endl;
+    switch (this->getMidCodeOperator()) {
+        case J:
+        {
+            midout << "J\t";
+            break;
+        }
+        case JAL:
+        {
+            midout << "JAL\t";
+            break;
+        }
+        default:
+            return;
+    }
+    midout << label << std::endl;
 }

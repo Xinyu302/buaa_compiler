@@ -3,6 +3,8 @@ stringEnter:	.asciiz	"\n"
 .text
 li	$t0,	4
 subu	$sp,	$sp,	$t0
+li	$t0,	1
+sw	$t0,	0($sp)
 li	$t0,	0
 sw	$t0,	0($sp)
 li	$a0,	20

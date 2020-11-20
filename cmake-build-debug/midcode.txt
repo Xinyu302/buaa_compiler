@@ -1,5 +1,4 @@
-#glocal:
-main:
-main:
+cs=1
+J	main:
 a=0
 write		@temp9
