@@ -1,16 +1,14 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/errorHandler.dir/MidCode.cpp.obj"
-  "CMakeFiles/errorHandler.dir/MipsCode.cpp.obj"
-  "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj"
-  "CMakeFiles/errorHandler.dir/ParseToken.cpp.obj"
-  "CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
-  "CMakeFiles/errorHandler.dir/Token.cpp.obj"
-  "CMakeFiles/errorHandler.dir/Utils.cpp.obj"
-  "CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.obj"
-  "errorHandler.exe"
-  "errorHandler.exe.manifest"
+  "CMakeFiles/errorHandler.dir/MidCode.cpp.o"
+  "CMakeFiles/errorHandler.dir/MipsCode.cpp.o"
+  "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o"
+  "CMakeFiles/errorHandler.dir/ParseToken.cpp.o"
+  "CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o"
+  "CMakeFiles/errorHandler.dir/Token.cpp.o"
+  "CMakeFiles/errorHandler.dir/Utils.cpp.o"
+  "CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o"
+  "errorHandler"
   "errorHandler.pdb"
-  "liberrorHandler.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

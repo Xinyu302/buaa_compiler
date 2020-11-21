@@ -4,16 +4,16 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/yxy/CLionProjects/errorHandler/MidCode.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/MidCode.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/MipsCode.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/MipsCode.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseSyntax.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/ParseToken.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseToken.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/Token.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/Token.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/Utils.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/Utils.cpp.obj"
-  "C:/Users/yxy/CLionProjects/errorHandler/symbolAnalysis.cpp" "C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.obj"
+  "/home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/MidCode.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/MipsCode.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseToken.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/Token.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/Token.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/Utils.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/Utils.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "Clang")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

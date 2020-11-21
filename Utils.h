@@ -5,6 +5,7 @@
 #include <string>
 #include "Token.h"
 #include "MidCode.h"
+std::string int2string(int num);
 std::string getNextStringId();
 std::string getNextTmpValId();
 std::string getNextWhileId();

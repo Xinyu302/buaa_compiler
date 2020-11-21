@@ -4,134 +4,138 @@
 	<Project>
 		<Option title="errorHandler"/>
 		<Option makefile_is_custom="1"/>
-		<Option compiler="gcc"/>
+		<Option compiler="clang"/>
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug"/>
+				<Option working_dir="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="errorHandler">
-				<Option output="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/errorHandler.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 errorHandler"/>
-					<CompileFile command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="errorHandler/fast">
-				<Option output="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/errorHandler.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
-					<Add directory="C:/Env/MinGW64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 errorHandler/fast"/>
-					<CompileFile command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug"/>
+				<Option working_dir="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug"/>
+				<Option working_dir="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/Env/MinGW64/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/yxy/CLionProjects/errorHandler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="errorHandler">
+				<Option output="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/errorHandler" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/c++/10"/>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/c++/10/backward"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/llvm-11/lib/clang/11.0.0/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 errorHandler"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="errorHandler/fast">
+				<Option output="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/errorHandler" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="clang"/>
+				<Compiler>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/c++/10"/>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/x86_64-linux-gnu/c++/10"/>
+					<Add directory="/usr/bin/../lib/gcc/x86_64-linux-gnu/10/../../../../include/c++/10/backward"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/llvm-11/lib/clang/11.0.0/include"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/10/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 errorHandler/fast"/>
+					<CompileFile command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j8 -f &quot;/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ErrorInfo.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ErrorInfo.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ErrorOutputControl.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ErrorOutputControl.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/MidCode.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/MidCode.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/MidCode.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/MipsCode.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/MipsCode.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/MipsCode.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ParseSyntax.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ParseToken.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/ParseToken.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ParseToken.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/SymbolTableItem.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Token.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/Token.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Token.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/Token.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Utils.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/Utils.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/Utils.h">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/Utils.h">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/symbolAnalysis.cpp">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp">
 			<Option target="errorHandler"/>
 		</Unit>
-		<Unit filename="C:/Users/yxy/CLionProjects/errorHandler/CMakeLists.txt">
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

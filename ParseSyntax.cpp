@@ -1367,7 +1367,7 @@ bool Handle_LOOP_STATE(bool show)
 	    const std::string& loopend = getNextWhileEnd();
 	    MidCodeFactory(MidCode::LABEL,loopstart);
 		if (!typeEnsure(Token::LPARENT)) return false;
-		if (!Handle_CONDITION(show)) return false;
+		if (!Handle_CONDITION(show,loopend,0)) return false;
         if (!typeEnsure(Token::RPARENT)) {
             error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
         }

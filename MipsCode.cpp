@@ -3,6 +3,7 @@
 //
 
 #include "MipsCode.h"
+#include "Utils.h"
 #include <vector>
 #include <fstream>
 #define midCodeVec (*nowMidCodeVec)
@@ -21,31 +22,31 @@ const std::string tab = "\t";
 extern std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 FunctionSymbolTable* nowFuncSymbolTable;
 
-std::string int2string(int num) {
-    char stringNum[20];
-    int cur = 0;
-    if (num == 0) return "0";
-    std::string s;
-    if (num < 0) {
-        num = -num;
-        s += "-";
-    }
-    while (num) {
-        stringNum[cur++] = num % 10 + '0';
-        num /= 10;
-    }
-    stringNum[cur] = 0;
-    int i = 0;
-    int j = cur - 1;
-    while (i < j) {
-        char c = stringNum[i];
-        stringNum[i] = stringNum[j];
-        stringNum[j] = c;
-        i++,j--;
-    }
-    s += stringNum;
-    return s;
-}
+//std::string int2string(int num) {
+//    char stringNum[20];
+//    int cur = 0;
+//    if (num == 0) return "0";
+//    std::string s;
+//    if (num < 0) {
+//        num = -num;
+//        s += "-";
+//    }
+//    while (num) {
+//        stringNum[cur++] = num % 10 + '0';
+//        num /= 10;
+//    }
+//    stringNum[cur] = 0;
+//    int i = 0;
+//    int j = cur - 1;
+//    while (i < j) {
+//        char c = stringNum[i];
+//        stringNum[i] = stringNum[j];
+//        stringNum[j] = c;
+//        i++,j--;
+//    }
+//    s += stringNum;
+//    return s;
+//}
 
 inline void genLi(const std::string& regTo,int imm) {
     mipscodes.push_back("li" + tab + regTo + "," + tab + int2string(imm));

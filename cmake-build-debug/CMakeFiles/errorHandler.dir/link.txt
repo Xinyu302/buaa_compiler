@@ -1,3 +1,1 @@
-"E:\Program Files\JetBrains\CLion 2020.2.4\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\errorHandler.dir/objects.a
-C:\Env\MinGW64\mingw64\bin\ar.exe cr CMakeFiles\errorHandler.dir/objects.a @CMakeFiles\errorHandler.dir\objects1.rsp
-C:\Env\MinGW64\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\errorHandler.dir/objects.a -Wl,--no-whole-archive  -o errorHandler.exe -Wl,--out-implib,liberrorHandler.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\errorHandler.dir\linklibs.rsp
+/usr/bin/c++  -g   CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o CMakeFiles/errorHandler.dir/Token.cpp.o CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o CMakeFiles/errorHandler.dir/ParseToken.cpp.o CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o CMakeFiles/errorHandler.dir/MidCode.cpp.o CMakeFiles/errorHandler.dir/MipsCode.cpp.o CMakeFiles/errorHandler.dir/Utils.cpp.o  -o errorHandler 
