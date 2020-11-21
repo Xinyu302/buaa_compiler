@@ -118,14 +118,21 @@ void LabelMidCode::displayMidCode() {
     midout << this->label << ":" << std::endl;
 }
 
-CompareMidCode::CompareMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &left,
-                               const std::string &right):MidCode(midCodeOperator,COMPAREMIDCODE) {
-    this->left = left;
-    this->right = right;
+void CompareMidCode::displayMidCode() {
+    static std::map<MidCode::MidCodeOperator, std::string> opMap = {{MidCode::EQL, "beq"},
+                                                                    {MidCode::NEQ, "bne"},
+                                                                    {MidCode::GRE, "bgt"},
+                                                                    {MidCode::GEQ, "bge"},
+                                                                    {MidCode::LSS, "blt"},
+                                                                    {MidCode::LEQ, "ble"}};
+    midout << opMap[this->getMidCodeOperator()] << "\t" << this->left << "\t" << this->right << "\t" << this->result << std::endl;
 }
 
-void CompareMidCode::displayMidCode() {
-//    midout <<
+CompareMidCode::CompareMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &result,
+                               const std::string &left, const std::string &right):MidCode(midCodeOperator,COMPAREMIDCODE) {
+    this->result = result;
+    this->left = left;
+    this->right = right;
 }
 
 JumpMidCode::JumpMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &label) : MidCode(midCodeOperator,JUMPMIDCODE) {

@@ -4,21 +4,15 @@ const char a = 'a';
 int num2 = 2;
 char b= 'b';
 
-int fuck() {
-    int b = 1;
-    char c = 1;
-    b = 1;
-    num2 = -1;
-    return ((c));
-}
 void main(){
-    const int num3 = 3;
-    const char c = 'c';
-    int num4 = 10000;
-    int d = 1;
-
-    int result;
-    char result1;
-    d=1000000*b/1;
-    printf("%d\n",d);
+    if ( 2 < 1) {
+        switch(num2) {
+        case(1): printf(1);
+        case(2):printf(2);
+        default: b = b + 1;
+        }
+    } else {
+        printf("big");
+    }
+    num2 = _num1 + 1;
 }

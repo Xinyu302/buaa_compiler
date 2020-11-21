@@ -80,106 +80,106 @@ include CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../symbolAnalysis.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp
 
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp > CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp > CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.i
 
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp -o CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/symbolAnalysis.cpp -o CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.s
 
 CMakeFiles/errorHandler.dir/Token.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/Token.cpp.o: ../Token.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/errorHandler.dir/Token.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/Token.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/Token.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/Token.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/Token.cpp
 
 CMakeFiles/errorHandler.dir/Token.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/Token.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/Token.cpp > CMakeFiles/errorHandler.dir/Token.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/Token.cpp > CMakeFiles/errorHandler.dir/Token.cpp.i
 
 CMakeFiles/errorHandler.dir/Token.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/Token.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/Token.cpp -o CMakeFiles/errorHandler.dir/Token.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/Token.cpp -o CMakeFiles/errorHandler.dir/Token.cpp.s
 
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../ParseSyntax.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp
 
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/ParseSyntax.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp > CMakeFiles/errorHandler.dir/ParseSyntax.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp > CMakeFiles/errorHandler.dir/ParseSyntax.cpp.i
 
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/ParseSyntax.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp -o CMakeFiles/errorHandler.dir/ParseSyntax.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp -o CMakeFiles/errorHandler.dir/ParseSyntax.cpp.s
 
 CMakeFiles/errorHandler.dir/ParseToken.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/ParseToken.cpp.o: ../ParseToken.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/errorHandler.dir/ParseToken.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/ParseToken.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/ParseToken.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp
 
 CMakeFiles/errorHandler.dir/ParseToken.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/ParseToken.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp > CMakeFiles/errorHandler.dir/ParseToken.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp > CMakeFiles/errorHandler.dir/ParseToken.cpp.i
 
 CMakeFiles/errorHandler.dir/ParseToken.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/ParseToken.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp -o CMakeFiles/errorHandler.dir/ParseToken.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp -o CMakeFiles/errorHandler.dir/ParseToken.cpp.s
 
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp
 
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp > CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp > CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.i
 
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp -o CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp -o CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.s
 
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../MidCode.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/errorHandler.dir/MidCode.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/MidCode.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/MidCode.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp
 
 CMakeFiles/errorHandler.dir/MidCode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/MidCode.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp > CMakeFiles/errorHandler.dir/MidCode.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp > CMakeFiles/errorHandler.dir/MidCode.cpp.i
 
 CMakeFiles/errorHandler.dir/MidCode.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/MidCode.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp -o CMakeFiles/errorHandler.dir/MidCode.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/MidCode.cpp -o CMakeFiles/errorHandler.dir/MidCode.cpp.s
 
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../MipsCode.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/errorHandler.dir/MipsCode.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/MipsCode.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/MipsCode.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp
 
 CMakeFiles/errorHandler.dir/MipsCode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/MipsCode.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp > CMakeFiles/errorHandler.dir/MipsCode.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp > CMakeFiles/errorHandler.dir/MipsCode.cpp.i
 
 CMakeFiles/errorHandler.dir/MipsCode.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/MipsCode.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp -o CMakeFiles/errorHandler.dir/MipsCode.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp -o CMakeFiles/errorHandler.dir/MipsCode.cpp.s
 
 CMakeFiles/errorHandler.dir/Utils.cpp.o: CMakeFiles/errorHandler.dir/flags.make
 CMakeFiles/errorHandler.dir/Utils.cpp.o: ../Utils.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/errorHandler.dir/Utils.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/Utils.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp
+	/usr/bin/clang++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/errorHandler.dir/Utils.cpp.o -c /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp
 
 CMakeFiles/errorHandler.dir/Utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/errorHandler.dir/Utils.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp > CMakeFiles/errorHandler.dir/Utils.cpp.i
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp > CMakeFiles/errorHandler.dir/Utils.cpp.i
 
 CMakeFiles/errorHandler.dir/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/errorHandler.dir/Utils.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp -o CMakeFiles/errorHandler.dir/Utils.cpp.s
+	/usr/bin/clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/yxy/study/compiler/design/buaa_compiler/Utils.cpp -o CMakeFiles/errorHandler.dir/Utils.cpp.s
 
 # Object files for target errorHandler
 errorHandler_OBJECTS = \

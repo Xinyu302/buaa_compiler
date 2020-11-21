@@ -6,7 +6,12 @@
 static int forId = 0;
 static int whileId = 0;
 static int elseId = 0;
+static int switchId = 0;
+static int caseId = 1;
 const std::string e = ":";
+static std::string switchEndId;
+static std::string exp2judge;
+
 std::string int2string(int num) {
     char tmpNo[20];
     snprintf(tmpNo,20,"%d",num);
@@ -62,6 +67,21 @@ std::string getNextElseEndId() {
     return s;
 }
 
+std::string getNextCaseId() {
+    static const std::string switchPre = "@switch_";
+    static const std::string casePre = "_case_";
+    std::string &&s = switchPre + int2string(switchId) + casePre + int2string(caseId);
+    return s;
+}
+
+std::string getNextDefault() {
+    static const std::string switchPre = "@switch_";
+    static const std::string defaultEnd = "_default";
+    std::string &&s = switchPre + int2string(switchId++) + defaultEnd;
+    caseId = 1;
+    return s;
+}
+
 MidCode::MidCodeOperator index2MidCode(Token::TokenTypeIndex index) {
     static std::map<Token::TokenTypeIndex, MidCode::MidCodeOperator> map = {{Token::EQL, MidCode::EQL},
                                                                             {Token::NEQ, MidCode::NEQ},
@@ -80,4 +100,43 @@ MidCode::MidCodeOperator reverseIndex2MidCode(Token::TokenTypeIndex index) {
                                                                             {Token::LSS, MidCode::GEQ},
                                                                             {Token::LEQ, MidCode::GRE}};
     return map[index];
+}
+
+std::string changeString(const std::string& s) {
+    static char y = '\\';
+    char *tmp = new char [s.length() * 2];
+    int j = 0;
+    for (int i = 0; i < s.length();i++) {
+        if (s[i] == y) {
+            tmp[j++] = y;
+            tmp[j++] = y;
+        }
+        else {
+            tmp[j++] = s[i];
+        }
+    }
+    tmp[j] = 0;
+    std::string&& ss = std::string(tmp);
+    delete [] tmp;
+    return ss;
+}
+
+std::string getExp2Judge() {
+    return exp2judge;
+}
+
+void setExp2Judge(const std::string& s) {
+    exp2judge = s;
+}
+
+std::string getNextSwitchEnd() {
+    static const std::string switchEndPre = "@switch_end_";
+    std::string &&s = switchEndPre + int2string(switchId);
+    switchEndId = s;
+    return s;
+}
+
+void addSwitchId() {
+    switchId++;
+    caseId = 1;
 }

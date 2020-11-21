@@ -3,15 +3,15 @@
 #include "Token.h"
 #include "ErrorInfo.h"
 #include <stdlib.h>
-bool Handle_FACTOR(bool show,int &,std::string &);
-bool Handle_RETURN_FUNC_CALL(bool show,int &);
+bool Handle_FACTOR(bool ,int &,std::string &);
+bool Handle_RETURN_FUNC_CALL(bool ,int &);
 bool Handle_STATEMENT(bool);
-bool Handle_CONDITON_TABLE(bool ,const int &);
+bool Handle_CONDITON_TABLE(bool ,const int& );
 bool Handle_CONST_DEFINE(bool);
-bool Handle_CONDITION_CHILD_STATE(bool show,const int& type);
-bool Handle_DEFAULT(bool show);
-bool Handle_STATE_LIST(bool show);
-bool Handle_MAIN(bool show);
+bool Handle_CONDITION_CHILD_STATE(bool , const int &);
+bool Handle_DEFAULT(bool );
+bool Handle_STATE_LIST(bool );
+bool Handle_MAIN(bool );
 
 //const std::string tmpVarPrefix = "@temp_";
 //int curTmpNo;

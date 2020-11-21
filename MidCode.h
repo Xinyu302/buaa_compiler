@@ -129,11 +129,11 @@ public:
 
 class CompareMidCode : public MidCode {
 public:
-    bool result;
+    std::string result;
 
     std::string left;
     std::string right;
-    CompareMidCode(MidCode::MidCodeOperator midCodeOperator,const std::string& left,const std::string& right);
+    CompareMidCode(MidCode::MidCodeOperator midCodeOperator,const std::string& result,const std::string& left,const std::string& right);
 
     void displayMidCode() override;
 
@@ -188,7 +188,8 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
         case MidCode::LEQ:
         case MidCode::LSS:
         {
-
+            newMidCodePtr = new CompareMidCode(midCodeOperator, result, left, right);
+            break;
         }
         case MidCode::J:
         case MidCode::JAL:

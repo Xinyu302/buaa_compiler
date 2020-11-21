@@ -22,32 +22,6 @@ const std::string tab = "\t";
 extern std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 FunctionSymbolTable* nowFuncSymbolTable;
 
-//std::string int2string(int num) {
-//    char stringNum[20];
-//    int cur = 0;
-//    if (num == 0) return "0";
-//    std::string s;
-//    if (num < 0) {
-//        num = -num;
-//        s += "-";
-//    }
-//    while (num) {
-//        stringNum[cur++] = num % 10 + '0';
-//        num /= 10;
-//    }
-//    stringNum[cur] = 0;
-//    int i = 0;
-//    int j = cur - 1;
-//    while (i < j) {
-//        char c = stringNum[i];
-//        stringNum[i] = stringNum[j];
-//        stringNum[j] = c;
-//        i++,j--;
-//    }
-//    s += stringNum;
-//    return s;
-//}
-
 inline void genLi(const std::string& regTo,int imm) {
     mipscodes.push_back("li" + tab + regTo + "," + tab + int2string(imm));
 }
@@ -232,6 +206,30 @@ void genAssignMips(AssignMidCode* assignMidCode) {
     }
 }
 
+void genCompareMips(CompareMidCode* compareMidCode) {
+    std::string cmpOp;
+    static std::map<MidCode::MidCodeOperator, std::string> opMap = {{MidCode::EQL, "beq"},
+                                                                    {MidCode::NEQ, "bne"},
+                                                                    {MidCode::GRE, "bgt"},
+                                                                    {MidCode::GEQ, "bge"},
+                                                                    {MidCode::LSS, "blt"},
+                                                                    {MidCode::LEQ, "ble"}};
+    cmpOp = opMap[compareMidCode->getMidCodeOperator()];
+    int value;
+    std::cout << compareMidCode->right << std::endl;
+    if (nowFuncSymbolTable->isConstValue(compareMidCode->left,value)) {
+        genLi("$t0", value);
+    } else {
+        genFetchVarFromMem(compareMidCode->left, "$t0");
+    }
+    if (nowFuncSymbolTable->isConstValue(compareMidCode->right,value)) {
+        genLi("$t1", value);
+    } else {
+        genFetchVarFromMem(compareMidCode->right, "$t1");
+    }
+    genThreeRegInstr(cmpOp, "$t0", "$t1", compareMidCode->result);
+}
+
 inline void genMips() {
     genData();
 //    enterFunc("main");
@@ -247,7 +245,7 @@ void genData() {
     mipscodes.push_back(".data");
     mipscodes.push_back("stringEnter:\t.asciiz" + tab + quotation + "\\n" + quotation);
     for (std::map<std::string,std::string>::iterator it = stringMap.begin();it != stringMap.end();it++) {
-        mipscodes.push_back(it->first + colon + tab + asciiz + tab + quotation + it->second + quotation);
+        mipscodes.push_back(it->first + colon + tab + asciiz + tab + quotation + changeString(it->second) + quotation);
     }
     /*
     for (int i = 0; i < allStringList.size();i++)
@@ -293,6 +291,11 @@ void genText() {
                 case MidCode::JUMPMIDCODE:
                 {
                     genJump((JumpMidCode *) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::COMPAREMIDCODE:
+                {
+                    genCompareMips((CompareMidCode *) midCodeVec[j]);
                     break;
                 }
                 default:

@@ -1115,6 +1115,8 @@ bool Handle_CONDITION(bool show,const std::string& label,int workMode)
 		Handle_CMP(show);
         Token::TokenTypeIndex index = Tokens[nowLoc - 1].getIndex();
 		Handle_EXPRESSION(show,typeR,expR);
+//		std::cout << expL << std::endl;
+//        std::cout << expR << std::endl;
 		if (typeL != EXP_INT || typeR != EXP_INT)
         {
 		    error(getLastLine(),ErrorInfo::TYPE_JUDGE_WRONG);
@@ -1149,6 +1151,7 @@ bool Handle_CONDITION_STATE(bool show)
     int exp_type = EXP_UNKNOWN;
 	if (!typeEnsure(Token::SWITCHTK)) return false;
 	if (!Handle_LPARENT_EXP_RPARENT(show,exp_type,expName)) return false;
+    setExp2Judge(expName);
 	if (!typeEnsure(Token::LBRACE)) return false;
 	if (!Handle_CONDITON_TABLE(show,exp_type)) return false;
 	if (!Handle_DEFAULT(show)) { default_missed = true; }
@@ -1176,8 +1179,12 @@ bool Handle_CONDITON_TABLE(bool show,const int& exp_type)
 //＜情况子语句＞  ::=  case＜常量＞：＜语句＞
 bool Handle_CONDITION_CHILD_STATE(bool show, const int &exp_type) {
     int const_or_char = EXP_UNKNOWN;
+    const std::string& caseNo = getNextCaseId();
     if (!typeEnsure(Token::CASETK)) return false;
-    if (!Handle_CONST_INT_OR_CHAR(show,const_or_char)) return false;
+    int value = 0;
+    if (!Handle_CONST_INT_OR_CHAR(show,const_or_char,value)) return false;
+    const std::string& v = applyTmpId(value);
+    MidCodeFactory(MidCode::NEQ, getNextStringId(),getExp2Judge(), v);
 //    int&& line = getLastLine();
     if (const_or_char != exp_type)
     {
@@ -1185,6 +1192,7 @@ bool Handle_CONDITION_CHILD_STATE(bool show, const int &exp_type) {
     }
     if (!typeEnsure(Token::COLON)) return false;
     if (Handle_STATEMENT(show)) {
+        MidCodeFactory(MidCode::J, getNextSwitchEnd());
         output += "<情况子语句>";
         output += '\n';
         return true;
@@ -1198,6 +1206,8 @@ bool Handle_DEFAULT(bool show)
 	if (!typeEnsure(Token::COLON)) return false;
 	if (Handle_STATEMENT(show))
 	{
+	    MidCodeFactory(MidCode::LABEL,getNextSwitchEnd());
+	    addSwitchId();
 		output += "<缺省>";
 		output += '\n';
 		return true;
