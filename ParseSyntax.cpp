@@ -1104,7 +1104,7 @@ bool Handle_STATE_LIST(bool show)
 	return true;
 }
 /*<条件>   ::=  <表达式><关系运算符><表达式>*/
-bool Handle_CONDITION(bool show)
+bool Handle_CONDITION(bool show,const std::string& label,int workMode)
 {
     int typeL = EXP_UNKNOWN;
     int typeR = EXP_UNKNOWN;
@@ -1113,11 +1113,19 @@ bool Handle_CONDITION(bool show)
 	if (Handle_EXPRESSION(show,typeL,expL))
 	{
 		Handle_CMP(show);
+        Token::TokenTypeIndex index = Tokens[nowLoc - 1].getIndex();
 		Handle_EXPRESSION(show,typeR,expR);
 		if (typeL != EXP_INT || typeR != EXP_INT)
         {
 		    error(getLastLine(),ErrorInfo::TYPE_JUDGE_WRONG);
         }
+		if (workMode == 0) // nomal {
+        {
+            MidCodeFactory(index2MidCode(index), label, expL, expR);
+        }
+		else { // for if statement
+            MidCodeFactory(reverseIndex2MidCode(index), label, expL, expR);
+		}
 		output += "<条件>";
 		output += '\n';
 		return true;
@@ -1126,9 +1134,9 @@ bool Handle_CONDITION(bool show)
 }
 
 //<步长>::= <无符号整数> 
-bool Handle_STEP(bool show)
+bool Handle_STEP(bool show,int& value)
 {
-	if (!Handle_UNSIGNED_INTCON(show)) return false;
+	if (!Handle_UNSIGNED_INTCON(show,value)) return false;
 	output += "<步长>";
 	output += '\n';
 	return true;
@@ -1206,12 +1214,21 @@ bool Handle_IF_STATE(bool show)
 {
 	if (!typeEnsure(Token::IFTK)) return false;
 	if (!typeEnsure(Token::LPARENT)) return false;
-	if (!Handle_CONDITION(show)) return false;
+    std::string &&elseBegin = getNextElseId();
+    std::string &&elseEnd = getNextElseEndId();
+	if (!Handle_CONDITION(show,elseBegin,1)) return false;
     if (!typeEnsure(Token::RPARENT)) {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
     }
 	if (!Handle_STATEMENT(show)) return false;
-	Handle_ELSE_STATE(show);
+    if (typeAssert(nowLoc,Token::ELSETK)) {
+        MidCodeFactory(MidCode::J, elseEnd);
+    }
+    MidCodeFactory(MidCode::LABEL, elseBegin);
+    if (typeAssert(nowLoc,Token::ELSETK)) {
+        Handle_ELSE_STATE(show);
+        MidCodeFactory(MidCode::LABEL, elseEnd);
+    }
 	output += "<条件语句>";
 	output += '\n';
 	return true;
@@ -1292,6 +1309,9 @@ bool Handle_FOR_STATE_PARENT(bool show)
 {
     int type;
     std::string expName;
+    int value;
+    const std::string& loopstart = getNextForId();
+    const std::string& loopend = getNextForEnd();
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_IDENFR(show)) return false;
 	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
@@ -1301,20 +1321,33 @@ bool Handle_FOR_STATE_PARENT(bool show)
 	}
 	if (!typeEnsure(Token::ASSIGN)) return false;
 	if (!Handle_EXPRESSION(show,type,expName)) return false;
+	if (curFuncTable->isConstValue(expName,value)) {
+        MidCodeFactory(MidCode::ASSIGN,idName,value);
+    } else {
+	    MidCodeFactory(MidCode::ASSIGN,idName,expName);
+	}
 	if (!typeEnsure(Token::SEMICN)) {
 	    error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
 	}
-	if (!Handle_CONDITION(show)) return false;
+	if (!Handle_CONDITION(show,loopend,0)) return false;
     if (!typeEnsure(Token::SEMICN)) {
         error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
     }
 	if (!Handle_IDENFR(show)) return false;
+	const std::string& l = Tokens[nowLoc - 1].getTokenStr();
 	if (!typeEnsure(Token::ASSIGN)) return false;
 	if (!Handle_IDENFR(show)) return false;
+    const std::string& r = Tokens[nowLoc - 1].getTokenStr();
 	Token::TokenTypeIndex index;
 	if (!Handle_PLUS(show,index)) return false;
-	if (!Handle_STEP(show)) return false;
-	
+	if (!Handle_STEP(show,value)) return false;
+	const std::string& constTmp = applyTmpId(value);
+	if (index == Token::PLUS) {
+        MidCodeFactory(MidCode::PLUS, l, r, constTmp);
+	}
+	else if (index == Token::MINU) {
+        MidCodeFactory(MidCode::MINUS, l, r, constTmp);
+	}
 	if (typeEnsure(Token::RPARENT))
 	{
 		return true;
@@ -1330,13 +1363,17 @@ bool Handle_LOOP_STATE(bool show)
 	bool flag = false;
 	if (typeEnsure(Token::WHILETK))
 	{
+	    const std::string& loopstart = getNextWhileId();
+	    const std::string& loopend = getNextWhileEnd();
+	    MidCodeFactory(MidCode::LABEL,loopstart);
 		if (!typeEnsure(Token::LPARENT)) return false;
 		if (!Handle_CONDITION(show)) return false;
         if (!typeEnsure(Token::RPARENT)) {
             error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
         }
 		if (Handle_STATEMENT(show)) flag = true;
-	}
+        MidCodeFactory(MidCode::LABEL,loopend);
+    }
 	else if (typeEnsure(Token::FORTK))
 	{
 		if (!Handle_FOR_STATE_PARENT(show)) return false;
