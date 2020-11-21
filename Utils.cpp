@@ -32,50 +32,58 @@ std::string getNextTmpValId() {
 }
 
 std::string getNextWhileId() {
-    static const std::string whilePrefix = "@while_";
+    static const std::string whilePrefix = "while_";
     std::string&& s = whilePrefix + int2string(whileId);
     return s;
 }
 
 std::string getNextForId() {
-    static const std::string forPrefix = "@for_";
+    static const std::string forPrefix = "for_";
     std::string&& s = forPrefix + int2string(forId);
     return s;
 }
 
 std::string getNextWhileEnd() {
-    static const std::string whileEndPre = "@while_end_";
+    static const std::string whileEndPre = "while_end_";
     std::string&& s = whileEndPre + int2string(whileId++);
     return s;
 }
 
 std::string getNextForEnd() {
-    static const std::string forEndPre = "@for_end_";
+    static const std::string forEndPre = "for_end_";
     std::string&& s = forEndPre + int2string(forId++);
     return s;
 }
 
 std::string getNextElseId() {
-    static const std::string elsePre = "@else_";
+    static const std::string elsePre = "else_";
     std::string &&s = elsePre + int2string(elseId);
     return s;
 }
 
 std::string getNextElseEndId() {
-    static const std::string elseEndPre = "@else_end_";
+    static const std::string elseEndPre = "else_end_";
     std::string &&s = elseEndPre + int2string(elseId++);
     return s;
 }
 
 std::string getNextCaseId() {
-    static const std::string switchPre = "@switch_";
+    static const std::string switchPre = "switch_";
     static const std::string casePre = "_case_";
     std::string &&s = switchPre + int2string(switchId) + casePre + int2string(caseId);
     return s;
 }
 
+std::string getNextCaseId(bool add) {
+    static const std::string switchPre = "switch_";
+    static const std::string casePre = "_case_";
+    std::string &&s = switchPre + int2string(switchId) + casePre + int2string(caseId++);
+    return s;
+}
+
+
 std::string getNextDefault() {
-    static const std::string switchPre = "@switch_";
+    static const std::string switchPre = "switch_";
     static const std::string defaultEnd = "_default";
     std::string &&s = switchPre + int2string(switchId++) + defaultEnd;
     caseId = 1;
@@ -130,7 +138,7 @@ void setExp2Judge(const std::string& s) {
 }
 
 std::string getNextSwitchEnd() {
-    static const std::string switchEndPre = "@switch_end_";
+    static const std::string switchEndPre = "switch_end_";
     std::string &&s = switchEndPre + int2string(switchId);
     switchEndId = s;
     return s;

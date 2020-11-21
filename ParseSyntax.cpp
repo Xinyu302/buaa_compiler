@@ -1160,6 +1160,7 @@ bool Handle_CONDITION_STATE(bool show)
 	    if (default_missed) {
             error(getLastLine(),ErrorInfo::DEFALUT_SHOULD_OCCUR);
 	    }
+
 		output += "<情况语句>";
 		output += '\n';
 		return true;
@@ -1184,7 +1185,7 @@ bool Handle_CONDITION_CHILD_STATE(bool show, const int &exp_type) {
     int value = 0;
     if (!Handle_CONST_INT_OR_CHAR(show,const_or_char,value)) return false;
     const std::string& v = applyTmpId(value);
-    MidCodeFactory(MidCode::NEQ, getNextStringId(),getExp2Judge(), v);
+    MidCodeFactory(MidCode::NEQ, getNextCaseId(),getExp2Judge(), v);
 //    int&& line = getLastLine();
     if (const_or_char != exp_type)
     {
@@ -1193,6 +1194,7 @@ bool Handle_CONDITION_CHILD_STATE(bool show, const int &exp_type) {
     if (!typeEnsure(Token::COLON)) return false;
     if (Handle_STATEMENT(show)) {
         MidCodeFactory(MidCode::J, getNextSwitchEnd());
+        MidCodeFactory(MidCode::LABEL, getNextCaseId(true));
         output += "<情况子语句>";
         output += '\n';
         return true;

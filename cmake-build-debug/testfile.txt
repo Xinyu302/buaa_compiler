@@ -5,12 +5,12 @@ int num2 = 2;
 char b= 'b';
 
 void main(){
-    if ( 2 < 1) {
+    if ( 2 >= 3) {
         switch(num2) {
-        case(1): printf(1);
-        case(2):printf(2);
-        default: b = b + 1;
-        }
+                case 1: printf(1);
+                case 2: printf(2);
+                default: b = b + 1;
+                }
     } else {
         printf("big");
     }
