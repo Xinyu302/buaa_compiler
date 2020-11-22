@@ -8,6 +8,7 @@
 #include <map>
 #include "Token.h"
 #include "MidCode.h"
+#define InnerSymbolTable (*innerSymbolTablePtr)
 
 class SymbolTableItem {
 public:
@@ -63,8 +64,11 @@ public:
     enum itemType{
         CONST,
         LOCALVAR,
+        PARA,
         GLOBALVAR,
-        TEMPVAR
+        TEMPVAR,
+        LOCALARRAY1,
+        LOCALARRAY2
     };
     struct itemInfo{
         itemType type;
@@ -72,29 +76,49 @@ public:
         itemInfo(itemType _type,int _offset):type(_type),offset(_offset){}
         itemInfo(){}
     };
-    FunctionSymbolTable(const std::string& name);
 
+    struct arrayItemInfo{
+        itemType type;
+        int x;
+        int y;
+        arrayItemInfo(itemType _type,int _x,int _y = 0): type(_type),x(_x),y(_y) {}
+    };
+
+    FunctionSymbolTable(const std::string& name);
+    void appendPara(const std::string& name);
     void appendConst(const std::string& name,int value);
     void appendTempVar(const std::string& name);
     void appendLocalVar(const std::string& name);
-    void appendGlobalVar(const std::string& name);
+    void appendLocalVar(const std::string& name,int );
+    void appendLocalVar(const std::string& name,int,int);
+//    void appendGlobalVar(const std::string& name);
     int getOffset(const std::string& name);
+    int getOffset(const std::string& name,int x);
+    int getOffset(const std::string &name, int x, int y);
+    int getParaOffsetByIndex(int index);
     int getSubOffset();
     bool isConstValue(const std::string& name,int &value);
+    int getRetOffset();
 
 private:
     int varNum;
     std::string funcName;
     std::map<std::string,itemInfo> varInfo;
-    std::map<std::string,int> constPool;
+    std::map<std::string,arrayItemInfo> arrayInfo;
+    std::vector<itemInfo> paraInfo;
 };
 
 
 class SyntaxSymbolTable {
 public:
-    SyntaxSymbolTable() {}
+    SyntaxSymbolTable() {
+        innerSymbolTablePtr = new std::map<std::string, SymbolTableItem *>;
+    }
 
     ~SyntaxSymbolTable() {
+        for (auto it = allInnerSymbolTable.begin();it != allInnerSymbolTable.end();it++) {
+            delete it->second;
+        }
     }
 
     void InsertPtrIntoTable(int inner, const std::string &name, SymbolTableItem *itemPtr) {
@@ -202,17 +226,17 @@ public:
 
     void clearInnerSymbolTable(const std::string& idName)
     {
-        allInnerSymbolTable[idName] = &InnerSymbolTable;
-        auto *InnerSymbolTablePtr = new std::map<std::string, SymbolTableItem *>;
-        InnerSymbolTable = *InnerSymbolTablePtr;
+        allInnerSymbolTable[idName] = innerSymbolTablePtr;
+        innerSymbolTablePtr = new std::map<std::string, SymbolTableItem *>;
     }
 
-    std::map<std::string, SymbolTableItem *> InnerSymbolTable;
+    std::map<std::string, SymbolTableItem *>* innerSymbolTablePtr;
+    std::map<std::string, std::map<std::string, SymbolTableItem *>*> allInnerSymbolTable;
+
 private:
      const int INNER = 1;
      const int OUTER = 0;
      int isInner;
      std::map<std::string, SymbolTableItem *> OuterSymbolTable;
-     std::map<std::string, std::map<std::string, SymbolTableItem *>*> allInnerSymbolTable;
 };
 

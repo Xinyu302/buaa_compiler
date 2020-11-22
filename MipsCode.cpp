@@ -21,6 +21,7 @@ const std::string syscall = "syscall";
 const std::string tab = "\t";
 extern std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 FunctionSymbolTable* nowFuncSymbolTable;
+FunctionSymbolTable* calledFuncSymbolTable;
 
 inline void genLi(const std::string& regTo,int imm) {
     mipscodes.push_back("li" + tab + regTo + "," + tab + int2string(imm));
@@ -230,6 +231,21 @@ void genCompareMips(CompareMidCode* compareMidCode) {
     genThreeRegInstr(cmpOp, "$t0", "$t1", compareMidCode->result);
 }
 
+void genCallMips(CallMidCode* callMidCode) {
+    calledFuncSymbolTable = FunctionSymbolTableMap[callMidCode->label];
+    genThreeRegInstr("addi", "$sp", "$sp", int2string(-calledFuncSymbolTable->getSubOffset()));
+}
+
+void genPushMips(PushMidCode* pushMidCode) {
+    int value;
+    if (nowFuncSymbolTable->isConstValue(pushMidCode->exp,value)) {
+        genLi("$t0", value);
+    } else {
+        genFetchVarFromMem(pushMidCode->exp, "$t0");
+    }
+    genSw("$t0", "$sp", nowFuncSymbolTable->getParaOffsetByIndex(pushMidCode->index));
+}
+
 inline void genMips() {
     genData();
 //    enterFunc("main");
@@ -297,6 +313,15 @@ void genText() {
                 {
                     genCompareMips((CompareMidCode *) midCodeVec[j]);
                     break;
+                }
+                case MidCode::PUSHMIDCODE:
+                {
+                    genPushMips((PushMidCode*) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::CALLMIDCODE:
+                {
+                    genCallMips((CallMidCode*) midCodeVec[j]);
                 }
                 default:
                     fprintf(stderr,"fuck!,dipatch wrong on %d",midCodeVec[i]->getMidCodeClass());

@@ -4,6 +4,7 @@
 
 #include "SymbolTableItem.h"
 #include <string>
+extern SyntaxSymbolTable symbolTable;
 
 bool SymbolTableItem::compareParaListNum(const std::vector<ItemReturnType> &paraListTypeIn) const {
     int n1 = paraListTypes.size();
@@ -34,7 +35,11 @@ extern FunctionSymbolTable* globalSymbolTable;
 
 SymbolTableItem::SymbolTableItem() {}
 
-FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {}
+FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {
+    if (this != globalSymbolTable) {
+        varInfo["$ra"] = itemInfo(LOCALVAR,varNum++);
+    }
+}
 
 void FunctionSymbolTable::appendConst(const std::string &name,int value) {
     if (varInfo.find(name) != varInfo.end())
@@ -45,6 +50,7 @@ void FunctionSymbolTable::appendConst(const std::string &name,int value) {
 }
 
 void FunctionSymbolTable::appendTempVar(const std::string &name) {
+
     varInfo[name] = itemInfo(TEMPVAR,4*varNum++);
 }
 
@@ -52,12 +58,26 @@ void FunctionSymbolTable::appendLocalVar(const std::string &name) {
     if (varInfo.find(name) != varInfo.end())
     varInfo[name].type = LOCALVAR;
     else
+    {
         varInfo[name] = itemInfo(LOCALVAR,4*varNum++);
+    }
 }
 
-void FunctionSymbolTable::appendGlobalVar(const std::string &name) {
-    varInfo[name] = itemInfo(GLOBALVAR,4*varNum++);
+void FunctionSymbolTable::appendLocalVar(const std::string &name,int x) {
+    varInfo[name] = itemInfo(LOCALARRAY1,4*varNum);
+    varNum += x;
+    arrayInfo[name] = arrayItemInfo(LOCALARRAY1, x);
 }
+
+void FunctionSymbolTable::appendLocalVar(const std::string &name,int x,int y) {
+    varInfo[name] = itemInfo(LOCALARRAY2,4*varNum);
+    varNum += x * y;
+    arrayInfo[name] = arrayItemInfo(LOCALARRAY2, x, y);
+}
+
+//void FunctionSymbolTable::appendGlobalVar(const std::string &name) {
+//    varInfo[name] = itemInfo(GLOBALVAR,4*varNum++);
+//}
 
 int FunctionSymbolTable::getOffset(const std::string& name) {
     auto it = varInfo.find(name);
@@ -67,9 +87,26 @@ int FunctionSymbolTable::getOffset(const std::string& name) {
     return -1;
 }
 
+int FunctionSymbolTable::getOffset(const std::string& name,int x) {
+    auto it = varInfo.find(name);
+    if (it != varInfo.end()) {
+        return varInfo[name].offset + x * 4;
+    }
+    return -1;
+}
+
+int FunctionSymbolTable::getOffset(const std::string& name,int x,int y) {
+    auto it = varInfo.find(name);
+    if (it != varInfo.end()) {
+        return varInfo[name].offset + arrayInfo[name].y * x + y;
+    }
+    return -1;
+}
+
 int FunctionSymbolTable::getSubOffset() {
     return 4 * this->varNum;
 }
+
 
 bool FunctionSymbolTable::isConstValue(const std::string& name, int &value) {
     auto it = varInfo.find(name);
@@ -82,5 +119,19 @@ bool FunctionSymbolTable::isConstValue(const std::string& name, int &value) {
         }
     }
     return globalSymbolTable->isConstValue(name,value);
+}
+
+void FunctionSymbolTable::appendPara(const std::string &name) {
+    auto info = itemInfo(PARA,4*varNum++);
+    paraInfo.push_back(info);
+    varInfo[name] = info;
+}
+
+int FunctionSymbolTable::getRetOffset() {
+    return 0;
+}
+
+int FunctionSymbolTable::getParaOffsetByIndex(int index) {
+    return paraInfo[index].offset;
 }
 

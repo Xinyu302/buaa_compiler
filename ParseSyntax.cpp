@@ -327,7 +327,7 @@ bool Handle_VAR_DEFINE_NO_INIT(bool show)
 	    if (defineCheckMulti(idName)) {
 	        error(getLastLine(),ErrorInfo::NAME_REDEFINED);
 	    }
-        curFuncTable->appendLocalVar(idName);
+
         if (typeEnsure(Token::LBRACK))
 		{
 			if (!Handle_UNSIGNED_INTCON(show)) return false;
@@ -342,15 +342,18 @@ bool Handle_VAR_DEFINE_NO_INIT(bool show)
                     error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
                 }
                 vec2 = atoi(Tokens[nowLoc - 2].getTokenStr().c_str());
+                curFuncTable->appendLocalVar(idName,vec1,vec2);
                 symbolTable.insertIntoSymbolTableVar(isInner,idName,index,2,vec1,vec2);
 			}
 			else
             {
+                curFuncTable->appendLocalVar(idName,vec1);
                 symbolTable.insertIntoSymbolTableVar(isInner,idName,index,1,vec1);
             }
 		}
 		else
         {
+            curFuncTable->appendLocalVar(idName);
 		    symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         }
 		if (!typeEnsure(Token::COMMA)) break;
@@ -367,10 +370,10 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 	{
 		return false;
 	}
-    const std::string idName = Tokens[nowLoc - 1].getTokenStr();
-	int& line = Tokens[nowLoc - 1].getLine();
+    const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+	int line = Tokens[nowLoc - 1].getLine();
 	Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
-	curFuncTable->appendLocalVar(idName);
+
 	int vec1,vec2;
 	bool hadError = false;
 	if (typeEnsure(Token::LBRACK))
@@ -391,6 +394,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 
 			if (typeEnsure(Token::ASSIGN))
 			{
+                curFuncTable->appendLocalVar(idName,vec1,vec2);
 				typeEnsure(Token::LBRACE);
 				while (typeEnsure(Token::LBRACE))
 				{
@@ -427,6 +431,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 		}
 		else if (typeEnsure(Token::ASSIGN))
 		{
+            curFuncTable->appendLocalVar(idName,vec1);
 			typeEnsure(Token::LBRACE);
 			int vec1_in = 0;
             int int_or_char = EXP_UNKNOWN;
@@ -456,6 +461,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
         {
             error(line,ErrorInfo::NAME_REDEFINED);
         }
+        curFuncTable->appendLocalVar(idName);
         symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         int int_or_char = EXP_UNKNOWN;
         int value;
@@ -524,7 +530,8 @@ bool Handle_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& pa
 	while (Handle_TYPE_IDENFR(show) && Handle_IDENFR(show))
 	{
         const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
-        int& line = Tokens[nowLoc - 1].getLine();
+        int line = Tokens[nowLoc - 1].getLine();
+        curFuncTable->appendPara(idName);
         Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
         SymbolTableItem::ItemReturnType type = (index == Token::INTTK) ? SymbolTableItem::INT : SymbolTableItem::CHAR;
         if (defineCheckMulti(idName))
@@ -536,7 +543,6 @@ bool Handle_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& pa
         {
             symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         }
-//        insertIntoSymbolTableVar(isInner, idName, index);
         paras.push_back(type);
 		typeEnsure(Token::COMMA);
 	}
@@ -824,6 +830,7 @@ bool Handle_VOID_FUNC_CALL(bool show)
 	if (!Handle_IDENFR(show)) return false;
 	const std::string & idName = Tokens[nowLoc - 1].getTokenStr();
     SymbolTableItem * localPtr = symbolTable.findSymbolTableItem(idName);
+    MidCodeFactory(MidCode::CAll, idName);
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_VAL_PARA_LIST(show,paras,should_cmp_paras)) return false;

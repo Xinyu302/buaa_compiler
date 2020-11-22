@@ -8,7 +8,6 @@
 std::ofstream midout("midcode.txt");
 extern FunctionSymbolTable* curFuncTable;
 extern std::vector<MidCode*>* curMidCodeVec;
-
 MidCode::MidCode(MidCode::MidCodeOperator midCodeOperator,MidCodeClass midCodeClass) {
     this->midCodeOperator = midCodeOperator;
     this->midCodeClass = midCodeClass;
@@ -155,4 +154,9 @@ void JumpMidCode::displayMidCode() {
             return;
     }
     midout << label << std::endl;
+}
+
+PushMidCode::PushMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string exp, int index):MidCode(midCodeOperator,PUSHMIDCODE) {
+    this->exp = exp;
+    this->index = index;
 }

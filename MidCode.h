@@ -43,7 +43,9 @@ public:
         READMIDCODE,
         LABELMIDCODE,
         COMPAREMIDCODE,
-        JUMPMIDCODE
+        JUMPMIDCODE,
+        PUSHMIDCODE,
+        CALLMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -146,6 +148,20 @@ public:
     void displayMidCode() override;
 };
 
+class CallMidCode : public MidCode {
+public:
+    CallMidCode(MidCodeOperator midCodeOperator, const std::string &label);
+    std::string label;
+    void displayMidCode() override;
+};
+
+class PushMidCode : public MidCode {
+public:
+    PushMidCode(MidCodeOperator midCodeOperator,const std::string exp, int index);
+    int index;
+    std::string exp;
+    void displayMidCode() override;
+};
 
 void push2Vec(MidCode* midCode);
 
@@ -197,6 +213,7 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new JumpMidCode(midCodeOperator, result);
             break;
         }
+
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
     }
@@ -211,6 +228,11 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
         case MidCode::ASSIGN:
         {
             newMidCodePtr =  new AssignMidCode(midCodeOperator,result,left);
+            break;
+        }
+        case MidCode::PUSH:
+        {
+            newMidCodePtr = new PushMidCode(midCodeOperator, result, left);
             break;
         }
         default:
