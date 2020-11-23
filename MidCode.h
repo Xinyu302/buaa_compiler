@@ -46,7 +46,8 @@ public:
         JUMPMIDCODE,
         PUSHMIDCODE,
         CALLMIDCODE,
-        HANDLEFUNCMIDCODE
+        HANDLEFUNCMIDCODE,
+        RETMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -170,9 +171,17 @@ public:
         ENTER,
         OUT
     };
-    HandleFuncMidCode(MidCodeOperator midCodeOperator,const std::string funcName,int op);
+    HandleFuncMidCode(MidCodeOperator midCodeOperator,const std::string& funcName,int op);
     Operate operate;
     std::string funcName;
+    void displayMidCode() override;
+};
+
+class RetMidCode : public MidCode {
+public:
+    RetMidCode(MidCodeOperator midCodeOperator,const std::string& );
+
+    std::string expName;
     void displayMidCode() override;
 };
 
@@ -231,7 +240,11 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new CallMidCode(midCodeOperator, result);
             break;
         }
-
+        case MidCode::RET:
+        {
+            newMidCodePtr = new RetMidCode(midCodeOperator, result);
+            break;
+        }
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
     }
@@ -258,6 +271,7 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new HandleFuncMidCode(midCodeOperator, result, left);
             break;
         }
+
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
     }

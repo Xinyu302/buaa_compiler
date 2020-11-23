@@ -9,4 +9,12 @@ void print(int a,int b) {
 }
 void main(){
     print(num2,b+1+1+1);
+    if (1 > 1)
+    {
+    return;
+    return;
+    } else {
+        printf("now ret ");
+        return;
+    }
 }

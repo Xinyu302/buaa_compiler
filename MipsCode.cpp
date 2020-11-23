@@ -88,7 +88,7 @@ inline void enterFunc(const std::string& funcName) {
 //    nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     mipscodes.push_back(funcName + ":");
-    if (funcName != "main" && nowFuncSymbolTable != globalSymbolTable) {
+    if (nowFuncSymbolTable != globalSymbolTable) {
         genMoveVarToMem("$ra", "$ra");
     }
 //    if (nowFuncSymbolTable == globalSymbolTable) {
@@ -100,8 +100,11 @@ inline void enterFunc(const std::string& funcName) {
 //    }
 }
 
-inline void outFunc(const std::string& funcName) {
-    genLw("$ra","$sp",nowFuncSymbolTable->getOffset("$ra"));
+inline void outFunc(const std::string &expName = "") {
+    if (expName.size()) {
+        genFetchVarFromMem("$v0", expName);
+    }
+    genLw("$ra", "$sp", nowFuncSymbolTable->getOffset("$ra"));
     genThreeRegInstr("addi", "$sp", "$sp", int2string(nowFuncSymbolTable->getSubOffset()));
     mipscodes.push_back("jr" + tab + "$ra");
 
@@ -261,10 +264,14 @@ void genPushMips(PushMidCode* pushMidCode) {
 
 void genHandleFuncMips(HandleFuncMidCode* handleFuncMidCode) {
     if (handleFuncMidCode->operate == HandleFuncMidCode::OUT) {
-        outFunc(handleFuncMidCode->funcName);
+        outFunc();
     } else {
         enterFunc(handleFuncMidCode->funcName);
     }
+}
+
+void genRetMips(RetMidCode* retMidCode) {
+    outFunc(retMidCode->expName);
 }
 
 inline void genMips() {
@@ -348,6 +355,11 @@ void genText() {
                 case MidCode::HANDLEFUNCMIDCODE:
                 {
                     genHandleFuncMips((HandleFuncMidCode *) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::RETMIDCODE:
+                {
+                    genRetMips((RetMidCode *) midCodeVec[j]);
                     break;
                 }
                 default:

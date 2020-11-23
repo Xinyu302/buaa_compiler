@@ -173,7 +173,7 @@ void CallMidCode::displayMidCode() {
     midout << "call" << "\t" << label << std::endl;
 }
 
-HandleFuncMidCode::HandleFuncMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string funcName, int op) : MidCode(midCodeOperator,HANDLEFUNCMIDCODE) {
+HandleFuncMidCode::HandleFuncMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string& funcName, int op) : MidCode(midCodeOperator,HANDLEFUNCMIDCODE) {
     this->operate = (op == 1) ? ENTER : OUT;
     this->funcName = funcName;
 }
@@ -181,4 +181,12 @@ HandleFuncMidCode::HandleFuncMidCode(MidCode::MidCodeOperator midCodeOperator, c
 void HandleFuncMidCode::displayMidCode() {
     std::string op = (operate == ENTER) ? "enter" : "out";
     midout << op << "\t" << funcName << std::endl;
+}
+
+RetMidCode::RetMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &exp): MidCode(midCodeOperator,RETMIDCODE) {
+    this->expName = exp;
+}
+
+void RetMidCode::displayMidCode() {
+    midout << "return" << "\t" << expName << std::endl;
 }

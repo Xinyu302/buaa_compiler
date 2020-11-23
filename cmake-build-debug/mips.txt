@@ -1,12 +1,15 @@
 .data
 stringEnter:	.asciiz	"\n"
+string0:	.asciiz	"now ret "
 .text
-#glocal:
+#global:
 li	$t0,	2
-sw	$t0,	4($gp)
+sw	$t0,	0($gp)
 li	$t0,	98
-sw	$t0,	8($gp)
-j	main
+sw	$t0,	4($gp)
+addi	$sp,	$sp,	-16
+jal	main
+j	PROGRAM_END
 print:
 sw	$ra,	0($sp)
 lw	$a0,	4($sp)
@@ -25,18 +28,41 @@ lw	$ra,	0($sp)
 addi	$sp,	$sp,	12
 jr	$ra
 main:
-lw	$t1,	8($gp)
-addi	$t0,	$t1,	1
-sw	$t0,	0($sp)
-lw	$t1,	0($sp)
+sw	$ra,	0($sp)
+lw	$t1,	4($gp)
 addi	$t0,	$t1,	1
 sw	$t0,	4($sp)
 lw	$t1,	4($sp)
 addi	$t0,	$t1,	1
 sw	$t0,	8($sp)
-lw	$t0,	4($gp)
+lw	$t1,	8($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	12($sp)
+lw	$t0,	0($gp)
 sw	$t0,	-8($sp)
-lw	$t0,	8($sp)
+lw	$t0,	12($sp)
 sw	$t0,	-4($sp)
 addi	$sp,	$sp,	-12
 jal	print
+li	$t0,	1
+li	$t1,	1
+ble	$t0,	$t1,	else_0
+lw	$ra,	0($sp)
+addi	$sp,	$sp,	16
+jr	$ra
+lw	$ra,	0($sp)
+addi	$sp,	$sp,	16
+jr	$ra
+j	else_end_0
+else_0:
+la	$a0,	string0
+li	$v0,	4
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+lw	$ra,	0($sp)
+addi	$sp,	$sp,	16
+jr	$ra
+else_end_0:
+PROGRAM_END:

@@ -1,7 +1,9 @@
-enter	#glocal
+enter	#global
 num2=2
 b=98
-J	main
+call	main
+JAL	main
+J	PROGRAM_END
 enter	print
 write		a
 write		b
@@ -14,3 +16,12 @@ call	print
 push	no.0para	num2
 push	no.1para	@temp5
 JAL	print
+ble	@temp6	@temp7	else_0
+return	
+return	
+J	else_end_0
+else_0:
+write	string0	
+return	
+else_end_0:
+PROGRAM_END:

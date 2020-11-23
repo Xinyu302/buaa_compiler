@@ -1031,6 +1031,7 @@ bool Handle_RETURN_STATE(bool show)
 	FUNC_HAS_RETURN = true;
 	int exp_type = EXP_UNKNOWN;
 	Handle_LPARENT_EXP_RPARENT(show,exp_type,expName);
+    MidCodeFactory(MidCode::RET, expName);
     if (exp_type != FUNC_TYPE)
     {
         if (FUNC_TYPE == FUNC_VOID)
@@ -1499,12 +1500,14 @@ bool Handle_STATEMENT(bool show)
 bool Handle_PROGRAM(bool show)
 {
     isInner = OUTER;
-    changeFuncArea("#glocal");
-    MidCodeFactory(MidCode::FUNCOP, "#glocal", 1);
+    changeFuncArea("#global");
+    MidCodeFactory(MidCode::FUNCOP, "#global", 1);
     globalSymbolTable = curFuncTable;
 	Handle_CONST_EXPLAIN(show);
 	Handle_VAR_EXPLAIN(show);
-	MidCodeFactory(MidCode::J,"main"); // jump to main
+    MidCodeFactory(MidCode::CAll, "main");
+	MidCodeFactory(MidCode::JAL,"main"); // jump to main
+    MidCodeFactory(MidCode::J, "PROGRAM_END");
 	while (Handle_RETURN_FUNC_DEFINE(show) || Handle_VOID_FUNC_DEFINE(show));
 	if (!Handle_MAIN(show)) return false;
 	output += "<程序>";
@@ -1542,6 +1545,7 @@ void ParseSyntax::parse()
 {
 	TokenVecPointer = &this->TokenVec;
 	Handle_PROGRAM(false);
+    MidCodeFactory(MidCode::LABEL, "PROGRAM_END");
 //    FILE* writeTo;
 //    writeTo = fopen("output.txt", "w");
 //    for (int i = 0; i < output.size(); i++)
