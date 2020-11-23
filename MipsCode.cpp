@@ -88,13 +88,23 @@ inline void enterFunc(const std::string& funcName) {
 //    nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     mipscodes.push_back(funcName + ":");
-    if (nowFuncSymbolTable == globalSymbolTable) {
-        ;;
+    if (funcName != "main" && nowFuncSymbolTable != globalSymbolTable) {
+        genMoveVarToMem("$ra", "$ra");
     }
-    else {
-        genLi("$t0",nowFuncSymbolTable->getSubOffset());
-        genThreeRegInstr("subu","$sp","$sp","$t0");
-    }
+//    if (nowFuncSymbolTable == globalSymbolTable) {
+//        ;;
+//    }
+//    else {
+////        genLi("$t0",nowFuncSymbolTable->getSubOffset());
+////        genThreeRegInstr("subu","$sp","$sp","$t0");
+//    }
+}
+
+inline void outFunc(const std::string& funcName) {
+    genLw("$ra","$sp",nowFuncSymbolTable->getOffset("$ra"));
+    genThreeRegInstr("addi", "$sp", "$sp", int2string(nowFuncSymbolTable->getSubOffset()));
+    mipscodes.push_back("jr" + tab + "$ra");
+
 }
 
 void genCalMips(CalMidCode* calMidCode) {
@@ -165,11 +175,14 @@ void genJump(JumpMidCode* jumpMidCode) {
     std::string op;
     if (jumpMidCode->getMidCodeOperator() == MidCode::JAL) {
         op = "jal";
+        genThreeRegInstr("addi", "$sp", "$sp", int2string(-calledFuncSymbolTable->getSubOffset()));
+        mipscodes.push_back(op + tab + jumpMidCode->label);
+//        genMoveVarToMem("$ra", "$ra");
     }
     else if (jumpMidCode->getMidCodeOperator() == MidCode::J) {
         op = "j";
+        mipscodes.push_back(op + tab + jumpMidCode->label);
     }
-    mipscodes.push_back(op + tab + jumpMidCode->label);
 }
 
 void genPrintMips(WriteMidCode* writeMidCode) {
@@ -233,7 +246,6 @@ void genCompareMips(CompareMidCode* compareMidCode) {
 
 void genCallMips(CallMidCode* callMidCode) {
     calledFuncSymbolTable = FunctionSymbolTableMap[callMidCode->label];
-    genThreeRegInstr("addi", "$sp", "$sp", int2string(-calledFuncSymbolTable->getSubOffset()));
 }
 
 void genPushMips(PushMidCode* pushMidCode) {
@@ -243,7 +255,16 @@ void genPushMips(PushMidCode* pushMidCode) {
     } else {
         genFetchVarFromMem(pushMidCode->exp, "$t0");
     }
-    genSw("$t0", "$sp", nowFuncSymbolTable->getParaOffsetByIndex(pushMidCode->index));
+    genSw("$t0", "$sp",
+          calledFuncSymbolTable->getParaOffsetByIndex(pushMidCode->index) - calledFuncSymbolTable->getSubOffset());
+}
+
+void genHandleFuncMips(HandleFuncMidCode* handleFuncMidCode) {
+    if (handleFuncMidCode->operate == HandleFuncMidCode::OUT) {
+        outFunc(handleFuncMidCode->funcName);
+    } else {
+        enterFunc(handleFuncMidCode->funcName);
+    }
 }
 
 inline void genMips() {
@@ -275,7 +296,7 @@ void genText() {
     mipscodes.push_back(".text");
     for (int i = 0; i < FunctionMidCodeVec.size();i++) {
         nowMidCodeVec = FunctionMidCodeVec[i];
-        enterFunc(FunctionNames[i]);
+//        enterFunc(FunctionNames[i]);
         for (int j = 0; j < midCodeVec.size();j++) {
             midCodeVec[j]->displayMidCode();
             switch (midCodeVec[j]->getMidCodeClass()) {
@@ -322,14 +343,19 @@ void genText() {
                 case MidCode::CALLMIDCODE:
                 {
                     genCallMips((CallMidCode*) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::HANDLEFUNCMIDCODE:
+                {
+                    genHandleFuncMips((HandleFuncMidCode *) midCodeVec[j]);
+                    break;
                 }
                 default:
                     fprintf(stderr,"fuck!,dipatch wrong on %d",midCodeVec[i]->getMidCodeClass());
             }
         }
+//        outFunc(FunctionNames[i]);
     }
-
-
 }
 
 void printMips()

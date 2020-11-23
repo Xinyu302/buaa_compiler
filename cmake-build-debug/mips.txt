@@ -1,56 +1,42 @@
 .data
 stringEnter:	.asciiz	"\n"
-string0:	.asciiz	"big"
 .text
 #glocal:
 li	$t0,	2
-sw	$t0,	0($gp)
-li	$t0,	98
 sw	$t0,	4($gp)
+li	$t0,	98
+sw	$t0,	8($gp)
 j	main
+print:
+sw	$ra,	0($sp)
+lw	$a0,	4($sp)
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+lw	$a0,	8($sp)
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+lw	$ra,	0($sp)
+addi	$sp,	$sp,	12
+jr	$ra
 main:
-li	$t0,	4
-subu	$sp,	$sp,	$t0
-li	$t0,	2
-li	$t1,	3
-blt	$t0,	$t1,	else_0
-lw	$t0,	0($gp)
-li	$t1,	1
-bne	$t0,	$t1,	switch_0_case_1
-li	$a0,	1
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-j	switch_end_0
-switch_0_case_1:
-lw	$t0,	0($gp)
-li	$t1,	2
-bne	$t0,	$t1,	switch_0_case_2
-li	$a0,	2
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-j	switch_end_0
-switch_0_case_2:
-lw	$t1,	4($gp)
+lw	$t1,	8($gp)
 addi	$t0,	$t1,	1
 sw	$t0,	0($sp)
 lw	$t1,	0($sp)
-move	$t0,	$t1
-sw	$t0,	4($gp)
-switch_end_0:
-j	else_end_0
-else_0:
-la	$a0,	string0
-li	$v0,	4
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-else_end_0:
-li	$t0,	2
-sw	$t0,	0($gp)
+addi	$t0,	$t1,	1
+sw	$t0,	4($sp)
+lw	$t1,	4($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	8($sp)
+lw	$t0,	4($gp)
+sw	$t0,	-8($sp)
+lw	$t0,	8($sp)
+sw	$t0,	-4($sp)
+addi	$sp,	$sp,	-12
+jal	print

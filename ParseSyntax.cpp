@@ -769,26 +769,31 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
     return flag;
 
 }
+
 //<值参数表>  ::= <表达式>{,<表达式>}｜<空>
-bool Handle_VAL_PARA_LIST(bool show,std::vector<SymbolTableItem::ItemReturnType>& paras,bool& should_cmp_paras)
-{
+bool Handle_VAL_PARA_LIST(bool show, std::vector<SymbolTableItem::ItemReturnType> &paras,
+                          std::vector<std::string> &paraNames, bool &should_cmp_paras) {
+
     int exp_type;
     std::string varName;
-	if (Handle_EXPRESSION(show,exp_type,varName))
-    {
-	    if (exp_type == EXP_INT) paras.push_back(SymbolTableItem::INT);
-	    else if (exp_type == EXP_CHAR) paras.push_back(SymbolTableItem::CHAR);
-	    else if (exp_type == EXP_ERROR) should_cmp_paras = false;
-    }
-	while (typeEnsure(Token::COMMA) && Handle_EXPRESSION(show,exp_type,varName))
-    {
+    int index = 0;
+    if (Handle_EXPRESSION(show, exp_type, varName)) {
         if (exp_type == EXP_INT) paras.push_back(SymbolTableItem::INT);
         else if (exp_type == EXP_CHAR) paras.push_back(SymbolTableItem::CHAR);
         else if (exp_type == EXP_ERROR) should_cmp_paras = false;
+//        MidCodeFactory(MidCode::PUSH, varName, index++);
+        paraNames.push_back(varName);
     }
-	output += "<值参数表>";
-	output += '\n';
-	return true;
+    while (typeEnsure(Token::COMMA) && Handle_EXPRESSION(show, exp_type, varName)) {
+        if (exp_type == EXP_INT) paras.push_back(SymbolTableItem::INT);
+        else if (exp_type == EXP_CHAR) paras.push_back(SymbolTableItem::CHAR);
+        else if (exp_type == EXP_ERROR) should_cmp_paras = false;
+//        MidCodeFactory(MidCode::PUSH, varName, index++);
+        paraNames.push_back(varName);
+    }
+    output += "<值参数表>";
+    output += '\n';
+    return true;
 }
 //<有返回值函数调用语句>::= <标识符>'('<值参数表>')'
 bool Handle_RETURN_FUNC_CALL(bool show,int& ischar)
@@ -802,7 +807,8 @@ bool Handle_RETURN_FUNC_CALL(bool show,int& ischar)
     if (localPtr->getReturnType() == SymbolTableItem::CHAR) ischar = EXP_CHAR;
 	if (!typeEnsure(Token::LPARENT)) return false;
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
-	if (!Handle_VAL_PARA_LIST(show,paras,should_cmp_paras)) return false;
+    std::vector<std::string> paraNames;
+	if (!Handle_VAL_PARA_LIST(show,paras,paraNames,should_cmp_paras)) return false;
     if (should_cmp_paras) {
         if (!localPtr->compareParaListNum(paras)) {
             error(getLastLine(),ErrorInfo::PARA_NUM_UNMATCHED);
@@ -812,6 +818,11 @@ bool Handle_RETURN_FUNC_CALL(bool show,int& ischar)
             }
         }
     }
+    MidCodeFactory(MidCode::CAll, idName);
+    for (int i = 0; i < paraNames.size(); i++) {
+        MidCodeFactory(MidCode::PUSH, paraNames[i],i);
+    }
+    MidCodeFactory(MidCode::JAL, idName);
 	if (typeEnsure(Token::RPARENT))
 	{
 		output += "<有返回值函数调用语句>";
@@ -830,10 +841,10 @@ bool Handle_VOID_FUNC_CALL(bool show)
 	if (!Handle_IDENFR(show)) return false;
 	const std::string & idName = Tokens[nowLoc - 1].getTokenStr();
     SymbolTableItem * localPtr = symbolTable.findSymbolTableItem(idName);
-    MidCodeFactory(MidCode::CAll, idName);
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
+    std::vector<std::string> paraNames;
 	if (!typeEnsure(Token::LPARENT)) return false;
-	if (!Handle_VAL_PARA_LIST(show,paras,should_cmp_paras)) return false;
+	if (!Handle_VAL_PARA_LIST(show,paras,paraNames,should_cmp_paras)) return false;
     if (should_cmp_paras) {
         if (!localPtr->compareParaListNum(paras)) {
             error(getLastLine(),ErrorInfo::PARA_NUM_UNMATCHED);
@@ -843,6 +854,11 @@ bool Handle_VOID_FUNC_CALL(bool show)
             }
         }
     }
+    MidCodeFactory(MidCode::CAll, idName);
+    for (int i = 0; i < paraNames.size(); i++) {
+        MidCodeFactory(MidCode::PUSH, paraNames[i],i);
+    }
+    MidCodeFactory(MidCode::JAL, idName);
 	if (typeEnsure(Token::RPARENT))
 	{
 		output += "<无返回值函数调用语句>";
@@ -943,6 +959,7 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     int& line = Tokens[nowLoc - 1].getLine();
     Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
     changeFuncArea(idName);
+    MidCodeFactory(MidCode::FUNCOP, idName, 1);
     std::vector<SymbolTableItem::SymbolTableItem::ItemReturnType> paras;
     if (!typeEnsure(Token::LPARENT)) return false;
     if (!Handle_PARA_LIST(show,paras)) return false;
@@ -964,7 +981,7 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     output += "<有返回值函数定义>";
     output += '\n';
     setInner(OUTER);
-
+    MidCodeFactory(MidCode::FUNCOP, idName, 0);
     clearInnerSymbolTable(idName);
     return true;
 }
@@ -981,6 +998,7 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
     int line = Tokens[nowLoc - 1].getLine();
     changeFuncArea(idName);
+    MidCodeFactory(MidCode::FUNCOP, idName, 1);
     if (!typeEnsure(Token::LPARENT)) return false;
     std::vector<SymbolTableItem::ItemReturnType> paras;
     if (!Handle_PARA_LIST(show,paras)) return false;
@@ -1001,6 +1019,7 @@ bool Handle_VOID_FUNC_DEFINE(bool show)
     output += "<无返回值函数定义>";
     output += '\n';
     setInner(OUTER);
+    MidCodeFactory(MidCode::FUNCOP, idName, 0);
     clearInnerSymbolTable(idName);
     return true;
 }
@@ -1481,6 +1500,7 @@ bool Handle_PROGRAM(bool show)
 {
     isInner = OUTER;
     changeFuncArea("#glocal");
+    MidCodeFactory(MidCode::FUNCOP, "#glocal", 1);
     globalSymbolTable = curFuncTable;
 	Handle_CONST_EXPLAIN(show);
 	Handle_VAR_EXPLAIN(show);
@@ -1497,6 +1517,7 @@ bool Handle_MAIN(bool show)
     setInner(INNER);
     FUNC_TYPE = FUNC_VOID;
     changeFuncArea("main");
+    MidCodeFactory(MidCode::FUNCOP, "main", 1);
 //    FunctionSymbolTableMap["main"] = curFuncTable;
     if (!typeEnsure(Token::VOIDTK)) return false;
 	if (!typeEnsure(Token::MAINTK)) return false;

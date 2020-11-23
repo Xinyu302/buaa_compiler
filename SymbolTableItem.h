@@ -82,6 +82,7 @@ public:
         int x;
         int y;
         arrayItemInfo(itemType _type,int _x,int _y = 0): type(_type),x(_x),y(_y) {}
+        arrayItemInfo(){}
     };
 
     FunctionSymbolTable(const std::string& name);
@@ -116,9 +117,9 @@ public:
     }
 
     ~SyntaxSymbolTable() {
-        for (auto it = allInnerSymbolTable.begin();it != allInnerSymbolTable.end();it++) {
-            delete it->second;
-        }
+//        for (auto it = allInnerSymbolTable.begin();it != allInnerSymbolTable.end();it++) {
+//            delete it->second;
+//        }
     }
 
     void InsertPtrIntoTable(int inner, const std::string &name, SymbolTableItem *itemPtr) {

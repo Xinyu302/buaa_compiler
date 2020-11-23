@@ -24,7 +24,7 @@ public:
         SCAN,
         WRITE,
         LABEL,
-        FUNC,
+        FUNCOP,
         PARA,
         PUSH,
         CAll,
@@ -45,7 +45,8 @@ public:
         COMPAREMIDCODE,
         JUMPMIDCODE,
         PUSHMIDCODE,
-        CALLMIDCODE
+        CALLMIDCODE,
+        HANDLEFUNCMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -163,6 +164,18 @@ public:
     void displayMidCode() override;
 };
 
+class HandleFuncMidCode : public MidCode {
+public:
+    enum Operate{
+        ENTER,
+        OUT
+    };
+    HandleFuncMidCode(MidCodeOperator midCodeOperator,const std::string funcName,int op);
+    Operate operate;
+    std::string funcName;
+    void displayMidCode() override;
+};
+
 void push2Vec(MidCode* midCode);
 
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result="",const std::string& left="",const std::string& right="")
@@ -213,6 +226,11 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new JumpMidCode(midCodeOperator, result);
             break;
         }
+        case MidCode::CAll:
+        {
+            newMidCodePtr = new CallMidCode(midCodeOperator, result);
+            break;
+        }
 
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
@@ -233,6 +251,11 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
         case MidCode::PUSH:
         {
             newMidCodePtr = new PushMidCode(midCodeOperator, result, left);
+            break;
+        }
+        case MidCode::FUNCOP:
+        {
+            newMidCodePtr = new HandleFuncMidCode(midCodeOperator, result, left);
             break;
         }
         default:

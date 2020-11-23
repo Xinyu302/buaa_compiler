@@ -160,3 +160,25 @@ PushMidCode::PushMidCode(MidCode::MidCodeOperator midCodeOperator, const std::st
     this->exp = exp;
     this->index = index;
 }
+
+void PushMidCode::displayMidCode() {
+    midout << "push" << "\tno." << index << "para\t" << exp << std::endl;
+}
+
+CallMidCode::CallMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &label):MidCode(midCodeOperator,CALLMIDCODE) {
+    this->label = label;
+}
+
+void CallMidCode::displayMidCode() {
+    midout << "call" << "\t" << label << std::endl;
+}
+
+HandleFuncMidCode::HandleFuncMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string funcName, int op) : MidCode(midCodeOperator,HANDLEFUNCMIDCODE) {
+    this->operate = (op == 1) ? ENTER : OUT;
+    this->funcName = funcName;
+}
+
+void HandleFuncMidCode::displayMidCode() {
+    std::string op = (operate == ENTER) ? "enter" : "out";
+    midout << op << "\t" << funcName << std::endl;
+}

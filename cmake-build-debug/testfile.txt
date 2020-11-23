@@ -3,16 +3,10 @@ const int _num1 = 1;
 const char a = 'a';
 int num2 = 2;
 char b= 'b';
-
+void print(int a,int b) {
+    printf(a);
+    printf(b);
+}
 void main(){
-    if ( 2 >= 3) {
-        switch(num2) {
-                case 1: printf(1);
-                case 2: printf(2);
-                default: b = b + 1;
-                }
-    } else {
-        printf("big");
-    }
-    num2 = _num1 + 1;
+    print(num2,b+1+1+1);
 }

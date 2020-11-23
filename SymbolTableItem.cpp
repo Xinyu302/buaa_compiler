@@ -36,7 +36,7 @@ extern FunctionSymbolTable* globalSymbolTable;
 SymbolTableItem::SymbolTableItem() {}
 
 FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {
-    if (this != globalSymbolTable) {
+    if (this != globalSymbolTable && name != "main") {
         varInfo["$ra"] = itemInfo(LOCALVAR,varNum++);
     }
 }

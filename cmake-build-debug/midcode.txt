@@ -1,20 +1,16 @@
+enter	#glocal
 num2=2
 b=98
 J	main
-blt	@temp0	@temp1	else_0
-bne	num2	@temp2	switch_0_case_1
-write		@temp3
-J	switch_end_0
-switch_0_case_1:
-bne	num2	@temp4	switch_0_case_2
-write		@temp5
-J	switch_end_0
-switch_0_case_2:
-@temp7=	b	+	@temp6
-b=@temp7
-switch_end_0:
-J	else_end_0
-else_0:
-write	string0	
-else_end_0:
-num2=2
+enter	print
+write		a
+write		b
+out	print
+enter	main
+@temp1=	b	+	@temp0
+@temp3=	@temp1	+	@temp2
+@temp5=	@temp3	+	@temp4
+call	print
+push	no.0para	num2
+push	no.1para	@temp5
+JAL	print
