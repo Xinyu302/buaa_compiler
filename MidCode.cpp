@@ -190,3 +190,36 @@ RetMidCode::RetMidCode(MidCode::MidCodeOperator midCodeOperator, const std::stri
 void RetMidCode::displayMidCode() {
     midout << "return" << "\t" << expName << std::endl;
 }
+
+ArrayOperateMidCode::ArrayOperateMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &arrayName,
+                                         const std::string &x, const std::string &y, const std::string &exp) : MidCode(midCodeOperator,ARRAYOPERATE){
+    this->arrayName = arrayName;
+    this->x = x;
+    this->y = y;
+    this->exp = exp;
+    this->arrayDimension = TRIBLE;
+}
+
+ArrayOperateMidCode::ArrayOperateMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &arrayName,
+                                         const std::string &x, const std::string &exp) : MidCode(midCodeOperator,ARRAYOPERATE){
+    this->arrayName = arrayName;
+    this->x = x;
+    this->exp = exp;
+    this->arrayDimension = DOUBLE;
+}
+
+void ArrayOperateMidCode::displayMidCode() {
+    if (arrayDimension == DOUBLE) {
+        if (this->getMidCodeOperator() == ARRAYLEFTSIDE) {
+            midout << arrayName << "[" << x << "]\t=\t" << exp << std::endl;
+        } else {
+            midout << exp << "\t=\t" << arrayName << "[" << x << "]" << std::endl;
+        }
+    } else {
+        if (this->getMidCodeOperator() == ARRAYLEFTSIDE) {
+            midout << arrayName << "[" << x << "][" << y << "]\t=\t" << exp << std::endl;
+        } else {
+            midout << exp << "\t=\t" << arrayName << "[" << x << "][" << y << "]\t=\t" << std::endl;
+        }
+    }
+}

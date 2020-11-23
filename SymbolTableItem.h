@@ -97,6 +97,7 @@ public:
     void appendArrayPointer(const std::string &name, const std::string &, int);
 //    void appendGlobalVar(const std::string& name);
     int getOffset(const std::string& name);
+    int getArrayY(const std::string& name);
     int getOffset(const std::string& name,int x);
     int getOffset(const std::string &name, int x, int y);
     int getParaOffsetByIndex(int index);

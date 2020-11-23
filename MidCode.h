@@ -32,7 +32,8 @@ public:
         VAR,
         CONST,
         BNZ,
-        BZ,
+        ARRAYLEFTSIDE,
+        ARRAYRIGHTSIDE,
         J,
         JAL
     };
@@ -47,7 +48,8 @@ public:
         PUSHMIDCODE,
         CALLMIDCODE,
         HANDLEFUNCMIDCODE,
-        RETMIDCODE
+        RETMIDCODE,
+        ARRAYOPERATE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -185,6 +187,23 @@ public:
     void displayMidCode() override;
 };
 
+class ArrayOperateMidCode: public MidCode {
+public:
+    enum dimension {
+       DOUBLE,
+       TRIBLE
+    };
+    ArrayOperateMidCode(MidCodeOperator midCodeOperator,const std::string& arrayName,const std::string& x,const std::string& y,const std::string& exp);
+    ArrayOperateMidCode(MidCodeOperator midCodeOperator,const std::string& arrayName,const std::string& x,const std::string& exp);
+    void displayMidCode() override;
+
+    std::string arrayName;
+    std::string x;
+    std::string y;
+    std::string exp;
+    dimension arrayDimension;
+};
+
 void push2Vec(MidCode* midCode);
 
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result="",const std::string& left="",const std::string& right="")
@@ -245,6 +264,12 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
             newMidCodePtr = new RetMidCode(midCodeOperator, result);
             break;
         }
+        case MidCode::ARRAYLEFTSIDE:
+        case MidCode::ARRAYRIGHTSIDE:
+        {
+            newMidCodePtr = new ArrayOperateMidCode(midCodeOperator,result,left,right);
+            break;
+        }
         default:
             fprintf(stderr,"fuck,midCodeOperator Wrong");
     }
@@ -252,6 +277,13 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
     return newMidCodePtr;
 }
 
+static MidCode *
+MidCodeFactory(MidCode::MidCodeOperator midCodeOperator, const std::string &arrayName, const std::string &x,
+               const std::string &y, const std::string &exp) {
+    MidCode *newMidCodePtr = new ArrayOperateMidCode(midCodeOperator, arrayName, x, y, exp);
+    push2Vec(newMidCodePtr);
+    return newMidCodePtr;
+}
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result,const int& left)
 {
     MidCode* newMidCodePtr;

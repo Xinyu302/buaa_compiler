@@ -283,8 +283,91 @@ void genHandleFuncMips(HandleFuncMidCode* handleFuncMidCode) {
     }
 }
 
+void genAssignRegFromExp(const std::string& reg,const std::string& exp) {
+    int value;
+    if (nowFuncSymbolTable->isConstValue(exp,value)) {
+        genLi(reg, value);
+    } else {
+        genFetchVarFromMem(exp, reg);
+    }
+}
+
 void genRetMips(RetMidCode* retMidCode) {
     outFunc(retMidCode->expName);
+}
+
+void genSll(const std::string& result,const std::string& from,int imm) {
+    genThreeRegInstr("sll",result, from, int2string(imm));
+}
+
+void genArrayEleOff(const std::string &reg, const std::string &arrayName, const std::string &x, const std::string &y = "") {
+    bool global = false;
+    int offset;
+    std::string base;
+    if (y.length()) {
+        int y_num = nowFuncSymbolTable->getArrayY(arrayName);
+        genAssignRegFromExp("$t1",y);
+        genSll("$t1", "$t1", 2);
+        genAssignRegFromExp("$t2",x);
+        genSll("$t2", "$t2", 2);
+        if (y_num < 0 || nowFuncSymbolTable == globalSymbolTable) {
+            global = true;
+            y_num = globalSymbolTable->getOffset(arrayName);
+        }
+        genLi("$t0", y_num);
+        mipscodes.push_back("mult" + tab + "$t0" + tab + "$t2");
+        mipscodes.push_back("mflo" + tab + "$t2");
+        genThreeRegInstr("addu", "$t1", "$t1", "$t2");
+        offset = (global) ? globalSymbolTable->getOffset(arrayName) : nowFuncSymbolTable->getOffset(arrayName);
+        base = (global) ? "$gp" : "$sp";
+        genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+        genThreeRegInstr("addu", "$t1", "$t1", base);
+
+    } else {
+        genAssignRegFromExp("$t1",x);
+        genSll("$t1", "$t1", 2);
+        offset = nowFuncSymbolTable->getOffset(arrayName);
+        if (offset < 0 || nowFuncSymbolTable == globalSymbolTable) {
+            offset = globalSymbolTable->getOffset(arrayName);
+            global = true;
+        }
+        base = (global) ? "$gp" : "$sp";
+        genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+        genThreeRegInstr("addu", "$t1", "$t1", base);
+    }
+}
+
+void genArrayOperateMips(ArrayOperateMidCode* arrayOperateMidCode) {
+    if (arrayOperateMidCode->getMidCodeOperator() == MidCode::ARRAYLEFTSIDE) {
+        if (arrayOperateMidCode->arrayDimension == ArrayOperateMidCode::DOUBLE) {
+            genArrayEleOff("$t1", arrayOperateMidCode->arrayName, arrayOperateMidCode->x);
+            genAssignRegFromExp("$t0",arrayOperateMidCode->exp);
+            genSw("$t0", "$t1", 0);
+        }
+        else {
+            genArrayEleOff("$t1", arrayOperateMidCode->arrayName, arrayOperateMidCode->x,arrayOperateMidCode->y);
+            genAssignRegFromExp("$t0",arrayOperateMidCode->exp);
+            genSw("$t0", "$t1", 0);
+        }
+    } else if (arrayOperateMidCode->getMidCodeOperator() == MidCode::ARRAYRIGHTSIDE) {
+        if (arrayOperateMidCode->arrayDimension == ArrayOperateMidCode::DOUBLE) {
+////            genAssignRegFromExp("$t0",arrayOperateMidCode->exp);
+//            genAssignRegFromExp("$t1",arrayOperateMidCode->x);
+//            genSll("$t1", "$t1", 2);
+//            int offset = nowFuncSymbolTable->getOffset(arrayOperateMidCode->arrayName);
+//            genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+//            genThreeRegInstr("addu", "$t1", "$t1", "$sp");
+            genArrayEleOff("$t1", arrayOperateMidCode->arrayName, arrayOperateMidCode->x);
+            genLw("$t0", "$t1", 0);
+            genMoveVarToMem(arrayOperateMidCode->exp, "$t0");
+        } else if (arrayOperateMidCode->arrayDimension == ArrayOperateMidCode::TRIBLE) {
+            genArrayEleOff("$t1", arrayOperateMidCode->arrayName, arrayOperateMidCode->x,arrayOperateMidCode->y);
+            genLw("$t0", "$t1", 0);
+            genMoveVarToMem(arrayOperateMidCode->exp, "$t0");
+        }
+    } else {
+        fprintf(stderr,"error at genArrayOperateMips\n");
+    }
 }
 
 inline void genMips() {
@@ -373,6 +456,11 @@ void genText() {
                 case MidCode::RETMIDCODE:
                 {
                     genRetMips((RetMidCode *) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::ARRAYOPERATE:
+                {
+                    genArrayOperateMips((ArrayOperateMidCode *) midCodeVec[j]);
                     break;
                 }
                 default:

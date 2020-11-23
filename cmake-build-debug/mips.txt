@@ -1,15 +1,17 @@
 .data
 stringEnter:	.asciiz	"\n"
-string0:	.asciiz	"now ret\\n "
+string0:	.asciiz	"18182681"
 .text
 #global:
-li	$t0,	2
-sw	$t0,	0($gp)
-li	$t0,	98
-sw	$t0,	4($gp)
-addi	$sp,	$sp,	-20
+addi	$sp,	$sp,	-84
 jal	main
 j	PROGRAM_END
+c:
+sw	$ra,	0($sp)
+li	$v0,	107
+lw	$ra,	0($sp)
+addi	$sp,	$sp,	4
+jr	$ra
 print:
 sw	$ra,	0($sp)
 lw	$a0,	4($sp)
@@ -18,147 +20,167 @@ syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-lw	$a0,	8($sp)
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-lw	$t1,	4($sp)
-lw	$t2,	4($sp)
-mult	$t1,	$t2
-mflo	$t0
-sw	$t0,	12($sp)
-lw	$t1,	8($sp)
-lw	$t2,	8($sp)
-mult	$t1,	$t2
-mflo	$t0
-sw	$t0,	16($sp)
-lw	$t1,	12($sp)
-lw	$t2,	16($sp)
-addu	$t0,	$t1,	$t2
-sw	$t0,	20($sp)
-lw	$v0,	20($sp)
 lw	$ra,	0($sp)
-addi	$sp,	$sp,	24
-jr	$ra
-fib:
-sw	$ra,	0($sp)
-lw	$t0,	4($sp)
-li	$t1,	0
-bne	$t0,	$t1,	else_0
-li	$v0,	1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	28
-jr	$ra
-j	else_end_0
-else_0:
-lw	$t0,	4($sp)
-li	$t1,	1
-bne	$t0,	$t1,	else_1
-li	$v0,	1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	28
-jr	$ra
-else_1:
-else_end_0:
-lw	$t1,	4($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	12($sp)
-lw	$t0,	12($sp)
-sw	$t0,	-24($sp)
-addi	$sp,	$sp,	-28
-jal	fib
-sw	$v0,	8($sp)
-lw	$t1,	4($sp)
-addi	$t0,	$t1,	-2
-sw	$t0,	20($sp)
-lw	$t0,	20($sp)
-sw	$t0,	-24($sp)
-addi	$sp,	$sp,	-28
-jal	fib
-sw	$v0,	16($sp)
-lw	$t1,	8($sp)
-lw	$t2,	16($sp)
-addu	$t0,	$t1,	$t2
-sw	$t0,	24($sp)
-lw	$v0,	24($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	28
-jr	$ra
-f:
-sw	$ra,	0($sp)
-lw	$t0,	4($sp)
-li	$t1,	0
-bne	$t0,	$t1,	else_2
-li	$v0,	1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	20
-jr	$ra
-else_2:
-lw	$t1,	4($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	12($sp)
-lw	$t0,	12($sp)
-sw	$t0,	-16($sp)
-addi	$sp,	$sp,	-20
-jal	f
-sw	$v0,	8($sp)
-lw	$t1,	4($sp)
-lw	$t2,	8($sp)
-mult	$t1,	$t2
-mflo	$t0
-sw	$t0,	16($sp)
-lw	$v0,	16($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	20
+addi	$sp,	$sp,	8
 jr	$ra
 main:
 sw	$ra,	0($sp)
 li	$t0,	0
-sw	$t0,	4($sp)
+sw	$t0,	40($sp)
 li	$t0,	0
-sw	$t0,	-24($sp)
-addi	$sp,	$sp,	-28
-jal	fib
-sw	$v0,	12($sp)
-li	$t0,	4
-sw	$t0,	-16($sp)
-addi	$sp,	$sp,	-20
-jal	f
-sw	$v0,	16($sp)
-lw	$t0,	12($sp)
-sw	$t0,	-20($sp)
-lw	$t0,	16($sp)
-sw	$t0,	-16($sp)
-addi	$sp,	$sp,	-24
-jal	print
-sw	$v0,	8($sp)
-lw	$t1,	8($sp)
-move	$t0,	$t1
-sw	$t0,	4($sp)
+sw	$t0,	44($sp)
+li	$t0,	0
+sw	$t0,	48($sp)
+li	$t0,	0
+sw	$t0,	40($sp)
+for_0:
+lw	$t0,	40($sp)
+li	$t1,	4
+bgt	$t0,	$t1,	for_end_0
+lw	$t1,	40($sp)
+sll	$t1,	$t1,	2
+addi	$t1,	$t1,	4
+addu	$t1,	$t1,	$sp
+lw	$t0,	40($sp)
+sw	$t0,	0($t1)
+lw	$t1,	40($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	40($sp)
+j	for_0
+for_end_0:
 li	$t0,	1
-li	$t1,	1
-ble	$t0,	$t1,	else_3
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	20
-jr	$ra
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	20
-jr	$ra
-j	else_end_3
-else_3:
+sw	$t0,	40($sp)
+for_1:
+lw	$t0,	40($sp)
+li	$t1,	0
+blt	$t0,	$t1,	for_end_1
+li	$t0,	0
+sw	$t0,	44($sp)
+for_2:
+lw	$t0,	44($sp)
+li	$t1,	2
+bge	$t0,	$t1,	for_end_2
+lw	$t1,	40($sp)
+lw	$t2,	44($sp)
+mult	$t1,	$t2
+mflo	$t0
+sw	$t0,	52($sp)
+lw	$t1,	44($sp)
+sll	$t1,	$t1,	2
+lw	$t2,	40($sp)
+sll	$t2,	$t2,	2
+li	$t0,	2
+mult	$t0	$t2
+mflo	$t2
+addu	$t1,	$t1,	$t2
+addi	$t1,	$t1,	24
+addu	$t1,	$t1,	$sp
+lw	$t0,	52($sp)
+sw	$t0,	0($t1)
+lw	$t1,	44($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	44($sp)
+j	for_2
+for_end_2:
+lw	$t1,	40($sp)
+addi	$t0,	$t1,	-1
+sw	$t0,	40($sp)
+j	for_1
+for_end_1:
+li	$t0,	0
+sw	$t0,	40($sp)
 la	$a0,	string0
 li	$v0,	4
-syscall
-lw	$a0,	4($sp)
-li	$v0,	1
 syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	20
-jr	$ra
-else_end_3:
+while_0:
+lw	$t0,	40($sp)
+li	$t1,	5
+bge	$t0,	$t1,	while_end_0
+lw	$t1,	40($sp)
+sll	$t1,	$t1,	2
+addi	$t1,	$t1,	4
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	56($sp)
+lw	$t1,	56($sp)
+move	$t0,	$t1
+sw	$t0,	48($sp)
+lw	$t0,	48($sp)
+sw	$t0,	-4($sp)
+addi	$sp,	$sp,	-8
+jal	print
+lw	$t1,	40($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	60($sp)
+lw	$t1,	60($sp)
+move	$t0,	$t1
+sw	$t0,	40($sp)
+j	while_0
+while_end_0:
+li	$t0,	0
+sw	$t0,	40($sp)
+li	$t0,	0
+sw	$t0,	44($sp)
+while_1:
+lw	$t0,	40($sp)
+li	$t1,	2
+bge	$t0,	$t1,	while_end_1
+while_2:
+lw	$t0,	44($sp)
+li	$t1,	2
+bge	$t0,	$t1,	while_end_2
+lw	$t1,	44($sp)
+sll	$t1,	$t1,	2
+lw	$t2,	40($sp)
+sll	$t2,	$t2,	2
+li	$t0,	2
+mult	$t0	$t2
+mflo	$t2
+addu	$t1,	$t1,	$t2
+addi	$t1,	$t1,	24
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	64($sp)
+lw	$t1,	64($sp)
+move	$t0,	$t1
+sw	$t0,	48($sp)
+lw	$t0,	48($sp)
+sw	$t0,	-4($sp)
+addi	$sp,	$sp,	-8
+jal	print
+lw	$t1,	44($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	68($sp)
+lw	$t1,	68($sp)
+move	$t0,	$t1
+sw	$t0,	44($sp)
+j	while_2
+while_end_2:
+lw	$t1,	40($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	72($sp)
+lw	$t1,	72($sp)
+move	$t0,	$t1
+sw	$t0,	40($sp)
+li	$t0,	0
+sw	$t0,	44($sp)
+j	while_1
+while_end_1:
+lw	$t1,	40($sp)
+li	$t2,	2
+div	$t1,	$t2
+mflo	$t0
+sw	$t0,	76($sp)
+lw	$t1,	76($sp)
+move	$t0,	$t1
+sw	$t0,	40($sp)
+lw	$t1,	40($sp)
+addi	$t0,	$t1,	97
+sw	$t0,	80($sp)
+lw	$t1,	80($sp)
+move	$t0,	$t1
+sw	$t0,	40($sp)
 PROGRAM_END:

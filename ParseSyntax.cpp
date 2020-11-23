@@ -375,6 +375,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 	Token::TokenTypeIndex index = Tokens[nowLoc - 2].getIndex();
 
 	int vec1,vec2;
+	int value;
 	bool hadError = false;
 	if (typeEnsure(Token::LBRACK))
 	{
@@ -398,17 +399,20 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 				typeEnsure(Token::LBRACE);
 				while (typeEnsure(Token::LBRACE))
 				{
+                    std::string x = applyTmpId(vec1_in);
                     vec1_in++;
                     int vec2_in = 0;
                     int int_or_char = EXP_UNKNOWN;
-					while (Handle_CONST_INT_OR_CHAR(show, int_or_char))
-					{
-					    vec2_in++;
-					    if (!indexMatchedIntOrChar(index,int_or_char)) {
-					        error(getLastLine(),ErrorInfo::CONST_TYPE_WRONG);
-					    }
-						if (!typeEnsure(Token::COMMA)) break;
-					}
+                    while (Handle_CONST_INT_OR_CHAR(show, int_or_char, value)) {
+                        std::string y = applyTmpId(vec2_in);
+                        std::string result = applyTmpId(value);
+                        vec2_in++;
+                        MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x, y, result);
+                        if (!indexMatchedIntOrChar(index, int_or_char)) {
+                            error(getLastLine(), ErrorInfo::CONST_TYPE_WRONG);
+                        }
+                        if (!typeEnsure(Token::COMMA)) break;
+                    }
 					typeEnsure(Token::RBRACE);
                     if (vec2_in != vec2 && !hadError)
                     {
@@ -435,8 +439,11 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 			typeEnsure(Token::LBRACE);
 			int vec1_in = 0;
             int int_or_char = EXP_UNKNOWN;
-			while (Handle_CONST_INT_OR_CHAR(show,int_or_char))
+			while (Handle_CONST_INT_OR_CHAR(show,int_or_char,value))
 			{
+                std::string x = applyTmpId(vec1_in);
+                std::string result = applyTmpId(value);
+                MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x,result);
                 if (!indexMatchedIntOrChar(index,int_or_char)) {
                     error(getLastLine(),ErrorInfo::CONST_TYPE_WRONG);
                 }
@@ -464,7 +471,6 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
         curFuncTable->appendLocalVar(idName);
         symbolTable.insertIntoSymbolTableVar(isInner,idName,index);
         int int_or_char = EXP_UNKNOWN;
-        int value;
 		flag = Handle_CONST_INT_OR_CHAR(show,int_or_char,value);
         if (!indexMatchedIntOrChar(index,int_or_char)) {
             error(getLastLine(),ErrorInfo::CONST_TYPE_WRONG);
@@ -693,6 +699,7 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
         {
             Handle_IDENFR(show);
             const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
+            const std::string &arrayTmp = applyTmpId();
             symbolTableItemPtr = symbolTable.findSymbolTableItem(idName);
             if (notFindSymbolTableItem()) {
                 error(getLastLine(), ErrorInfo::NAME_UNDEFINED);
@@ -703,8 +710,9 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
             }
             typeEnsure(Token::LBRACK);
             int exp_type = EXP_UNKNOWN;
-            std::string expName;
-            Handle_EXPRESSION(show,exp_type,expName);
+            std::string expName_x;
+            std::string expName_y;
+            Handle_EXPRESSION(show,exp_type,expName_x);
             if (exp_type != EXP_INT) {error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);}
             if (!typeEnsure(Token::RBRACK)) {
                 error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
@@ -712,12 +720,17 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
             if (typeAssert(nowLoc, Token::LBRACK))
             {
                 typeEnsure(Token::LBRACK);
-                Handle_EXPRESSION(show,exp_type,expName);
+                Handle_EXPRESSION(show,exp_type,expName_y);
                 if (exp_type != EXP_INT) {error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);}
                 if (!typeEnsure(Token::RBRACK)) {
                     error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
                 }
+                MidCodeFactory(MidCode::ARRAYRIGHTSIDE, idName, expName_x, expName_y, arrayTmp);
             }
+            else { // 1wei shuzu
+                MidCodeFactory(MidCode::ARRAYRIGHTSIDE, idName, expName_x,arrayTmp);
+            }
+            varName = arrayTmp;
         }
         else if (typeAssert(nowLoc+1, Token::LPARENT))
         {
@@ -1309,7 +1322,8 @@ bool Handle_ASSIGN_STATE(bool show)
 		}
 		else if (typeEnsure(Token::LBRACK))
 		{
-			if (!Handle_EXPRESSION(show,type,expName)) return false;
+		    std::string exp_x;
+			if (!Handle_EXPRESSION(show,type,exp_x)) return false;
 			if (type != EXP_INT) {
 			    error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);
 			}
@@ -1319,10 +1333,12 @@ bool Handle_ASSIGN_STATE(bool show)
 			if (typeEnsure(Token::ASSIGN))
 			{
 				flag = Handle_EXPRESSION(show,type,expName);
+                MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, exp_x, expName);
 			}
 			else if (typeEnsure(Token::LBRACK))
 			{
-				if (!Handle_EXPRESSION(show,type,expName)) return false;
+			    std::string exp_y;
+				if (!Handle_EXPRESSION(show,type,exp_y)) return false;
                 if (type != EXP_INT) {
                     error(getLastLine(),ErrorInfo::ARRAY_INDEX_NOT_NUM);
                 }
@@ -1332,6 +1348,7 @@ bool Handle_ASSIGN_STATE(bool show)
 				if (typeEnsure(Token::ASSIGN))
 				{
 					flag = Handle_EXPRESSION(show,type,expName);
+                    MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName,exp_x, exp_y, expName);
 				}
 			}
 			else return false;
@@ -1345,7 +1362,7 @@ bool Handle_ASSIGN_STATE(bool show)
 	}
 	return flag;
 }
-//＜循环语句＞   ::=  while '('＜条件＞')'＜语句＞| for'('＜标识符＞＝＜表达式＞;＜条件＞;＜标识符＞＝＜标识符＞(+|-)＜步长＞')'＜语句＞     
+//for'('＜标识符＞＝＜表达式＞;＜条件＞;＜标识符＞＝＜标识符＞(+|-)＜步长＞')'＜语句＞
 bool Handle_FOR_STATE_PARENT(bool show) 
 {
     int type;
@@ -1370,11 +1387,13 @@ bool Handle_FOR_STATE_PARENT(bool show)
 	if (!typeEnsure(Token::SEMICN)) {
 	    error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
 	}
-	if (!Handle_CONDITION(show,loopend,0)) return false;
+    MidCodeFactory(MidCode::LABEL, loopstart);
+	if (!Handle_CONDITION(show,loopend,1)) return false;
     if (!typeEnsure(Token::SEMICN)) {
         error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
     }
 	if (!Handle_IDENFR(show)) return false;
+
 	const std::string& l = Tokens[nowLoc - 1].getTokenStr();
 	if (!typeEnsure(Token::ASSIGN)) return false;
 	if (!Handle_IDENFR(show)) return false;
@@ -1383,16 +1402,18 @@ bool Handle_FOR_STATE_PARENT(bool show)
 	if (!Handle_PLUS(show,index)) return false;
 	if (!Handle_STEP(show,value)) return false;
 	const std::string& constTmp = applyTmpId(value);
-	if (index == Token::PLUS) {
-        MidCodeFactory(MidCode::PLUS, l, r, constTmp);
-	}
-	else if (index == Token::MINU) {
-        MidCodeFactory(MidCode::MINUS, l, r, constTmp);
-	}
 	if (typeEnsure(Token::RPARENT))
 	{
-		return true;
-	}
+        if (!Handle_STATEMENT(show)) return false;
+        if (index == Token::PLUS) {
+            MidCodeFactory(MidCode::PLUS, l, r, constTmp);
+        }
+        else if (index == Token::MINU) {
+            MidCodeFactory(MidCode::MINUS, l, r, constTmp);
+        }
+        MidCodeFactory(MidCode::J, loopstart);
+        MidCodeFactory(MidCode::LABEL, loopend);
+    }
     else {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
     }
@@ -1408,17 +1429,19 @@ bool Handle_LOOP_STATE(bool show)
 	    const std::string& loopend = getNextWhileEnd();
 	    MidCodeFactory(MidCode::LABEL,loopstart);
 		if (!typeEnsure(Token::LPARENT)) return false;
-		if (!Handle_CONDITION(show,loopend,0)) return false;
+		if (!Handle_CONDITION(show,loopend,1)) return false;
         if (!typeEnsure(Token::RPARENT)) {
             error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
         }
 		if (Handle_STATEMENT(show)) flag = true;
+        MidCodeFactory(MidCode::J, loopstart);
         MidCodeFactory(MidCode::LABEL,loopend);
     }
 	else if (typeEnsure(Token::FORTK))
 	{
 		if (!Handle_FOR_STATE_PARENT(show)) return false;
-		if (Handle_STATEMENT(show)) flag = true;
+        flag = true;
+//		if (Handle_STATEMENT(show)) flag = true;
 	}
 	if (flag)
 	{

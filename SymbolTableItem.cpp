@@ -139,3 +139,11 @@ void FunctionSymbolTable::appendArrayPointer(const std::string &name, const std:
 
 }
 
+int FunctionSymbolTable::getArrayY(const std::string &name) {
+    auto it = varInfo.find(name);
+    if (it != varInfo.end()) {
+        return arrayInfo[name].y;
+    }
+    return -1;
+}
+

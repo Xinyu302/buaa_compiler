@@ -1,70 +1,72 @@
 enter	#global
-num2=2
-b=98
 call	main
 JAL	main
 J	PROGRAM_END
+enter	c
+return	@temp0
 enter	print
-write		a
-write		b
-@temp0=	a	*	a
-@temp1=	b	*	b
-@temp2=	@temp0	+	@temp1
-return	@temp2
-enter	fib
-bne	x	@temp3	else_0
-return	@temp4
-J	else_end_0
-else_0:
-bne	x	@temp5	else_1
-return	@temp6
-else_1:
-else_end_0:
-@temp9=	x	-	@temp8
-call	fib
-push	no.0para	@temp9
-JAL	fib
-@temp7=$v0
-@temp12=	x	-	@temp11
-call	fib
-push	no.0para	@temp12
-JAL	fib
-@temp10=$v0
-@temp13=	@temp7	+	@temp10
-return	@temp13
-enter	f
-bne	x	@temp14	else_2
-return	@temp15
-else_2:
-@temp18=	x	-	@temp17
-call	f
-push	no.0para	@temp18
-JAL	f
-@temp16=$v0
-@temp19=	x	*	@temp16
-return	@temp19
+write		input
+out	print
 enter	main
-a=0
-call	fib
-push	no.0para	@temp22
-JAL	fib
-@temp21=$v0
-call	f
-push	no.0para	@temp24
-JAL	f
-@temp23=$v0
+i=0
+j=0
+out=0
+i=0
+for_0:
+bgt	i	@temp2	for_end_0
+array_1[i]	=	i
+i=	i	+	@temp3
+J	for_0
+for_end_0:
+i=1
+for_1:
+blt	i	@temp5	for_end_1
+j=0
+for_2:
+bge	j	@temp8	for_end_2
+@temp10=	i	*	j
+array_2[i][j]	=	@temp10
+j=	j	+	@temp9
+J	for_2
+for_end_2:
+i=	i	-	@temp6
+J	for_1
+for_end_1:
+i=0
+write	string0	
+while_0:
+bge	i	@temp12	while_end_0
+@temp13	=	array_1[i]
+out=@temp13
 call	print
-push	no.0para	@temp21
-push	no.1para	@temp23
+push	no.0para	out
 JAL	print
-@temp20=$v0
-a=@temp20
-ble	@temp25	@temp26	else_3
-return	
-return	
-J	else_end_3
-else_3:
-write	string0	a
-return	
-else_end_3:
+@temp15=	i	+	@temp14
+i=@temp15
+J	while_0
+while_end_0:
+i=0
+j=0
+while_1:
+bge	i	@temp18	while_end_1
+while_2:
+bge	j	@temp19	while_end_2
+@temp20	=	array_2[i][j]	=	
+out=@temp20
+call	print
+push	no.0para	out
+JAL	print
+@temp22=	j	+	@temp21
+j=@temp22
+J	while_2
+while_end_2:
+@temp24=	i	+	@temp23
+i=@temp24
+j=0
+J	while_1
+while_end_1:
+@temp27=	i	/	@temp26
+i=@temp27
+@temp29=	i	+	@temp28
+i=@temp29
 PROGRAM_END:
