@@ -102,7 +102,14 @@ inline void enterFunc(const std::string& funcName) {
 
 inline void outFunc(const std::string &expName = "") {
     if (expName.size()) {
-        genFetchVarFromMem("$v0", expName);
+        int value;
+        if (nowFuncSymbolTable->isConstValue(expName, value)) {
+            genLi("$v0", value);
+        }
+        else {
+            genFetchVarFromMem(expName,"$v0");
+        }
+
     }
     genLw("$ra", "$sp", nowFuncSymbolTable->getOffset("$ra"));
     genThreeRegInstr("addi", "$sp", "$sp", int2string(nowFuncSymbolTable->getSubOffset()));
@@ -217,9 +224,15 @@ void genAssignMips(AssignMidCode* assignMidCode) {
         genMoveVarToMem(assignMidCode->result,"$t0");
     }
     if (assignMidCode->getAssignType() == AssignMidCode::VAL) {
-        genFetchVarFromMem(assignMidCode->leftVal,"$t1");
-        genMove("$t0","$t1");
-        genMoveVarToMem(assignMidCode->result,"$t0");
+        if (assignMidCode->leftVal == "$v0") { // drectly load $v0 to temp var result
+            genMoveVarToMem(assignMidCode->result,"$v0");
+            return;
+        }
+        else {
+            genFetchVarFromMem(assignMidCode->leftVal,"$t1");
+            genMove("$t0","$t1");
+            genMoveVarToMem(assignMidCode->result,"$t0");
+        }
     }
 }
 

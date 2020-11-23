@@ -135,3 +135,7 @@ int FunctionSymbolTable::getParaOffsetByIndex(int index) {
     return paraInfo[index].offset;
 }
 
+void FunctionSymbolTable::appendArrayPointer(const std::string &name, const std::string &arrayName, int x, int y) {
+
+}
+

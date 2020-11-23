@@ -721,7 +721,9 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
         }
         else if (typeAssert(nowLoc+1, Token::LPARENT))
         {
+            varName = applyTmpId();
             Handle_RETURN_FUNC_CALL(show,ischar);
+            MidCodeFactory(MidCode::ASSIGN, varName, "$v0");
         }
         else
         {
@@ -796,7 +798,7 @@ bool Handle_VAL_PARA_LIST(bool show, std::vector<SymbolTableItem::ItemReturnType
     return true;
 }
 //<有返回值函数调用语句>::= <标识符>'('<值参数表>')'
-bool Handle_RETURN_FUNC_CALL(bool show,int& ischar)
+bool Handle_RETURN_FUNC_CALL(bool show,int& ischar/*,const std::string& retExpName*/)
 {
     bool should_cmp_paras = true;
 	if (!Handle_IDENFR(show)) return false;
@@ -981,7 +983,7 @@ bool Handle_RETURN_FUNC_DEFINE(bool show)
     output += "<有返回值函数定义>";
     output += '\n';
     setInner(OUTER);
-    MidCodeFactory(MidCode::FUNCOP, idName, 0);
+//    MidCodeFactory(MidCode::FUNCOP, idName, 0);
     clearInnerSymbolTable(idName);
     return true;
 }

@@ -7,21 +7,64 @@ J	PROGRAM_END
 enter	print
 write		a
 write		b
-out	print
-enter	main
-@temp1=	b	+	@temp0
-@temp3=	@temp1	+	@temp2
-@temp5=	@temp3	+	@temp4
-call	print
-push	no.0para	num2
-push	no.1para	@temp5
-JAL	print
-ble	@temp6	@temp7	else_0
-return	
-return	
+@temp0=	a	*	a
+@temp1=	b	*	b
+@temp2=	@temp0	+	@temp1
+return	@temp2
+enter	fib
+bne	x	@temp3	else_0
+return	@temp4
 J	else_end_0
 else_0:
-write	string0	
-return	
+bne	x	@temp5	else_1
+return	@temp6
+else_1:
 else_end_0:
+@temp9=	x	-	@temp8
+call	fib
+push	no.0para	@temp9
+JAL	fib
+@temp7=$v0
+@temp12=	x	-	@temp11
+call	fib
+push	no.0para	@temp12
+JAL	fib
+@temp10=$v0
+@temp13=	@temp7	+	@temp10
+return	@temp13
+enter	f
+bne	x	@temp14	else_2
+return	@temp15
+else_2:
+@temp18=	x	-	@temp17
+call	f
+push	no.0para	@temp18
+JAL	f
+@temp16=$v0
+@temp19=	x	*	@temp16
+return	@temp19
+enter	main
+a=0
+call	fib
+push	no.0para	@temp22
+JAL	fib
+@temp21=$v0
+call	f
+push	no.0para	@temp24
+JAL	f
+@temp23=$v0
+call	print
+push	no.0para	@temp21
+push	no.1para	@temp23
+JAL	print
+@temp20=$v0
+a=@temp20
+ble	@temp25	@temp26	else_3
+return	
+return	
+J	else_end_3
+else_3:
+write	string0	a
+return	
+else_end_3:
 PROGRAM_END:

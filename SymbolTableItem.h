@@ -68,7 +68,8 @@ public:
         GLOBALVAR,
         TEMPVAR,
         LOCALARRAY1,
-        LOCALARRAY2
+        LOCALARRAY2,
+        ARRAYPOINTER
     };
     struct itemInfo{
         itemType type;
@@ -92,6 +93,8 @@ public:
     void appendLocalVar(const std::string& name);
     void appendLocalVar(const std::string& name,int );
     void appendLocalVar(const std::string& name,int,int);
+    void appendArrayPointer(const std::string &name, const std::string &,int, int);
+    void appendArrayPointer(const std::string &name, const std::string &, int);
 //    void appendGlobalVar(const std::string& name);
     int getOffset(const std::string& name);
     int getOffset(const std::string& name,int x);
