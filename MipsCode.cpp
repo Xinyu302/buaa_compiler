@@ -312,7 +312,7 @@ void genArrayEleOff(const std::string &reg, const std::string &arrayName, const 
         genSll("$t2", "$t2", 2);
         if (y_num < 0 || nowFuncSymbolTable == globalSymbolTable) {
             global = true;
-            y_num = globalSymbolTable->getOffset(arrayName);
+            y_num = globalSymbolTable->getArrayY(arrayName);
         }
         genLi("$t0", y_num);
         mipscodes.push_back("mult" + tab + "$t0" + tab + "$t2");

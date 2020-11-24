@@ -1,43 +1,93 @@
-const char t='t';
-char c(){
-	return ('k');
+const int NE = 0;
+const int LT = +1, GE = -2, GT = -20, LE = 888, EQ = +22;
+const char constA = 'A';
+const char constB = '+', constC = '2', constD = '*';
+
+int x;
+char array[10], double_axis_array[10][9];
+char t = 'z';
+int globalFlag = 1;
+int Nums[4] = {0, 1, 2, 3};
+int flags[3][4] = {{0, 0, 0, 0},{1, 1, 1, 1},{1, 0, 0, 1}};
+
+int getNumSum() {
+    const char unUsed = '-';
+    int sum = 0;
+    int i;
+    for (i = 0; i < 3; i = i + 1) {
+        sum = sum + Nums[i];
+    }
+    return (sum);
 }
-void print(int input){
-	printf(input);
+
+int whileGetNumSum() {
+    int i = 0;
+    int sum = 0;
+    while (i < 3) {
+    printf(sum);
+    printf(nums[1]);
+        sum = sum + Nums[i];
+        i = i + 1;
+    }
+    return (sum);
 }
-void main(){
-	int array_1[5];
-	int array_2[2][2];
-	int i=0;
-	int j=0;
-	int out=0;
-	;
-	for(i=0;i<=4;i=i+1){
-		array_1[i]=i;
-	}
-	for(i=1;i>=0;i=i-1){
-		for(j=0;j<2;j=j+1){
-			array_2[i][j]=i*j;
-		}
-	}
-	i=0;
-	printf("18182681");
-	while(i<5){
-		out=array_1[i];
-		print(out);
-		i=i+1;
-	}
-	i=0;
-	j=0;
-	while(i<2){
-		while(j<2){
-			out=array_2[i][j];
-			print(out);
-			j=j+1;
-		}
-		i=i+1;
-		j=0;
-	}
-	i=i/2;
-	i=i+'a';
+
+int getX() {
+    return (x);
+}
+
+int getNum(int i) {
+    return (Nums[i]);
+}
+
+int add_and_increase(int fff, int y) {
+    return (fff + y + 1);
+}
+
+void none() {
+
+}
+
+void setNum(int i, int x) {
+    Nums[i] = x;
+    return;
+}
+
+char getAAA(){
+    return ('A');
+}
+
+void main() {
+    int i, j, k;
+    printf("18373317");
+    printf(nums[0]);
+    printf(nums[1]);
+    printf(nums[2]);
+    printf(nums[3]);
+    if (1==1) {
+    }
+    if (0==1) {
+        x = 100;
+    } else {
+        j = 0;
+        for (x = 6; x >= 0; x = x-1)
+            for (i = 0; i <= 6; i = i+1)
+                double_axis_array[x][i] = 'a';
+    }
+    switch (- +2 * 3 - x) {
+        case -5:
+            x = getNumSum();
+        default:;
+    }
+    none();
+    scanf(k);
+    printf(add_and_increase(1, k));
+    printf(whileGetNumSum());
+    printf("abcdefghijklmnopqrstuvwxyz_");
+    printf(add_and_increase(getNum(2) * getX() + EQ, globalFlag));
+    printf('g');
+    printf(('c'));
+    printf(double_axis_array[0][3]);
+    printf(flags[2][x * 0 + 2]);
+    printf("a", 'a');
 }
