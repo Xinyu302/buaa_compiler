@@ -392,22 +392,23 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
                 error(getLastLine(),ErrorInfo::RBRACK_SHOULD_OCCUR);
             }
             int vec1_in = 0;
-
+            std::vector<int>* values = new std::vector<int>;
 			if (typeEnsure(Token::ASSIGN))
 			{
                 curFuncTable->appendLocalVar(idName,vec1,vec2);
 				typeEnsure(Token::LBRACE);
 				while (typeEnsure(Token::LBRACE))
 				{
-                    std::string x = applyTmpId(vec1_in);
+//                    std::string x = applyTmpId(vec1_in);
                     vec1_in++;
                     int vec2_in = 0;
                     int int_or_char = EXP_UNKNOWN;
                     while (Handle_CONST_INT_OR_CHAR(show, int_or_char, value)) {
-                        std::string y = applyTmpId(vec2_in);
-                        std::string result = applyTmpId(value);
+//                        std::string y = applyTmpId(vec2_in);
+//                        std::string result = applyTmpId(value);
+                        values->push_back(value);
                         vec2_in++;
-                        MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x, y, result);
+//                        MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x, y, result);
                         if (!indexMatchedIntOrChar(index, int_or_char)) {
                             error(getLastLine(), ErrorInfo::CONST_TYPE_WRONG);
                         }
@@ -421,6 +422,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
                     }
 					if (!typeEnsure(Token::COMMA)) break;
 				}
+
                 if (vec1_in != vec1 && !hadError)
                 {
                     error(line,ErrorInfo::ARRAY_INIT_WRONG_NUM);
@@ -430,6 +432,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
                 {
                     error(line,ErrorInfo::NAME_REDEFINED);
                 }
+                MidCodeFactory(MidCode::INITARRAY, idName, values);
                 symbolTable.insertIntoSymbolTableVar(isInner,idName,index,vec1,vec2);
             }
 		}
@@ -439,11 +442,13 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
 			typeEnsure(Token::LBRACE);
 			int vec1_in = 0;
             int int_or_char = EXP_UNKNOWN;
-			while (Handle_CONST_INT_OR_CHAR(show,int_or_char,value))
+            std::vector<int>* values = new std::vector<int>;
+            while (Handle_CONST_INT_OR_CHAR(show,int_or_char,value))
 			{
-                std::string x = applyTmpId(vec1_in);
-                std::string result = applyTmpId(value);
-                MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x,result);
+//                std::string x = applyTmpId(vec1_in);
+//                std::string result = applyTmpId(value);
+//                MidCodeFactory(MidCode::ARRAYLEFTSIDE, idName, x,result);
+                values->push_back(value);
                 if (!indexMatchedIntOrChar(index,int_or_char)) {
                     error(getLastLine(),ErrorInfo::CONST_TYPE_WRONG);
                 }
@@ -458,6 +463,7 @@ bool Handle_VAR_DEFINE_WITH_INIT(bool show)
             {
                 error(line,ErrorInfo::NAME_REDEFINED);
             }
+            MidCodeFactory(MidCode::INITARRAY, idName, values);
             symbolTable.insertIntoSymbolTableVar(isInner,idName,index,vec1);
 			flag = typeEnsure(Token::RBRACE);
 		}

@@ -223,3 +223,13 @@ void ArrayOperateMidCode::displayMidCode() {
         }
     }
 }
+
+InitArrayMidCode::InitArrayMidCode(MidCode::MidCodeOperator midCodeOperator, const std::string &arrayName,
+                                   std::vector<int> *values) : MidCode(midCodeOperator,INITARRAYMIDCODE){
+    this->values = values;
+    this->arrayName = arrayName;
+}
+
+void InitArrayMidCode::displayMidCode() {
+
+}

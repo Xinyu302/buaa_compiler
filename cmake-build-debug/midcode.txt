@@ -3,40 +3,62 @@ call	main
 JAL	main
 J	PROGRAM_END
 enter	main
-temp=1000
+@temp0	=	n[@temp1][@temp2]	=	
+bne	@temp0	@temp3	else_0
 write	string0	
-bge	temp	@temp0	else_0
-write	string1	
-J	else_end_0
 else_0:
-write	string2	
-else_end_0:
-bgt	temp	@temp1	else_1
-write	string3	
-J	else_end_1
-else_1:
-write	string4	
-else_end_1:
-ble	temp	@temp2	else_2
-write	string5	
-J	else_end_2
-else_2:
-write	string6	
-else_end_2:
-blt	temp	@temp3	else_3
-write	string7	
-J	else_end_3
-else_3:
-write	string8	
-else_end_3:
-read	i
-temp=i
+i=0
 for_0:
-ble	temp	@temp4	for_end_0
-@temp8=	@temp6	-	temp
-ans=@temp8
-write		ans
-temp=	temp	-	@temp5
+bge	i	@temp5	for_end_0
+j=0
+for_1:
+bge	j	@temp8	for_end_1
+@temp10	=	n[i][j]	=	
+bne	@temp10	@temp11	switch_0_case_1
+write		@temp12
+J	switch_end_0
+switch_0_case_1:
+bne	@temp10	@temp13	switch_0_case_2
+write		@temp14
+J	switch_end_0
+switch_0_case_2:
+bne	@temp10	@temp15	switch_0_case_3
+write		@temp16
+J	switch_end_0
+switch_0_case_3:
+bne	@temp10	@temp17	switch_0_case_4
+write		@temp18
+J	switch_end_0
+switch_0_case_4:
+bne	@temp10	@temp19	switch_0_case_5
+write		@temp20
+J	switch_end_0
+switch_0_case_5:
+bne	@temp10	@temp21	switch_0_case_6
+write		@temp22
+J	switch_end_0
+switch_0_case_6:
+bne	@temp10	@temp23	switch_0_case_7
+write		@temp24
+J	switch_end_0
+switch_0_case_7:
+write		@temp25
+switch_end_0:
+j=	j	+	@temp9
+J	for_1
+for_end_1:
+i=	i	+	@temp6
 J	for_0
 for_end_0:
+@temp26	=	n[@temp27][@temp28]	=	
+bne	@temp26	@temp29	switch_1_case_1
+n[@temp30][@temp31]	=	@temp32
+J	switch_end_1
+switch_1_case_1:
+n[@temp33][@temp34]	=	@temp35
+switch_end_1:
+@temp36	=	n[@temp37][@temp38]	=	
+beq	@temp36	@temp39	else_1
+write	string1	
+else_1:
 PROGRAM_END:

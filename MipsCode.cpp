@@ -401,6 +401,28 @@ void genArrayOperateMips(ArrayOperateMidCode* arrayOperateMidCode) {
     }
 }
 
+void genInitArray(InitArrayMidCode* initArrayMidCode)
+{
+    const std::string &arrayName = initArrayMidCode->arrayName;
+    int offset = nowFuncSymbolTable->getOffset(arrayName);
+    bool global = false;
+    if (offset < 0 || nowFuncSymbolTable == globalSymbolTable) {
+        offset = globalSymbolTable->getOffset(arrayName);
+        global = true;
+    }
+    std::string base = (global) ? "$gp" : "$sp";
+    std::vector<int> *values = initArrayMidCode->values;
+    for (int i = 0, j = 0; i < values->size(); i++, j += 4) {
+        if ((*values)[i] == 0) {
+            genSw("$zero", base, offset + j);
+        } else {
+            genLi("$t0", (*values)[i]);
+            genSw("$t0", base, offset + j);
+        }
+    }
+    delete values;
+}
+
 inline void genMips() {
     genData();
 //    enterFunc("main");
@@ -492,6 +514,11 @@ void genText() {
                 case MidCode::ARRAYOPERATE:
                 {
                     genArrayOperateMips((ArrayOperateMidCode *) midCodeVec[j]);
+                    break;
+                }
+                case MidCode::INITARRAYMIDCODE:
+                {
+                    genInitArray((InitArrayMidCode *) midCodeVec[j]);
                     break;
                 }
                 default:

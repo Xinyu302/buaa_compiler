@@ -35,7 +35,8 @@ public:
         ARRAYLEFTSIDE,
         ARRAYRIGHTSIDE,
         J,
-        JAL
+        JAL,
+        INITARRAY
     };
     enum MidCodeClass{
         CALMIDCODE,
@@ -49,7 +50,8 @@ public:
         CALLMIDCODE,
         HANDLEFUNCMIDCODE,
         RETMIDCODE,
-        ARRAYOPERATE
+        ARRAYOPERATE,
+        INITARRAYMIDCODE
     };
 
     MidCode(MidCodeOperator midCodeOperator,MidCodeClass midCodeClass);
@@ -204,6 +206,15 @@ public:
     dimension arrayDimension;
 };
 
+class InitArrayMidCode: public MidCode {
+public:
+    InitArrayMidCode(MidCodeOperator midCodeOperator,const std::string& arrayName,std::vector<int> * values);
+    std::string arrayName;
+    std::vector<int> * values;
+    void displayMidCode() override;
+
+};
+
 void push2Vec(MidCode* midCode);
 
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result="",const std::string& left="",const std::string& right="")
@@ -284,6 +295,7 @@ MidCodeFactory(MidCode::MidCodeOperator midCodeOperator, const std::string &arra
     push2Vec(newMidCodePtr);
     return newMidCodePtr;
 }
+
 static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result,const int& left)
 {
     MidCode* newMidCodePtr;
@@ -310,6 +322,18 @@ static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const st
     push2Vec(newMidCodePtr);
     return newMidCodePtr;
 }
-
+static MidCode* MidCodeFactory(MidCode::MidCodeOperator midCodeOperator,const std::string& result,std::vector<int>* values) {
+    MidCode* newMidCodePtr;
+    switch (midCodeOperator) {
+        case MidCode::INITARRAY: {
+            newMidCodePtr = new InitArrayMidCode(midCodeOperator, result, values);
+            break;
+        }
+        default:
+            fprintf(stderr,"fuck,midCodeOperator Wrong");
+    }
+    push2Vec(newMidCodePtr);
+    return newMidCodePtr;
+}
 
 //extern std::vector<MidCode*> midCodeVec;
