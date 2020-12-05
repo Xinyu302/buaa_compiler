@@ -130,7 +130,7 @@ void genCalMips(CalMidCode* calMidCode) {
     MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
     if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
         isValue1const = true;
-        if ((value1 & (value1 - 1)) == 0) {
+        if ((value1 & (value1 - 1)) == 0 && anOperator == MidCode::MULTI) {
             constValueIndex = 1;
             const4Value = value1;
         }
@@ -152,7 +152,7 @@ void genCalMips(CalMidCode* calMidCode) {
             genThreeRegInstr("addi","$t0","$t1",int2string(-value2));
             goto genCalMipsEnd;
         } else {
-            if ((value2 & (value2 - 1))== 0) {
+            if ((value2 & (value2 - 1))== 0 && anOperator == MidCode::MULTI) {
                 constValueIndex = 2;
                 const4Value = value2;
             } else {

@@ -289,10 +289,10 @@ bool assert_VAR_DEFINE_WITH_INIT()
 	int loc = nowLoc;
 	if (!(typeAssert(loc,Token::INTTK) || typeAssert(loc,Token::CHARTK))) return false;
 	loc++;
-	int line = getLastLine();
+	int line = Tokens[loc].getLine();
 	if (!typeAssert(loc++, Token::IDENFR)) return false;
 	while (!typeAssert(loc,Token::SEMICN)) {
-	    if (line != getLastLine()) {
+	    if (line != Tokens[loc].getLine()) {
             break;
 	    }
         if (typeAssert(loc,Token::ASSIGN)) return true;
@@ -572,7 +572,9 @@ bool Handle_TERM(bool show,int& isChar,std::string &varName)
 	while (Handle_MULT(show,index) && Handle_FACTOR(show, charOrNot,varName2)) {
 	    std::string nextTmp;
 	    valueTop = value2 = -1;
-	    if (curFuncTable->isConstValue(varNameTop,valueTop) && curFuncTable->isConstValue(varName2,value2)) {
+        bool b1 = curFuncTable->isConstValue(varNameTop, valueTop);
+        bool b2 = curFuncTable->isConstValue(varName2, value2);
+        if (b1 && b2) {
             if (index == Token::MULT) nextTmp = applyTmpId(valueTop * value2);
             if (index == Token::DIV) nextTmp = applyTmpId(valueTop / value2);
         }

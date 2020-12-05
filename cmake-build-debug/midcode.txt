@@ -1,0 +1,42 @@
+enter	#global
+call	main
+JAL	main
+J	PROGRAM_END
+enter	main
+temp=1000
+write	string0	
+bge	temp	@temp0	else_0
+write	string1	
+J	else_end_0
+else_0:
+write	string2	
+else_end_0:
+bgt	temp	@temp1	else_1
+write	string3	
+J	else_end_1
+else_1:
+write	string4	
+else_end_1:
+ble	temp	@temp2	else_2
+write	string5	
+J	else_end_2
+else_2:
+write	string6	
+else_end_2:
+blt	temp	@temp3	else_3
+write	string7	
+J	else_end_3
+else_3:
+write	string8	
+else_end_3:
+read	i
+temp=i
+for_0:
+ble	temp	@temp4	for_end_0
+@temp8=	@temp6	-	temp
+ans=@temp8
+write		ans
+temp=	temp	-	@temp5
+J	for_0
+for_end_0:
+PROGRAM_END:
