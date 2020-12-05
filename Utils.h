@@ -25,3 +25,5 @@ std::string getExp2Judge();
 void setExp2Judge(const std::string& s);
 std::string getNextSwitchEnd();
 void addSwitchId();
+
+int log2_B(int value) ;

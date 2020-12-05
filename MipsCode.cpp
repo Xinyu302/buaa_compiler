@@ -124,32 +124,63 @@ void genCalMips(CalMidCode* calMidCode) {
                                                                               {MidCode::DIV,   "div"}};
     int value1 = 0;
     int value2 = 0;
-    if (nowFuncSymbolTable->isConstValue(calMidCode->left,value1)) {
-        genLi("$t1", value1);
+    int constValueIndex = 0;
+    int const4Value = 0;
+    bool isValue1const = false;
+    MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
+    if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
+        isValue1const = true;
+        if ((value1 & (value1 - 1)) == 0) {
+            constValueIndex = 1;
+            const4Value = value1;
+        }
+        else {
+            if (anOperator != MidCode::PLUS) {
+                genLi("$t1", value1);
+            }
+        }
     } else {
         genFetchVarFromMem(calMidCode->left,"$t1");
     }
+
     if (nowFuncSymbolTable->isConstValue(calMidCode->right,value2)) {
-        if (calMidCode->getMidCodeOperator() == MidCode::PLUS) {
+        if (anOperator == MidCode::PLUS) {
             genThreeRegInstr("addi","$t0","$t1",int2string(value2));
             goto genCalMipsEnd;
         }
-        else if (calMidCode->getMidCodeOperator() == MidCode::MINUS) {
+        else if (anOperator == MidCode::MINUS) {
             genThreeRegInstr("addi","$t0","$t1",int2string(-value2));
             goto genCalMipsEnd;
         } else {
-            genLi("$t2", value2);
+            if ((value2 & (value2 - 1))== 0) {
+                constValueIndex = 2;
+                const4Value = value2;
+            } else {
+                genLi("$t2", value2);
+            }
         }
     }
     else {
         genFetchVarFromMem(calMidCode->right, "$t2");
+        if (isValue1const && anOperator == MidCode::PLUS) {
+            genThreeRegInstr("addi","$t0","$t2",int2string(value1));
+            goto genCalMipsEnd;
+        }
     }
-    if (calMidCode->getMidCodeOperator() == MidCode::PLUS || calMidCode->getMidCodeOperator() == MidCode::MINUS) {
-        genThreeRegInstr(op2string[calMidCode->getMidCodeOperator()],"$t0","$t1","$t2");
+    if (anOperator == MidCode::PLUS || anOperator == MidCode::MINUS) {
+        genThreeRegInstr(op2string[anOperator],"$t0","$t1","$t2");
     }
-    if (calMidCode->getMidCodeOperator() == MidCode::MULTI || calMidCode->getMidCodeOperator() == MidCode::DIV) {
-        genTwoRegInstr(op2string[calMidCode->getMidCodeOperator()],"$t1","$t2");
-        mipscodes.push_back("mflo" + tab + "$t0");
+    if (anOperator == MidCode::MULTI || anOperator == MidCode::DIV) {
+        if (constValueIndex != 0 && anOperator == MidCode::MULTI) {
+            if (constValueIndex == 1) {
+                genSll("$t0", "$t2", log2_B(const4Value));
+            } else {
+                genSll("$t0", "$t1", log2_B(const4Value));
+            }
+        } else {
+            genTwoRegInstr(op2string[anOperator],"$t1","$t2");
+            mipscodes.push_back("mflo" + tab + "$t0");
+        }
     }
     genCalMipsEnd:
     genMoveVarToMem(calMidCode->result,"$t0");

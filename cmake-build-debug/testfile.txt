@@ -1,93 +1,93 @@
-const int NE = 0;
-const int LT = +1, GE = -2, GT = -20, LE = 888, EQ = +22;
-const char constA = 'A';
-const char constB = '+', constC = '2', constD = '*';
 
-int x;
-char array[10], double_axis_array[10][9];
-char t = 'z';
-int globalFlag = 1;
-int Nums[4] = {0, 1, 2, 3};
-int flags[3][4] = {{0, 0, 0, 0},{1, 1, 1, 1},{1, 0, 0, 1}};
+int a[1000];
+int seed[3] = {19971231, 19981013, 1000000007};
+int staticvalue = 0;
 
-int getNumSum() {
-    const char unUsed = '-';
-    int sum = 0;
-    int i;
-    for (i = 0; i < 3; i = i + 1) {
-        sum = sum + Nums[i];
-    }
-    return (sum);
+int myscanf()
+{
+    int n;
+    scanf(n);
+    return (n);
 }
 
-int whileGetNumSum() {
-    int i = 0;
-    int sum = 0;
-    while (i < 3) {
-    printf(sum);
-    printf(nums[1]);
-        sum = sum + Nums[i];
-        i = i + 1;
-    }
-    return (sum);
-}
-
-int getX() {
-    return (x);
-}
-
-int getNum(int i) {
-    return (Nums[i]);
-}
-
-int add_and_increase(int fff, int y) {
-    return (fff + y + 1);
-}
-
-void none() {
-
-}
-
-void setNum(int i, int x) {
-    Nums[i] = x;
+void myprintf(int n)
+{
+    printf(n);
     return;
 }
 
-char getAAA(){
-    return ('A');
+int set(int pos, int d){
+    int x[31];
+    int i = 10;
+    int v = 0;
+
+    x[0] = 1;
+    x[1] = x[0] * 2;
+    x[2] = x[1] * 2;
+    x[3] = x[2] * 2;
+    x[4] = x[3] * 2;
+    x[5] = x[4] * 2;
+    x[6] = x[5] * 2;
+    x[7] = x[6] * 2;
+    x[8] = x[7] * 2;
+    x[9] = x[8] * 2;
+    x[10] = x[9] * 2;
+
+    while (i < 30){
+        i = i + 1;
+        x[i] = x[i - 1] * 2;
+    }
+
+
+    if (pos / 30 >= 1000) return(0);
+    if ((a[pos / 30] / (x[pos-pos/30*30]))-(a[pos / 30] / (x[pos-pos/30*30]))/2*2 != d){
+        if ((a[pos / 30] / (x[pos-pos/30*30]))-(a[pos / 30] / (x[pos-pos/30*30]))/2*2 == 0)
+            if (d == 1)
+                v = (x[pos-pos/30*30]);
+
+        if ((a[pos / 30] / (x[pos-pos/30*30]))-(a[pos / 30] / (x[pos-pos/30*30]))/2*2 == 1)
+            if (d == 0)
+                v = v - (x[pos-pos/30*30]);
+    }
+
+    a[pos / 30] = a[pos / 30] + v;
+    return(0);
 }
 
-void main() {
-    int i, j, k;
-    printf("18373317");
-    printf(nums[0]);
-    printf(nums[1]);
-    printf(nums[2]);
-    printf(nums[3]);
-    if (1==1) {
+
+int rand(){
+    staticvalue = staticvalue * seed[0] + seed[1];
+    staticvalue = staticvalue - staticvalue / seed[2] * seed[2];
+    if (staticvalue < 0) staticvalue = seed[2] + staticvalue;
+    return(staticvalue);
+}
+
+void main(){
+
+    int n;
+    int x, y, z;
+    int tmp = 0;
+    int i = 0;
+    int j = 0;
+    while(j<1000){
+        a[j] = 0;
+        j =j + 1;
     }
-    if (0==1) {
-        x = 100;
-    } else {
-        j = 0;
-        for (x = 6; x >= 0; x = x-1)
-            for (i = 0; i <= 6; i = i+1)
-                double_axis_array[x][i] = 'a';
+    n = myscanf();
+    staticvalue = myscanf();
+    while (n > 0){
+        n = n - 1;
+        z = rand();
+        x = z - z / 300000 * 300000;
+        z = rand();
+        y = z - z / 2 * 2;
+        set(x, y);
     }
-    switch (- +2 * 3 - x) {
-        case -5:
-            x = getNumSum();
-        default:;
+    while(i<1000){
+        tmp = tmp + (a[i] - a[i]/100000 * 100000);
+        tmp = tmp - tmp / 100000 * 100000;
+        i = i + 1;
     }
-    none();
-    scanf(k);
-    printf(add_and_increase(1, k));
-    printf(whileGetNumSum());
-    printf("abcdefghijklmnopqrstuvwxyz_");
-    printf(add_and_increase(getNum(2) * getX() + EQ, globalFlag));
-    printf('g');
-    printf(('c'));
-    printf(double_axis_array[0][3]);
-    printf(flags[2][x * 0 + 2]);
-    printf("a", 'a');
+    myprintf(tmp);
+    return ;
 }

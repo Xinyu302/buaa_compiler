@@ -105,3 +105,6 @@ void genData();
 void genText();
 void printMips();
 void printMipsCode();
+
+
+void genSll(const std::string& result,const std::string& from,int imm);
