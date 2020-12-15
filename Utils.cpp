@@ -166,3 +166,7 @@ bool judgeByCmpIndex(int value1, int value2, Token::TokenTypeIndex index) {
         return (value1 >= value2);
     }
 }
+
+bool is_n_two(int value2) {
+    return ((value2 & (value2 - 1)) == 0);
+}

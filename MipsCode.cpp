@@ -334,37 +334,94 @@ void genSll(const std::string& result,const std::string& from,int imm) {
 void genArrayEleOff(const std::string &reg, const std::string &arrayName, const std::string &x, const std::string &y = "") {
     bool global = false;
     int offset;
+    int value_x;
+    int value_y;
+    bool x_const = false;
+    bool y_const = false;
     std::string base;
+
     if (y.length()) {
         int y_num = nowFuncSymbolTable->getArrayY(arrayName);
-        genAssignRegFromExp("$t1",y);
-        genSll("$t1", "$t1", 2);
-        genAssignRegFromExp("$t2",x);
-        genSll("$t2", "$t2", 2);
+        if (nowFuncSymbolTable->isConstValue(x,value_x)) {
+            x_const = true;
+        } else{
+            genAssignRegFromExp("$t0",x);
+            genSll("$t0", "$t0", 2);
+        }
+
         if (y_num < 0 || nowFuncSymbolTable == globalSymbolTable) {
             global = true;
             y_num = globalSymbolTable->getArrayY(arrayName);
+
         }
-        genLi("$t0", y_num);
-        mipscodes.push_back("mult" + tab + "$t0" + tab + "$t2");
-        mipscodes.push_back("mflo" + tab + "$t2");
-        genThreeRegInstr("addu", "$t1", "$t1", "$t2");
         offset = (global) ? globalSymbolTable->getOffset(arrayName) : nowFuncSymbolTable->getOffset(arrayName);
         base = (global) ? "$gp" : "$sp";
+        int x_offset = -1;
+        int y_offset = -1;
+        if (x_const) {
+            x_offset = value_x * y_num * 4;
+        } else {
+            if (is_n_two(y_num)) {
+                genSll("$t0", "$t0", log2_B(y_num));
+            }
+            else {
+                genLi("$t1", y_num);
+                mipscodes.push_back("mult" + tab + "$t0" + tab + "$t1");
+                mipscodes.push_back("mflo" + tab + "$t0");
+            }
+        }
+        if (nowFuncSymbolTable->isConstValue(y,value_y)) {
+            y_const = true;
+        } else {
+            genAssignRegFromExp("$t1",y);
+            genSll("$t1", "$t1", 2);
+        }
+        if (y_const) {
+            if (x_const) {
+//                x_offset += 4 * value_y;
+//                genLi("$t1", offset + x_offset + 4 * value_y);
+                genThreeRegInstr("addi", "$t1", base, int2string(offset + x_offset + 4 * value_y));
+            } else {
+                genThreeRegInstr("addi", "$t1", "$t0", int2string(offset + 4 * value_y));
+                genThreeRegInstr("addu", "$t1", "$t1", base);
+            }
+        } else {
+            if (x_const) {
+                genThreeRegInstr("addi", "$t1", "$t1", int2string(offset + x_offset));
+                genThreeRegInstr("addu", "$t1", "$t1", base);
+            }
+            else {
+                genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+                genThreeRegInstr("addu","$t1","$t1","$t0");
+                genThreeRegInstr("addu", "$t1", "$t1", base);
+            }
+//            genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+        }
+//        genThreeRegInstr("addu", "$t1", "$t1", "$t2");
+
         genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
         genThreeRegInstr("addu", "$t1", "$t1", base);
 
     } else {
-        genAssignRegFromExp("$t1",x);
-        genSll("$t1", "$t1", 2);
+        if (nowFuncSymbolTable->isConstValue(x,value_x)) {
+            x_const = true;
+        } else{
+            genAssignRegFromExp("$t0",x);
+            genSll("$t0", "$t0", 2);
+        }
         offset = nowFuncSymbolTable->getOffset(arrayName);
         if (offset < 0 || nowFuncSymbolTable == globalSymbolTable) {
             offset = globalSymbolTable->getOffset(arrayName);
             global = true;
         }
         base = (global) ? "$gp" : "$sp";
-        genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
-        genThreeRegInstr("addu", "$t1", "$t1", base);
+        if (x_const) {
+            genThreeRegInstr("addi", "$t1", base, int2string(offset + 4 * value_x));
+        } else {
+            genThreeRegInstr("addi", "$t1", "$t0", int2string(offset));
+            genThreeRegInstr("addu", "$t1", "$t1", base);
+        }
+
     }
 }
 

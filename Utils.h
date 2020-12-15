@@ -29,3 +29,4 @@ std::string getNextSwitchEnd();
 void addSwitchId();
 
 int log2_B(int value) ;
+bool is_n_two(int );

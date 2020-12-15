@@ -31,6 +31,9 @@ extern std::vector<MidCode*> midCodeVec;
 std::string conditionL;
 std::string conditionR;
 Token::TokenTypeIndex conditionIndex;
+std::vector<MidCode*> repeatMidCodes;
+int repeatStart;
+int repeatEnd;
 /**
  * end for loop condition
  */
@@ -1169,6 +1172,7 @@ bool Handle_CONDITION(bool show,const std::string& label,int workMode,int &resul
     int typeR = EXP_UNKNOWN;
     std::string expL;
     std::string expR;
+    repeatStart = curMidCodeVec->size();
 	if (Handle_EXPRESSION(show,typeL,expL))
 	{
         bool not2gen = false;
@@ -1186,6 +1190,7 @@ bool Handle_CONDITION(bool show,const std::string& label,int workMode,int &resul
         if (curFuncTable->isConstValue(expL, value1) && curFuncTable->isConstValue(expR, value2)) {
             not2gen = true;
         }
+        repeatEnd = curMidCodeVec->size() - 1;
 		if (workMode == 0) // nomal {
         {
             MidCodeFactory(index2MidCode(index), label, expL, expR);
@@ -1419,6 +1424,8 @@ bool Handle_FOR_STATE_PARENT(bool show)
     Token::TokenTypeIndex cIndex = conditionIndex;
     const std::string L = conditionL;
     const std::string R = conditionR;
+    int s = repeatStart;
+    int e = repeatEnd;
     if (!typeEnsure(Token::SEMICN)) {
         error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
     }
@@ -1441,6 +1448,9 @@ bool Handle_FOR_STATE_PARENT(bool show)
         }
         else if (index == Token::MINU) {
             MidCodeFactory(MidCode::MINUS, l, r, constTmp);
+        }
+        for (int i = s; i <= e; i++) {
+            push2Vec((*curMidCodeVec)[i]);
         }
         MidCodeFactory(index2MidCode(cIndex), loopstart, L, R);
 //        MidCodeFactory(MidCode::J, loopstart);
@@ -1469,11 +1479,16 @@ bool Handle_LOOP_STATE(bool show)
         Token::TokenTypeIndex cIndex = conditionIndex;
         std::string L = conditionL;
         std::string R = conditionR;
+        int s = repeatStart;
+        int e = repeatEnd;
         if (!typeEnsure(Token::RPARENT)) {
             error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
         }
         MidCodeFactory(MidCode::LABEL,loopstart);
         if (Handle_STATEMENT(show)) flag = true;
+        for (int i = s; i <= e; i++) {
+            push2Vec((*curMidCodeVec)[i]);
+        }
         MidCodeFactory(index2MidCode(cIndex), loopstart, L, R);
         MidCodeFactory(MidCode::LABEL,elseBegin);
 

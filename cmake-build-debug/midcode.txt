@@ -43,6 +43,7 @@ return	@temp25
 else_6:
 @temp27=	i	+	@temp26
 i=@temp27
+@temp12	=	bigintlength[@temp13]
 blt	i	@temp12	while_0
 else_4:
 return	@temp28
@@ -170,6 +171,8 @@ bne	@temp106	@temp109	else_16
 while_7:
 @temp111=	i	-	@temp110
 i=@temp111
+@temp108=	i	-	@temp107
+@temp106	=	c[@temp108]
 beq	@temp106	@temp109	while_7
 else_16:
 j=0
