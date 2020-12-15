@@ -32,7 +32,7 @@ extern std::vector<MidCode*> midCodeVec;
 std::string conditionL;
 std::string conditionR;
 Token::TokenTypeIndex conditionIndex;
-std::vector<MidCode*> repeatMidCodes;
+//std::vector<MidCode*> repeatMidCodes;
 int repeatStart;
 int repeatEnd;
 /**

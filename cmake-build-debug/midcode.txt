@@ -2,63 +2,323 @@ enter	#global
 call	main
 JAL	main
 J	PROGRAM_END
-enter	main
-@temp0	=	n[@temp1][@temp2]	=	
-bne	@temp0	@temp3	else_0
-write	string0	
+enter	myscanf
+read	n
+return	n
+enter	myprintf
+write		n
+return	
+out	myprintf
+enter	checkrange
+ble	num	max	else_0
+while_0:
+@temp0=	num	-	max
+num=@temp0
+bgt	num	max	while_0
 else_0:
-i=0
-bge	i	@temp5	else_1
-for_0:
-j=0
-bge	j	@temp8	else_2
-for_1:
-@temp10	=	n[i][j]	=	
-bne	@temp10	@temp11	switch_0_case_1
-write		@temp12
-J	switch_end_0
-switch_0_case_1:
-bne	@temp10	@temp13	switch_0_case_2
-write		@temp14
-J	switch_end_0
-switch_0_case_2:
-bne	@temp10	@temp15	switch_0_case_3
-write		@temp16
-J	switch_end_0
-switch_0_case_3:
-bne	@temp10	@temp17	switch_0_case_4
-write		@temp18
-J	switch_end_0
-switch_0_case_4:
-bne	@temp10	@temp19	switch_0_case_5
-write		@temp20
-J	switch_end_0
-switch_0_case_5:
-bne	@temp10	@temp21	switch_0_case_6
-write		@temp22
-J	switch_end_0
-switch_0_case_6:
-bne	@temp10	@temp23	switch_0_case_7
-write		@temp24
-J	switch_end_0
-switch_0_case_7:
-write		@temp25
-switch_end_0:
-j=	j	+	@temp9
-blt	j	@temp8	for_1
-else_2:
-i=	i	+	@temp6
-blt	i	@temp5	for_0
+bge	num	@temp1	else_1
+while_1:
+@temp2=	num	+	max
+num=@temp2
+blt	num	@temp1	while_1
 else_1:
-@temp26	=	n[@temp27][@temp28]	=	
-bne	@temp26	@temp29	switch_1_case_1
-n[@temp30][@temp31]	=	@temp32
-J	switch_end_1
-switch_1_case_1:
-n[@temp33][@temp34]	=	@temp35
-switch_end_1:
-@temp36	=	n[@temp37][@temp38]	=	
-beq	@temp36	@temp39	else_3
-write	string1	
+return	num
+enter	reduce
+bne	kernelid	@temp3	else_2
+@temp5=	x	+	y
+call	checkrange
+push	no.0para	@temp5
+JAL	checkrange
+@temp4=$v0
+return	@temp4
+else_2:
+bne	kernelid	@temp6	else_3
+ret=0
+i=1
+bge	i	max	else_4
+while_2:
+@temp9=	x	/	i
+@temp10=	x	/	i
+@temp12=	@temp10	/	@temp11
+@temp14=	@temp12	*	@temp13
+@temp15=	@temp9	-	@temp14
+@temp16=	y	/	i
+@temp17=	y	/	i
+@temp19=	@temp17	/	@temp18
+@temp21=	@temp19	*	@temp20
+@temp22=	@temp16	-	@temp21
+bne	@temp15	@temp22	else_5
+@temp24=	ret	*	@temp23
+ret=@temp24
+J	else_end_5
+else_5:
+@temp26=	ret	*	@temp25
+@temp28=	@temp26	+	@temp27
+ret=@temp28
+else_end_5:
+@temp30=	i	*	@temp29
+i=@temp30
+blt	i	max	while_2
+else_4:
+return	ret
 else_3:
+bne	kernelid	@temp31	else_6
+ble	x	y	else_7
+return	x
+J	else_end_7
+else_7:
+return	y
+else_end_7:
+else_6:
+bne	kernelid	@temp32	else_8
+ret=0
+i=1
+bge	i	max	else_9
+while_3:
+@temp35=	x	/	i
+@temp36=	x	/	i
+@temp38=	@temp36	/	@temp37
+@temp40=	@temp38	*	@temp39
+@temp41=	@temp35	-	@temp40
+bne	@temp41	@temp42	else_10
+@temp44=	ret	*	@temp43
+@temp46=	@temp44	+	@temp45
+ret=@temp46
+J	else_end_10
+else_10:
+@temp47=	y	/	i
+@temp48=	y	/	i
+@temp50=	@temp48	/	@temp49
+@temp52=	@temp50	*	@temp51
+@temp53=	@temp47	-	@temp52
+bne	@temp53	@temp54	else_11
+@temp56=	ret	*	@temp55
+@temp58=	@temp56	+	@temp57
+ret=@temp58
+else_11:
+@temp60=	ret	*	@temp59
+ret=@temp60
+else_end_10:
+@temp62=	i	*	@temp61
+i=@temp62
+blt	i	max	while_3
+else_9:
+return	ret
+else_8:
+bne	kernelid	@temp63	else_12
+ret=0
+i=1
+bge	i	max	else_13
+while_4:
+@temp66=	x	/	i
+@temp67=	x	/	i
+@temp69=	@temp67	/	@temp68
+@temp71=	@temp69	*	@temp70
+@temp72=	@temp66	-	@temp71
+bne	@temp72	@temp73	else_14
+@temp74=	y	/	i
+@temp75=	y	/	i
+@temp77=	@temp75	/	@temp76
+@temp79=	@temp77	*	@temp78
+@temp80=	@temp74	-	@temp79
+bne	@temp80	@temp81	else_15
+@temp83=	ret	*	@temp82
+@temp85=	@temp83	+	@temp84
+ret=@temp85
+J	else_end_15
+else_15:
+@temp87=	ret	*	@temp86
+ret=@temp87
+else_end_15:
+J	else_end_14
+else_14:
+@temp89=	ret	*	@temp88
+ret=@temp89
+else_end_14:
+@temp91=	i	*	@temp90
+i=@temp91
+blt	i	max	while_4
+else_13:
+return	ret
+else_12:
+return	@temp92
+enter	getvalue
+bge	x	@temp93	else_16
+return	@temp94
+else_16:
+bge	y	@temp95	else_17
+return	@temp96
+else_17:
+blt	x	n	else_18
+return	@temp97
+else_18:
+blt	y	m	else_19
+return	@temp98
+else_19:
+@temp100=	x	*	m
+@temp101=	@temp100	+	y
+@temp99	=	a[@temp101]
+return	@temp99
+enter	convn
+i=0
+j=0
+flag1=1
+flag2=1
+flag3=1
+flag4=1
+bne	flag1	@temp102	else_20
+while_5:
+j=0
+bne	flag2	@temp104	else_21
+while_6:
+curr=0
+@temp107=	c	/	@temp106
+@temp108=	i	-	@temp107
+x=@temp108
+bne	flag3	@temp109	else_22
+while_7:
+@temp111=	c	/	@temp110
+@temp112=	j	-	@temp111
+y=@temp112
+bne	flag4	@temp113	else_23
+while_8:
+call	getvalue
+push	no.0para	n
+push	no.1para	m
+push	no.2para	x
+push	no.3para	y
+JAL	getvalue
+@temp115=$v0
+call	reduce
+push	no.0para	kernelid
+push	no.1para	curr
+push	no.2para	@temp115
+JAL	reduce
+@temp114=$v0
+curr=@temp114
+@temp117=	y	+	@temp116
+y=@temp117
+@temp119=	c	/	@temp118
+@temp120=	j	+	@temp119
+blt	y	@temp120	else_24
+flag4=0
+else_24:
+beq	flag4	@temp113	while_8
+else_23:
+flag4=1
+@temp124=	x	+	@temp123
+x=@temp124
+@temp126=	c	/	@temp125
+@temp127=	i	+	@temp126
+blt	x	@temp127	else_25
+flag3=0
+else_25:
+beq	flag3	@temp109	while_7
+else_22:
+flag3=1
+@temp130=	i	*	m
+@temp131=	@temp130	+	j
+b[@temp131]	=	curr
+@temp133=	j	+	@temp132
+j=@temp133
+blt	j	m	else_26
+flag2=0
+else_26:
+beq	flag2	@temp104	while_6
+else_21:
+flag2=1
+@temp137=	i	+	@temp136
+i=@temp137
+blt	i	n	else_27
+flag1=0
+else_27:
+beq	flag1	@temp102	while_5
+else_20:
+return	@temp139
+enter	mymemmove
+i=0
+bge	i	n	else_28
+while_9:
+@temp140	=	b[i]
+a[i]	=	@temp140
+@temp142=	i	+	@temp141
+i=@temp142
+blt	i	n	while_9
+else_28:
+out	mymemmove
+enter	main
+i=0
+call	myscanf
+JAL	myscanf
+@temp143=$v0
+c=@temp143
+call	myscanf
+JAL	myscanf
+@temp144=$v0
+n=@temp144
+call	myscanf
+JAL	myscanf
+@temp145=$v0
+m=@temp145
+call	myscanf
+JAL	myscanf
+@temp146=$v0
+arrlen=@temp146
+bge	i	arrlen	else_29
+while_10:
+call	myscanf
+JAL	myscanf
+@temp147=$v0
+a[i]	=	@temp147
+@temp149=	i	+	@temp148
+i=@temp149
+blt	i	arrlen	while_10
+else_29:
+call	myscanf
+JAL	myscanf
+@temp150=$v0
+task=@temp150
+i=0
+bge	i	task	else_30
+while_11:
+call	myscanf
+JAL	myscanf
+@temp152=$v0
+kernelid[i]	=	@temp152
+@temp154=	i	+	@temp153
+i=@temp154
+blt	i	task	while_11
+else_30:
+i=0
+bge	i	task	else_31
+while_12:
+@temp156	=	kernelid[i]
+call	convn
+push	no.0para	@temp156
+push	no.1para	n
+push	no.2para	m
+push	no.3para	c
+JAL	convn
+@temp157=	n	*	m
+call	mymemmove
+push	no.0para	@temp157
+JAL	mymemmove
+@temp159=	i	+	@temp158
+i=@temp159
+blt	i	task	while_12
+else_31:
+i=0
+@temp161=	n	*	m
+bge	i	@temp161	else_32
+while_13:
+@temp162	=	a[i]
+call	myprintf
+push	no.0para	@temp162
+JAL	myprintf
+@temp164=	i	+	@temp163
+i=@temp164
+@temp161=	n	*	m
+blt	i	@temp161	while_13
+else_32:
+return	
 PROGRAM_END:

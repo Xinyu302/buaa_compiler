@@ -219,7 +219,7 @@ void ArrayOperateMidCode::displayMidCode() {
         if (this->getMidCodeOperator() == ARRAYLEFTSIDE) {
             midout << arrayName << "[" << x << "][" << y << "]\t=\t" << exp << std::endl;
         } else {
-            midout << exp << "\t=\t" << arrayName << "[" << x << "][" << y << "]\t=\t" << std::endl;
+            midout << exp << "\t=\t" << arrayName << "[" << x << "][" << y << "]\t" << std::endl;
         }
     }
 }
