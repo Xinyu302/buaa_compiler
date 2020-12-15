@@ -434,7 +434,6 @@ void genData() {
 
     const std::string colon = ":";
     const std::string asciiz = ".asciiz";
-
     mipscodes.push_back(".data");
     mipscodes.push_back("stringEnter:\t.asciiz" + tab + quotation + "\\n" + quotation);
     for (std::map<std::string,std::string>::iterator it = stringMap.begin();it != stringMap.end();it++) {

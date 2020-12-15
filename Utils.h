@@ -22,6 +22,8 @@ MidCode::MidCodeOperator reverseIndex2MidCode(Token::TokenTypeIndex index);
 std::string changeString(const std::string& s);
 std::string getSwitchId();
 std::string getExp2Judge();
+
+bool judgeByCmpIndex(int value1, int value2, Token::TokenTypeIndex index);
 void setExp2Judge(const std::string& s);
 std::string getNextSwitchEnd();
 void addSwitchId();

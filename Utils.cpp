@@ -160,3 +160,9 @@ int log2_B(int value) //非递归判断一个数是2的多少次
     }
     return x;
 }
+
+bool judgeByCmpIndex(int value1, int value2, Token::TokenTypeIndex index) {
+    if (index == Token::GRE) {
+        return (value1 >= value2);
+    }
+}

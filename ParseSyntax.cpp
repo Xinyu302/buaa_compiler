@@ -25,6 +25,15 @@ bool FUNC_HAS_RETURN;
 
 extern std::vector<MidCode*> midCodeVec;
 
+/**
+ * for loop condition
+ */
+std::string conditionL;
+std::string conditionR;
+Token::TokenTypeIndex conditionIndex;
+/**
+ * end for loop condition
+ */
 FunctionSymbolTable* curFuncTable;
 FunctionSymbolTable* globalSymbolTable;
 std::vector<MidCode*>* curMidCodeVec;
@@ -1154,7 +1163,7 @@ bool Handle_STATE_LIST(bool show)
 	return true;
 }
 /*<条件>   ::=  <表达式><关系运算符><表达式>*/
-bool Handle_CONDITION(bool show,const std::string& label,int workMode)
+bool Handle_CONDITION(bool show,const std::string& label,int workMode,int &result=nothing)
 {
     int typeL = EXP_UNKNOWN;
     int typeR = EXP_UNKNOWN;
@@ -1162,14 +1171,20 @@ bool Handle_CONDITION(bool show,const std::string& label,int workMode)
     std::string expR;
 	if (Handle_EXPRESSION(show,typeL,expL))
 	{
+        bool not2gen = false;
 		Handle_CMP(show);
         Token::TokenTypeIndex index = Tokens[nowLoc - 1].getIndex();
 		Handle_EXPRESSION(show,typeR,expR);
-//		std::cout << expL << std::endl;
-//        std::cout << expR << std::endl;
 		if (typeL != EXP_INT || typeR != EXP_INT)
         {
 		    error(getLastLine(),ErrorInfo::TYPE_JUDGE_WRONG);
+        }
+		conditionL = expL;
+		conditionR = expR;
+        conditionIndex = index;
+        int value1,value2;
+        if (curFuncTable->isConstValue(expL, value1) && curFuncTable->isConstValue(expR, value2)) {
+            not2gen = true;
         }
 		if (workMode == 0) // nomal {
         {
@@ -1278,7 +1293,8 @@ bool Handle_IF_STATE(bool show)
 	if (!typeEnsure(Token::LPARENT)) return false;
     std::string &&elseBegin = getNextElseId();
     std::string &&elseEnd = getNextElseEndId();
-	if (!Handle_CONDITION(show,elseBegin,1)) return false;
+    int result = 0;
+	if (!Handle_CONDITION(show,elseBegin,1,result)) return false;
     if (!typeEnsure(Token::RPARENT)) {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
     }
@@ -1378,6 +1394,9 @@ bool Handle_FOR_STATE_PARENT(bool show)
     int value;
     const std::string& loopstart = getNextForId();
     const std::string& loopend = getNextForEnd();
+    const std::string &elseBegin = getNextElseId();
+    const std::string &elseEnd = getNextElseEndId();
+
 	if (!typeEnsure(Token::LPARENT)) return false;
 	if (!Handle_IDENFR(show)) return false;
 	const std::string& idName = Tokens[nowLoc - 1].getTokenStr();
@@ -1392,14 +1411,18 @@ bool Handle_FOR_STATE_PARENT(bool show)
     } else {
 	    MidCodeFactory(MidCode::ASSIGN,idName,expName);
 	}
+//    MidCodeFactory(MidCode::LABEL, elseBegin);
 	if (!typeEnsure(Token::SEMICN)) {
 	    error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
 	}
-    MidCodeFactory(MidCode::LABEL, loopstart);
-	if (!Handle_CONDITION(show,loopend,1)) return false;
+	if (!Handle_CONDITION(show,elseBegin,1)) return false;
+    Token::TokenTypeIndex cIndex = conditionIndex;
+    const std::string L = conditionL;
+    const std::string R = conditionR;
     if (!typeEnsure(Token::SEMICN)) {
         error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
     }
+    MidCodeFactory(MidCode::LABEL, loopstart);
 	if (!Handle_IDENFR(show)) return false;
 
 	const std::string& l = Tokens[nowLoc - 1].getTokenStr();
@@ -1419,12 +1442,14 @@ bool Handle_FOR_STATE_PARENT(bool show)
         else if (index == Token::MINU) {
             MidCodeFactory(MidCode::MINUS, l, r, constTmp);
         }
-        MidCodeFactory(MidCode::J, loopstart);
-        MidCodeFactory(MidCode::LABEL, loopend);
+        MidCodeFactory(index2MidCode(cIndex), loopstart, L, R);
+//        MidCodeFactory(MidCode::J, loopstart);
+//        MidCodeFactory(MidCode::LABEL, loopend);
     }
     else {
         error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
     }
+    MidCodeFactory(MidCode::LABEL, elseBegin);
     return true;
 }
 
@@ -1433,17 +1458,25 @@ bool Handle_LOOP_STATE(bool show)
 	bool flag = false;
 	if (typeEnsure(Token::WHILETK))
 	{
-	    const std::string& loopstart = getNextWhileId();
-	    const std::string& loopend = getNextWhileEnd();
-	    MidCodeFactory(MidCode::LABEL,loopstart);
+        const std::string& loopstart = getNextWhileId();
+        const std::string& loopend = getNextWhileEnd();
+        const std::string &elseBegin = getNextElseId();
+        const std::string &elseEnd = getNextElseEndId();
+
+//	    MidCodeFactory(MidCode::LABEL,loopstart);
 		if (!typeEnsure(Token::LPARENT)) return false;
-		if (!Handle_CONDITION(show,loopend,1)) return false;
+		if (!Handle_CONDITION(show,elseBegin,1)) return false;
+        Token::TokenTypeIndex cIndex = conditionIndex;
+        std::string L = conditionL;
+        std::string R = conditionR;
         if (!typeEnsure(Token::RPARENT)) {
             error(getLastLine(),ErrorInfo::RPARENT_SHOULD_OCCUR);
         }
-		if (Handle_STATEMENT(show)) flag = true;
-        MidCodeFactory(MidCode::J, loopstart);
-        MidCodeFactory(MidCode::LABEL,loopend);
+        MidCodeFactory(MidCode::LABEL,loopstart);
+        if (Handle_STATEMENT(show)) flag = true;
+        MidCodeFactory(index2MidCode(cIndex), loopstart, L, R);
+        MidCodeFactory(MidCode::LABEL,elseBegin);
+
     }
 	else if (typeEnsure(Token::FORTK))
 	{
