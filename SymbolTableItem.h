@@ -105,12 +105,16 @@ public:
     bool isConstValue(const std::string& name,int &value);
     int getRetOffset();
 
+    void setIsLeaf(bool isLeaf);
+    bool getIsLeaf();
+
 private:
     int varNum;
     std::string funcName;
     std::map<std::string,itemInfo> varInfo;
     std::map<std::string,arrayItemInfo> arrayInfo;
     std::vector<itemInfo> paraInfo;
+    bool isLeaf = true;
 };
 
 

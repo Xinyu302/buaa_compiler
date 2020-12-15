@@ -2,231 +2,63 @@ enter	#global
 call	main
 JAL	main
 J	PROGRAM_END
-enter	min
-ble	a	b	else_0
-return	b
-J	else_end_0
-else_0:
-return	a
-else_end_0:
-enter	max
-ble	a	b	else_1
-return	a
-J	else_end_1
-else_1:
-return	b
-else_end_1:
-enter	compare
-i=0
-@temp0	=	bigintlength[@temp1]
-@temp2	=	bigintlength[@temp3]
-ble	@temp0	@temp2	else_2
-return	@temp4
-else_2:
-@temp5	=	bigintlength[@temp6]
-@temp7	=	bigintlength[@temp8]
-bge	@temp5	@temp7	else_3
-return	@temp11
-else_3:
-@temp12	=	bigintlength[@temp13]
-bge	i	@temp12	else_4
-while_0:
-@temp14	=	bigintarr[@temp15][i]	=	
-@temp16	=	bigintarr[@temp17][i]	=	
-ble	@temp14	@temp16	else_5
-return	@temp18
-else_5:
-@temp19	=	bigintarr[@temp20][i]	=	
-@temp21	=	bigintarr[@temp22][i]	=	
-bge	@temp19	@temp21	else_6
-return	@temp25
-else_6:
-@temp27=	i	+	@temp26
-i=@temp27
-@temp12	=	bigintlength[@temp13]
-blt	i	@temp12	while_0
-else_4:
-return	@temp28
-enter	subtract
-@temp29	=	bigintlength[@temp30]
-l1=@temp29
-@temp31	=	bigintlength[@temp32]
-l2=@temp31
-call	min
-push	no.0para	l1
-push	no.1para	l2
-JAL	min
-@temp33=$v0
-k=@temp33
-call	max
-push	no.0para	l1
-push	no.1para	l2
-JAL	max
-@temp34=$v0
-j=@temp34
-call	compare
-JAL	compare
-@temp35=$v0
-blt	@temp35	@temp36	else_7
-flag=0
-i=0
-bge	i	l1	else_8
-while_1:
-@temp42=	l1	-	@temp41
-@temp43=	@temp42	-	i
-@temp39	=	bigintarr[@temp40][@temp43]	=	
-a[i]	=	@temp39
-@temp45=	i	+	@temp44
-i=@temp45
-blt	i	l1	while_1
-else_8:
-i=0
-bge	i	l2	else_9
-while_2:
-@temp50=	l2	-	@temp49
-@temp51=	@temp50	-	i
-@temp47	=	bigintarr[@temp48][@temp51]	=	
-b[i]	=	@temp47
-@temp53=	i	+	@temp52
-i=@temp53
-blt	i	l2	while_2
-else_9:
-J	else_end_7
-else_7:
-flag=1
-i=0
-bge	i	l2	else_10
-while_3:
-@temp59=	l2	-	@temp58
-@temp60=	@temp59	-	i
-@temp56	=	bigintarr[@temp57][@temp60]	=	
-a[i]	=	@temp56
-@temp62=	i	+	@temp61
-i=@temp62
-blt	i	l2	while_3
-else_10:
-i=0
-bge	i	l1	else_11
-while_4:
-@temp67=	l1	-	@temp66
-@temp68=	@temp67	-	i
-@temp64	=	bigintarr[@temp65][@temp68]	=	
-b[i]	=	@temp64
-@temp70=	i	+	@temp69
-i=@temp70
-blt	i	l1	while_4
-else_11:
-else_end_7:
-i=0
-bge	i	k	else_12
-while_5:
-@temp72	=	a[i]
-@temp73	=	b[i]
-blt	@temp72	@temp73	else_13
-@temp74	=	a[i]
-@temp75	=	b[i]
-@temp76=	@temp74	-	@temp75
-c[i]	=	@temp76
-J	else_end_13
-else_13:
-@temp77	=	a[i]
-@temp79=	@temp77	+	@temp78
-@temp80	=	b[i]
-@temp81=	@temp79	-	@temp80
-c[i]	=	@temp81
-@temp83=	i	+	@temp82
-@temp86=	i	+	@temp85
-@temp84	=	a[@temp86]
-@temp88=	@temp84	-	@temp87
-a[@temp83]	=	@temp88
-else_end_13:
-@temp90=	i	+	@temp89
-i=@temp90
-blt	i	k	while_5
-else_12:
-bge	i	j	else_14
-while_6:
-@temp91	=	a[i]
-blt	@temp91	@temp92	else_15
-@temp93	=	a[i]
-c[i]	=	@temp93
-J	else_end_15
-else_15:
-@temp94	=	a[i]
-@temp96=	@temp94	+	@temp95
-c[i]	=	@temp96
-@temp98=	i	+	@temp97
-@temp101=	i	+	@temp100
-@temp99	=	a[@temp101]
-@temp103=	@temp99	-	@temp102
-a[@temp98]	=	@temp103
-else_end_15:
-@temp105=	i	+	@temp104
-i=@temp105
-blt	i	j	while_6
-else_14:
-@temp108=	i	-	@temp107
-@temp106	=	c[@temp108]
-bne	@temp106	@temp109	else_16
-while_7:
-@temp111=	i	-	@temp110
-i=@temp111
-@temp108=	i	-	@temp107
-@temp106	=	c[@temp108]
-beq	@temp106	@temp109	while_7
-else_16:
-j=0
-bne	flag	@temp113	else_17
-write	string0	
-else_17:
-@temp115=	i	-	@temp114
-k=@temp115
-ble	k	@temp118	else_18
-while_8:
-@temp119	=	c[k]
-result[j]	=	@temp119
-@temp121=	k	-	@temp120
-k=@temp121
-@temp123=	j	+	@temp122
-j=@temp123
-bgt	k	@temp118	while_8
-else_18:
-return	j
 enter	main
+@temp0	=	n[@temp1][@temp2]	=	
+bne	@temp0	@temp3	else_0
+write	string0	
+else_0:
 i=0
-read	n
-bigintlength[@temp124]	=	n
-bge	i	n	else_19
-while_9:
-read	tmp
-bigintarr[@temp125][i]	=	tmp
-@temp127=	i	+	@temp126
-i=@temp127
-blt	i	n	while_9
-else_19:
-read	n
-bigintlength[@temp128]	=	n
-i=0
-bge	i	n	else_20
-while_10:
-read	tmp
-bigintarr[@temp130][i]	=	tmp
-@temp132=	i	+	@temp131
-i=@temp132
-blt	i	n	while_10
-else_20:
-i=0
-call	subtract
-JAL	subtract
-@temp134=$v0
-n=@temp134
-bge	i	n	else_21
-while_11:
-@temp135	=	result[i]
-write		@temp135
-@temp137=	i	+	@temp136
-i=@temp137
-blt	i	n	while_11
-else_21:
-return	
+bge	i	@temp5	else_1
+for_0:
+j=0
+bge	j	@temp8	else_2
+for_1:
+@temp10	=	n[i][j]	=	
+bne	@temp10	@temp11	switch_0_case_1
+write		@temp12
+J	switch_end_0
+switch_0_case_1:
+bne	@temp10	@temp13	switch_0_case_2
+write		@temp14
+J	switch_end_0
+switch_0_case_2:
+bne	@temp10	@temp15	switch_0_case_3
+write		@temp16
+J	switch_end_0
+switch_0_case_3:
+bne	@temp10	@temp17	switch_0_case_4
+write		@temp18
+J	switch_end_0
+switch_0_case_4:
+bne	@temp10	@temp19	switch_0_case_5
+write		@temp20
+J	switch_end_0
+switch_0_case_5:
+bne	@temp10	@temp21	switch_0_case_6
+write		@temp22
+J	switch_end_0
+switch_0_case_6:
+bne	@temp10	@temp23	switch_0_case_7
+write		@temp24
+J	switch_end_0
+switch_0_case_7:
+write		@temp25
+switch_end_0:
+j=	j	+	@temp9
+blt	j	@temp8	for_1
+else_2:
+i=	i	+	@temp6
+blt	i	@temp5	for_0
+else_1:
+@temp26	=	n[@temp27][@temp28]	=	
+bne	@temp26	@temp29	switch_1_case_1
+n[@temp30][@temp31]	=	@temp32
+J	switch_end_1
+switch_1_case_1:
+n[@temp33][@temp34]	=	@temp35
+switch_end_1:
+@temp36	=	n[@temp37][@temp38]	=	
+beq	@temp36	@temp39	else_3
+write	string1	
+else_3:
 PROGRAM_END:

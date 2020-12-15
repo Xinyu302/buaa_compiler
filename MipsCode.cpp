@@ -88,7 +88,7 @@ inline void enterFunc(const std::string& funcName) {
 //    nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     mipscodes.push_back(funcName + ":");
-    if (nowFuncSymbolTable != globalSymbolTable) {
+    if (nowFuncSymbolTable != globalSymbolTable && !nowFuncSymbolTable->getIsLeaf()) {
         genMoveVarToMem("$ra", "$ra");
     }
 //    if (nowFuncSymbolTable == globalSymbolTable) {
@@ -111,7 +111,9 @@ inline void outFunc(const std::string &expName = "") {
         }
 
     }
-    genLw("$ra", "$sp", nowFuncSymbolTable->getOffset("$ra"));
+    if (!nowFuncSymbolTable->getIsLeaf()) {
+        genLw("$ra", "$sp", nowFuncSymbolTable->getOffset("$ra"));
+    }
     genThreeRegInstr("addi", "$sp", "$sp", int2string(nowFuncSymbolTable->getSubOffset()));
     mipscodes.push_back("jr" + tab + "$ra");
 
@@ -398,9 +400,9 @@ void genArrayEleOff(const std::string &reg, const std::string &arrayName, const 
 //            genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
         }
 //        genThreeRegInstr("addu", "$t1", "$t1", "$t2");
-
-        genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
-        genThreeRegInstr("addu", "$t1", "$t1", base);
+//
+//        genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+//        genThreeRegInstr("addu", "$t1", "$t1", base);
 
     } else {
         if (nowFuncSymbolTable->isConstValue(x,value_x)) {

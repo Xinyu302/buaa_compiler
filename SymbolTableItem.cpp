@@ -147,3 +147,11 @@ int FunctionSymbolTable::getArrayY(const std::string &name) {
     return -1;
 }
 
+void FunctionSymbolTable::setIsLeaf(bool isLeaf) {
+    this->isLeaf = isLeaf;
+}
+
+bool FunctionSymbolTable::getIsLeaf() {
+    return isLeaf;
+}
+

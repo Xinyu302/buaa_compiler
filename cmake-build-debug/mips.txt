@@ -1,707 +1,188 @@
 .data
 stringEnter:	.asciiz	"\n"
-string0:	.asciiz	"-"
+string0:	.asciiz	"18231210"
+string1:	.asciiz	"finish"
 .text
 #global:
-addi	$sp,	$sp,	-36
+addi	$sp,	$sp,	-60
 jal	main
 j	PROGRAM_END
-min:
-sw	$ra,	0($sp)
-lw	$t0,	4($sp)
-lw	$t1,	8($sp)
-ble	$t0,	$t1,	else_0
-lw	$v0,	8($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	12
-jr	$ra
-j	else_end_0
-else_0:
-lw	$v0,	4($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	12
-jr	$ra
-else_end_0:
-max:
-sw	$ra,	0($sp)
-lw	$t0,	4($sp)
-lw	$t1,	8($sp)
-ble	$t0,	$t1,	else_1
-lw	$v0,	4($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	12
-jr	$ra
-j	else_end_1
-else_1:
-lw	$v0,	8($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	12
-jr	$ra
-else_end_1:
-compare:
-sw	$ra,	0($sp)
-li	$t0,	0
-sw	$t0,	4($sp)
-addi	$t1,	$gp,	800
-lw	$t0,	0($t1)
-sw	$t0,	8($sp)
-addi	$t1,	$gp,	804
-lw	$t0,	0($t1)
-sw	$t0,	12($sp)
-lw	$t0,	8($sp)
-lw	$t1,	12($sp)
-ble	$t0,	$t1,	else_2
-li	$v0,	1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	48
-jr	$ra
-else_2:
-addi	$t1,	$gp,	800
-lw	$t0,	0($t1)
-sw	$t0,	16($sp)
-addi	$t1,	$gp,	804
-lw	$t0,	0($t1)
-sw	$t0,	20($sp)
-lw	$t0,	16($sp)
-lw	$t1,	20($sp)
-bge	$t0,	$t1,	else_3
-li	$v0,	-1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	48
-jr	$ra
-else_3:
-addi	$t1,	$gp,	800
-lw	$t0,	0($t1)
-sw	$t0,	24($sp)
-lw	$t0,	4($sp)
-lw	$t1,	24($sp)
-bge	$t0,	$t1,	else_4
-while_0:
-lw	$t1,	4($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	28($sp)
-lw	$t1,	4($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	400
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	32($sp)
-lw	$t0,	28($sp)
-lw	$t1,	32($sp)
-ble	$t0,	$t1,	else_5
-li	$v0,	1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	48
-jr	$ra
-else_5:
-lw	$t1,	4($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	36($sp)
-lw	$t1,	4($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	400
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	40($sp)
-lw	$t0,	36($sp)
-lw	$t1,	40($sp)
-bge	$t0,	$t1,	else_6
-li	$v0,	-1
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	48
-jr	$ra
-else_6:
-lw	$t1,	4($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	44($sp)
-lw	$t1,	44($sp)
-move	$t0,	$t1
-sw	$t0,	4($sp)
-addi	$t1,	$gp,	800
-lw	$t0,	0($t1)
-sw	$t0,	24($sp)
-lw	$t0,	4($sp)
-lw	$t1,	24($sp)
-blt	$t0,	$t1,	while_0
-else_4:
-li	$v0,	0
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	48
-jr	$ra
-subtract:
-sw	$ra,	0($sp)
-addi	$t1,	$gp,	800
-lw	$t0,	0($t1)
-sw	$t0,	1228($sp)
-lw	$t1,	1228($sp)
-move	$t0,	$t1
-sw	$t0,	1220($sp)
-addi	$t1,	$gp,	804
-lw	$t0,	0($t1)
-sw	$t0,	1232($sp)
-lw	$t1,	1232($sp)
-move	$t0,	$t1
-sw	$t0,	1224($sp)
-lw	$t0,	1220($sp)
-sw	$t0,	-8($sp)
-lw	$t0,	1224($sp)
-sw	$t0,	-4($sp)
-addi	$sp,	$sp,	-12
-jal	min
-sw	$v0,	1236($sp)
-lw	$t1,	1236($sp)
-move	$t0,	$t1
-sw	$t0,	1212($sp)
-lw	$t0,	1220($sp)
-sw	$t0,	-8($sp)
-lw	$t0,	1224($sp)
-sw	$t0,	-4($sp)
-addi	$sp,	$sp,	-12
-jal	max
-sw	$v0,	1240($sp)
-lw	$t1,	1240($sp)
-move	$t0,	$t1
-sw	$t0,	1208($sp)
-addi	$sp,	$sp,	-48
-jal	compare
-sw	$v0,	1244($sp)
-lw	$t0,	1244($sp)
-li	$t1,	0
-blt	$t0,	$t1,	else_7
-li	$t0,	0
-sw	$t0,	1216($sp)
-li	$t0,	0
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1220($sp)
-bge	$t0,	$t1,	else_8
-while_1:
-lw	$t1,	1220($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1252($sp)
-lw	$t1,	1252($sp)
-lw	$t2,	1204($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1256($sp)
-lw	$t1,	1256($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	1248($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	1248($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1260($sp)
-lw	$t1,	1260($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1220($sp)
-blt	$t0,	$t1,	while_1
-else_8:
-li	$t0,	0
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1224($sp)
-bge	$t0,	$t1,	else_9
-while_2:
-lw	$t1,	1224($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1268($sp)
-lw	$t1,	1268($sp)
-lw	$t2,	1204($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1272($sp)
-lw	$t1,	1272($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	400
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	1264($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	404
-addu	$t1,	$t1,	$sp
-lw	$t0,	1264($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1276($sp)
-lw	$t1,	1276($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1224($sp)
-blt	$t0,	$t1,	while_2
-else_9:
-j	else_end_7
-else_7:
+main:
 li	$t0,	1
-sw	$t0,	1216($sp)
-li	$t0,	0
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1224($sp)
-bge	$t0,	$t1,	else_10
-while_3:
-lw	$t1,	1224($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1284($sp)
-lw	$t1,	1284($sp)
-lw	$t2,	1204($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1288($sp)
-lw	$t1,	1288($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	400
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
+sw	$t0,	4($sp)
+li	$t0,	2
+sw	$t0,	8($sp)
+li	$t0,	3
+sw	$t0,	12($sp)
+li	$t0,	4
+sw	$t0,	16($sp)
+li	$t0,	5
+sw	$t0,	20($sp)
+li	$t0,	6
+sw	$t0,	24($sp)
+li	$t0,	7
+sw	$t0,	28($sp)
+li	$t0,	8
+sw	$t0,	32($sp)
+addi	$t1,	$sp,	4
 lw	$t0,	0($t1)
-sw	$t0,	1280($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	1280($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1292($sp)
-lw	$t1,	1292($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1224($sp)
-blt	$t0,	$t1,	while_3
-else_10:
-li	$t0,	0
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1220($sp)
-bge	$t0,	$t1,	else_11
-while_4:
-lw	$t1,	1220($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1300($sp)
-lw	$t1,	1300($sp)
-lw	$t2,	1204($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1304($sp)
-lw	$t1,	1304($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	1296($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	404
-addu	$t1,	$t1,	$sp
-lw	$t0,	1296($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1308($sp)
-lw	$t1,	1308($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1220($sp)
-blt	$t0,	$t1,	while_4
-else_11:
-else_end_7:
-li	$t0,	0
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1212($sp)
-bge	$t0,	$t1,	else_12
-while_5:
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1312($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	404
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1316($sp)
-lw	$t0,	1312($sp)
-lw	$t1,	1316($sp)
-blt	$t0,	$t1,	else_13
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1320($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	404
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1324($sp)
-lw	$t1,	1320($sp)
-lw	$t2,	1324($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1328($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	1328($sp)
-sw	$t0,	0($t1)
-j	else_end_13
-else_13:
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1332($sp)
-lw	$t1,	1332($sp)
-addi	$t0,	$t1,	10
-sw	$t0,	1336($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	404
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1340($sp)
-lw	$t1,	1336($sp)
-lw	$t2,	1340($sp)
-subu	$t0,	$t1,	$t2
-sw	$t0,	1344($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	1344($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1348($sp)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1356($sp)
-lw	$t0,	1356($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1352($sp)
-lw	$t1,	1352($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1360($sp)
-lw	$t0,	1348($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	1360($sp)
-sw	$t0,	0($t1)
-else_end_13:
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1364($sp)
-lw	$t1,	1364($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1212($sp)
-blt	$t0,	$t1,	while_5
-else_12:
-lw	$t0,	1204($sp)
-lw	$t1,	1208($sp)
-bge	$t0,	$t1,	else_14
-while_6:
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1368($sp)
-lw	$t0,	1368($sp)
-li	$t1,	0
-blt	$t0,	$t1,	else_15
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1372($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	1372($sp)
-sw	$t0,	0($t1)
-j	else_end_15
-else_15:
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1376($sp)
-lw	$t1,	1376($sp)
-addi	$t0,	$t1,	10
-sw	$t0,	1380($sp)
-lw	$t0,	1204($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	1380($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1384($sp)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1392($sp)
-lw	$t0,	1392($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1388($sp)
-lw	$t1,	1388($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1396($sp)
-lw	$t0,	1384($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4
-addu	$t1,	$t1,	$sp
-lw	$t0,	1396($sp)
-sw	$t0,	0($t1)
-else_end_15:
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1400($sp)
-lw	$t1,	1400($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t0,	1204($sp)
-lw	$t1,	1208($sp)
-blt	$t0,	$t1,	while_6
-else_14:
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1408($sp)
-lw	$t0,	1408($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1404($sp)
-lw	$t0,	1404($sp)
-li	$t1,	0
-bne	$t0,	$t1,	else_16
-while_7:
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1412($sp)
-lw	$t1,	1412($sp)
-move	$t0,	$t1
-sw	$t0,	1204($sp)
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1408($sp)
-lw	$t0,	1408($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
-addu	$t1,	$t1,	$sp
-lw	$t0,	0($t1)
-sw	$t0,	1404($sp)
-lw	$t0,	1404($sp)
-li	$t1,	0
-beq	$t0,	$t1,	while_7
-else_16:
-li	$t0,	0
-sw	$t0,	1208($sp)
-lw	$t0,	1216($sp)
+sw	$t0,	44($sp)
+lw	$t0,	44($sp)
 li	$t1,	1
-bne	$t0,	$t1,	else_17
+bne	$t0,	$t1,	else_0
 la	$a0,	string0
 li	$v0,	4
 syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-else_17:
-lw	$t1,	1204($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1416($sp)
-lw	$t1,	1416($sp)
-move	$t0,	$t1
-sw	$t0,	1212($sp)
-lw	$t0,	1212($sp)
-li	$t1,	-1
-ble	$t0,	$t1,	else_18
-while_8:
-lw	$t0,	1212($sp)
+else_0:
+li	$t0,	0
+sw	$t0,	36($sp)
+lw	$t0,	36($sp)
+li	$t1,	2
+bge	$t0,	$t1,	else_1
+for_0:
+li	$t0,	0
+sw	$t0,	40($sp)
+lw	$t0,	40($sp)
+li	$t1,	4
+bge	$t0,	$t1,	else_2
+for_1:
+lw	$t0,	36($sp)
 sll	$t0,	$t0,	2
-addi	$t1,	$t0,	804
+sll	$t0,	$t0,	2
+lw	$t1,	40($sp)
+sll	$t1,	$t1,	2
+addi	$t1,	$t1,	4
+addu	$t1,	$t1,	$t0
 addu	$t1,	$t1,	$sp
 lw	$t0,	0($t1)
-sw	$t0,	1420($sp)
-lw	$t0,	1208($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	808
-addu	$t1,	$t1,	$gp
-lw	$t0,	1420($sp)
-sw	$t0,	0($t1)
-lw	$t1,	1212($sp)
-addi	$t0,	$t1,	-1
-sw	$t0,	1424($sp)
-lw	$t1,	1424($sp)
-move	$t0,	$t1
-sw	$t0,	1212($sp)
-lw	$t1,	1208($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	1428($sp)
-lw	$t1,	1428($sp)
-move	$t0,	$t1
-sw	$t0,	1208($sp)
-lw	$t0,	1212($sp)
-li	$t1,	-1
-bgt	$t0,	$t1,	while_8
-else_18:
-lw	$v0,	1208($sp)
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	1432
-jr	$ra
-main:
-sw	$ra,	0($sp)
-li	$t0,	0
-sw	$t0,	8($sp)
-li	$v0,	5
-syscall
-sw	$v0,	4($sp)
-addi	$t1,	$gp,	800
-lw	$t0,	4($sp)
-sw	$t0,	0($t1)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-bge	$t0,	$t1,	else_19
-while_9:
-li	$v0,	5
-syscall
-sw	$v0,	12($sp)
-lw	$t1,	8($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	12($sp)
-sw	$t0,	0($t1)
-lw	$t1,	8($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	16($sp)
-lw	$t1,	16($sp)
-move	$t0,	$t1
-sw	$t0,	8($sp)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-blt	$t0,	$t1,	while_9
-else_19:
-li	$v0,	5
-syscall
-sw	$v0,	4($sp)
-addi	$t1,	$gp,	804
-lw	$t0,	4($sp)
-sw	$t0,	0($t1)
-li	$t0,	0
-sw	$t0,	8($sp)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-bge	$t0,	$t1,	else_20
-while_10:
-li	$v0,	5
-syscall
-sw	$v0,	12($sp)
-lw	$t1,	8($sp)
-sll	$t1,	$t1,	2
-addi	$t1,	$t1,	400
-addu	$t1,	$t1,	$gp
-addi	$t1,	$t1,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	12($sp)
-sw	$t0,	0($t1)
-lw	$t1,	8($sp)
-addi	$t0,	$t1,	1
-sw	$t0,	20($sp)
-lw	$t1,	20($sp)
-move	$t0,	$t1
-sw	$t0,	8($sp)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-blt	$t0,	$t1,	while_10
-else_20:
-li	$t0,	0
-sw	$t0,	8($sp)
-addi	$sp,	$sp,	-1432
-jal	subtract
-sw	$v0,	24($sp)
-lw	$t1,	24($sp)
-move	$t0,	$t1
-sw	$t0,	4($sp)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-bge	$t0,	$t1,	else_21
-while_11:
-lw	$t0,	8($sp)
-sll	$t0,	$t0,	2
-addi	$t1,	$t0,	808
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	28($sp)
-lw	$a0,	28($sp)
+sw	$t0,	48($sp)
+lw	$t0,	48($sp)
+li	$t1,	1
+bne	$t0,	$t1,	switch_0_case_1
+li	$a0,	1
 li	$v0,	1
 syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-lw	$t1,	8($sp)
+j	switch_end_0
+switch_0_case_1:
+lw	$t0,	48($sp)
+li	$t1,	2
+bne	$t0,	$t1,	switch_0_case_2
+li	$a0,	2
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_2:
+lw	$t0,	48($sp)
+li	$t1,	3
+bne	$t0,	$t1,	switch_0_case_3
+li	$a0,	3
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_3:
+lw	$t0,	48($sp)
+li	$t1,	4
+bne	$t0,	$t1,	switch_0_case_4
+li	$a0,	4
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_4:
+lw	$t0,	48($sp)
+li	$t1,	5
+bne	$t0,	$t1,	switch_0_case_5
+li	$a0,	5
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_5:
+lw	$t0,	48($sp)
+li	$t1,	6
+bne	$t0,	$t1,	switch_0_case_6
+li	$a0,	6
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_6:
+lw	$t0,	48($sp)
+li	$t1,	7
+bne	$t0,	$t1,	switch_0_case_7
+li	$a0,	7
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+j	switch_end_0
+switch_0_case_7:
+li	$a0,	8
+li	$v0,	1
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+switch_end_0:
+lw	$t1,	40($sp)
 addi	$t0,	$t1,	1
-sw	$t0,	32($sp)
-lw	$t1,	32($sp)
-move	$t0,	$t1
-sw	$t0,	8($sp)
-lw	$t0,	8($sp)
-lw	$t1,	4($sp)
-blt	$t0,	$t1,	while_11
-else_21:
-lw	$ra,	0($sp)
-addi	$sp,	$sp,	36
-jr	$ra
+sw	$t0,	40($sp)
+lw	$t0,	40($sp)
+li	$t1,	4
+blt	$t0,	$t1,	for_1
+else_2:
+lw	$t1,	36($sp)
+addi	$t0,	$t1,	1
+sw	$t0,	36($sp)
+lw	$t0,	36($sp)
+li	$t1,	2
+blt	$t0,	$t1,	for_0
+else_1:
+addi	$t1,	$sp,	4
+lw	$t0,	0($t1)
+sw	$t0,	52($sp)
+lw	$t0,	52($sp)
+li	$t1,	1
+bne	$t0,	$t1,	switch_1_case_1
+addi	$t1,	$sp,	4
+li	$t0,	0
+sw	$t0,	0($t1)
+j	switch_end_1
+switch_1_case_1:
+addi	$t1,	$sp,	4
+li	$t0,	1
+sw	$t0,	0($t1)
+switch_end_1:
+addi	$t1,	$sp,	4
+lw	$t0,	0($t1)
+sw	$t0,	56($sp)
+lw	$t0,	56($sp)
+li	$t1,	2
+beq	$t0,	$t1,	else_3
+la	$a0,	string1
+li	$v0,	4
+syscall
+la	$a0,	stringEnter
+li	$v0,	4
+syscall
+else_3:
 PROGRAM_END:

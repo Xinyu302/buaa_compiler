@@ -20,6 +20,7 @@ ParseSyntax::ParseSyntax(std::vector<Token>& _TokenVec):TokenVec(_TokenVec){}
 int nothing;
 int nowLoc = 0;
 int isInner = 0;
+bool isLeaf = true;
 int FUNC_TYPE;
 bool FUNC_HAS_RETURN;
 
@@ -1547,6 +1548,7 @@ bool Handle_STATEMENT(bool show)
 		else {
             if (symbolTableItemPtr->getClassType() == SymbolTableItem::FUNC)
             {
+                curFuncTable->setIsLeaf(false);
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::VOID)
                 {
                     Handle_VOID_FUNC_CALL(show);
