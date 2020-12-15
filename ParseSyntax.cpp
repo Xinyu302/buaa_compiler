@@ -756,6 +756,7 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
         else if (typeAssert(nowLoc+1, Token::LPARENT))
         {
             varName = applyTmpId();
+            curFuncTable->setIsLeaf(false);
             Handle_RETURN_FUNC_CALL(show,ischar);
             MidCodeFactory(MidCode::ASSIGN, varName, "$v0");
         }
