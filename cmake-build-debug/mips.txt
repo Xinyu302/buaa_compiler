@@ -123,13 +123,13 @@ bge	$t0,	$t1,	else_2
 for_0:
 lw	$t0,	36($sp)
 sll	$t0,	$t0,	2
-addi	$t1,	$t0,	0
+addiu	$t1,	$t0,	0
 addu	$t1,	$t1,	$gp
 lw	$t0,	36($sp)
 sw	$t0,	0($t1)
 lw	$t0,	36($sp)
 sll	$t0,	$t0,	2
-addi	$t1,	$t0,	0
+addiu	$t1,	$t0,	0
 addu	$t1,	$t1,	$gp
 lw	$t0,	0($t1)
 sw	$t0,	40($sp)
@@ -154,7 +154,7 @@ bge	$t0,	$t1,	else_3
 for_1:
 lw	$t0,	4024($gp)
 sll	$t0,	$t0,	2
-addi	$t1,	$t0,	4028
+addiu	$t1,	$t0,	4028
 addu	$t1,	$t1,	$gp
 lw	$t0,	0($t1)
 sw	$t0,	44($sp)
@@ -197,7 +197,7 @@ li	$t1,	0
 blt	$t0,	$t1,	else_5
 j	else_end_5
 else_5:
-addi	$t1,	$gp,	4076
+addiu	$t1,	$gp,	4076
 li	$t0,	10
 sw	$t0,	0($t1)
 else_end_5:
@@ -220,7 +220,7 @@ mult	$t0	$t1
 mflo	$t0
 lw	$t1,	36($sp)
 sll	$t1,	$t1,	2
-addi	$t1,	$t1,	4040
+addiu	$t1,	$t1,	4040
 addu	$t1,	$t1,	$t0
 addu	$t1,	$t1,	$gp
 lw	$t0,	0($t1)
@@ -247,16 +247,16 @@ blt	$t0,	$t1,	for_3
 else_6:
 addiu	$sp,	$sp,	-44
 jal	func1
-sw	$v0,	56($sp)
+move	$t2,	$v0
+sw	$t2,	-40($sp)
 li	$t0,	668
 sw	$t0,	-8($sp)
 addiu	$sp,	$sp,	-44
 jal	func2
-sw	$v0,	60($sp)
-lw	$t0,	56($sp)
-lw	$t1,	60($sp)
-addu	$t2,	$t0,	$t1
-sw	$t2,	-68($sp)
+lw	$t2,	-40($sp)
+move	$t3,	$v0
+addu	$t4,	$t2,	$t3
+sw	$t4,	-60($sp)
 li	$t0,	50
 sw	$t0,	-36($sp)
 li	$t0,	-80
@@ -265,14 +265,13 @@ li	$t0,	49
 sw	$t0,	-28($sp)
 addiu	$sp,	$sp,	-72
 jal	func3
-lw	$t2,	-68($sp)
-sw	$v0,	68($sp)
-lw	$t0,	68($sp)
+lw	$t4,	-60($sp)
+move	$t2,	$v0
 li	$t1,	917
-mult	$t0,	$t1
+mult	$t2,	$t1
 mflo	$t3
-addu	$t4,	$t2,	$t3
-move	$a0,	$t4
+addu	$t2,	$t4,	$t3
+move	$a0,	$t2
 li	$v0,	1
 syscall
 la	$a0,	stringEnter

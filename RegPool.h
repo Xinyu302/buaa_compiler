@@ -21,6 +21,5 @@ public:
 };
 
 class SRegPool {
-    int regSum = 8;
 
 };

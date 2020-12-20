@@ -172,7 +172,7 @@ void genCalMips(CalMidCode* calMidCode) {
     MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
     if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
         isValue1const = true;
-        if ((value1 & (value1 - 1)) == 0 && anOperator == MidCode::MULTI) {
+        if ((value1 & (value1 - 1)) == 0 && (anOperator == MidCode::MULTI )) {
             constValueIndex = 1;
             const4Value = value1;
         }
@@ -200,7 +200,7 @@ void genCalMips(CalMidCode* calMidCode) {
             genThreeRegInstr("addiu",regResult,l,int2string(-value2));
             goto genCalMipsEnd;
         } else {
-            if ((value2 & (value2 - 1))== 0 && anOperator == MidCode::MULTI) {
+            if ((value2 & (value2 - 1))== 0 && (anOperator == MidCode::MULTI || anOperator == MidCode::DIV)) {
                 constValueIndex = 2;
                 const4Value = value2;
             } else {
@@ -232,8 +232,21 @@ void genCalMips(CalMidCode* calMidCode) {
                 genSll(regResult, l, log2_B(const4Value));
             }
         } else {
-            genTwoRegInstr(op2string[anOperator],l,r);
-            mipscodes.push_back("mflo" + tab + regResult);
+            if (constValueIndex == 2 && anOperator == MidCode::DIV) {
+                const std::string &elseId = getNextElseId();
+                const std::string &elseEndId = getNextElseEndId();
+                genThreeRegInstr("blt", l, "zero", elseId);
+                genSrl(regResult, l, log2_B(const4Value));
+                mipscodes.push_back("j" + tab + elseEndId);
+                mipscodes.push_back(elseId + ":");
+                genThreeRegInstr("subu", l, "zero", l);
+                genSrl(l, l, log2_B(const4Value));
+                genThreeRegInstr("subu", regResult, "zero", l);
+                mipscodes.push_back(elseEndId + ":");
+            } else {
+                genTwoRegInstr(op2string[anOperator],l,r);
+                mipscodes.push_back("mflo" + tab + regResult);
+            }
         }
     }
     genCalMipsEnd:
@@ -319,6 +332,13 @@ void genAssignMips(AssignMidCode* assignMidCode) {
     }
     if (assignMidCode->getAssignType() == AssignMidCode::VAL) {
         if (assignMidCode->leftVal == "$v0") { // drectly load $v0 to temp var result
+            if (nowFuncSymbolTable->isTmpValue(assignMidCode->result) && tRegPool->hasFreeReg()) {
+                const std::string &regResult = tRegPool->allocReg(assignMidCode->result);
+                if (regResult.length()) {
+                    genMove(regResult, "$v0");
+                    return;
+                }
+            }
             genMoveVarToMem(assignMidCode->result,"$v0");
             return;
         }
@@ -425,6 +445,10 @@ void genSll(const std::string& result,const std::string& from,int imm) {
     genThreeRegInstr("sll",result, from, int2string(imm));
 }
 
+void genSrl(const std::string& result,const std::string& from,int imm) {
+    genThreeRegInstr("srl",result, from, int2string(imm));
+}
+
 void genArrayEleOff(const std::string &reg, const std::string &arrayName, const std::string &x, const std::string &y = "") {
     bool global = false;
     int offset;
@@ -474,18 +498,18 @@ void genArrayEleOff(const std::string &reg, const std::string &arrayName, const 
             if (x_const) {
 //                x_offset += 4 * value_y;
 //                genLi("$t1", offset + x_offset + 4 * value_y);
-                genThreeRegInstr("addi", "$t1", base, int2string(offset + x_offset + 4 * value_y));
+                genThreeRegInstr("addiu", "$t1", base, int2string(offset + x_offset + 4 * value_y));
             } else {
-                genThreeRegInstr("addi", "$t1", "$t0", int2string(offset + 4 * value_y));
+                genThreeRegInstr("addiu", "$t1", "$t0", int2string(offset + 4 * value_y));
                 genThreeRegInstr("addu", "$t1", "$t1", base);
             }
         } else {
             if (x_const) {
-                genThreeRegInstr("addi", "$t1", "$t1", int2string(offset + x_offset));
+                genThreeRegInstr("addiu", "$t1", "$t1", int2string(offset + x_offset));
                 genThreeRegInstr("addu", "$t1", "$t1", base);
             }
             else {
-                genThreeRegInstr("addi", "$t1", "$t1", int2string(offset));
+                genThreeRegInstr("addiu", "$t1", "$t1", int2string(offset));
                 genThreeRegInstr("addu","$t1","$t1","$t0");
                 genThreeRegInstr("addu", "$t1", "$t1", base);
             }
@@ -506,9 +530,9 @@ void genArrayEleOff(const std::string &reg, const std::string &arrayName, const 
         }
         base = (global) ? "$gp" : "$sp";
         if (x_const) {
-            genThreeRegInstr("addi", "$t1", base, int2string(offset + 4 * value_x));
+            genThreeRegInstr("addiu", "$t1", base, int2string(offset + 4 * value_x));
         } else {
-            genThreeRegInstr("addi", "$t1", "$t0", int2string(offset));
+            genThreeRegInstr("addiu", "$t1", "$t0", int2string(offset));
             genThreeRegInstr("addu", "$t1", "$t1", base);
         }
 

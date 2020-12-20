@@ -19,3 +19,4 @@ void genSaveTReg();
 void genRestoreTReg();
 
 void genSll(const std::string& result,const std::string& from,int imm);
+void genSrl(const std::string& result,const std::string& from,int imm);
