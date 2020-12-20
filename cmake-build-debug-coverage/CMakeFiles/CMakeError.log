@@ -1,0 +1,360 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags:  
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -c 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -Aa 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+cc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+cc: error: unrecognized command-line option ‘--target=arm-arm-none-eabi’
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_f89a9/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f89a9.dir/build.make CMakeFiles/cmTC_f89a9.dir/build
+gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f89a9.dir/testCCompiler.c.o
+/usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_f89a9.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+gmake[1]: *** [CMakeFiles/cmTC_f89a9.dir/build.make:86: CMakeFiles/cmTC_f89a9.dir/testCCompiler.c.o] Error 1
+gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:141: cmTC_f89a9/fast] Error 2
+
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags:  
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -c 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -Aa 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+cc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+cc: error: unrecognized command-line option ‘--target=arm-arm-none-eabi’
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_3d7bc/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_3d7bc.dir/build.make CMakeFiles/cmTC_3d7bc.dir/build
+gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_3d7bc.dir/testCCompiler.c.o
+/usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_3d7bc.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+gmake[1]: *** [CMakeFiles/cmTC_3d7bc.dir/build.make:86: CMakeFiles/cmTC_3d7bc.dir/testCCompiler.c.o] Error 1
+gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:141: cmTC_3d7bc/fast] Error 2
+
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags:  
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -c 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -Aa 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+cc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+cc: error: unrecognized command-line option ‘--target=arm-arm-none-eabi’
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_deb00/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_deb00.dir/build.make CMakeFiles/cmTC_deb00.dir/build
+gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_deb00.dir/testCCompiler.c.o
+/usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_deb00.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+gmake[1]: *** [CMakeFiles/cmTC_deb00.dir/build.make:86: CMakeFiles/cmTC_deb00.dir/testCCompiler.c.o] Error 1
+gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:141: cmTC_deb00/fast] Error 2
+
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags:  
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -c 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -Aa 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+cc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+cc: error: unrecognized command-line option ‘--target=arm-arm-none-eabi’
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_b3657/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_b3657.dir/build.make CMakeFiles/cmTC_b3657.dir/build
+gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b3657.dir/testCCompiler.c.o
+/usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_b3657.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+gmake[1]: *** [CMakeFiles/cmTC_b3657.dir/build.make:86: CMakeFiles/cmTC_b3657.dir/testCCompiler.c.o] Error 1
+gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:141: cmTC_b3657/fast] Error 2
+
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags:  
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -c 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -Aa 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: -D__CLASSIC_C__ 
+
+The output was:
+1
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+
+
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: /usr/bin/cc 
+Build flags: -fprofile-instr-generate;-fcoverage-mapping
+Id flags: --target=arm-arm-none-eabi;-mcpu=cortex-m3 
+
+The output was:
+1
+cc: warning: ‘-mcpu=’ is deprecated; use ‘-mtune=’ or ‘-march=’ instead
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+cc: error: unrecognized command-line option ‘--target=arm-arm-none-eabi’
+
+
+Determining if the C compiler works failed with the following output:
+Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/gmake cmTC_f0430/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f0430.dir/build.make CMakeFiles/cmTC_f0430.dir/build
+gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o
+/usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+gmake[1]: *** [CMakeFiles/cmTC_f0430.dir/build.make:86: CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o] Error 1
+gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+gmake: *** [Makefile:141: cmTC_f0430/fast] Error 2
+
+
+

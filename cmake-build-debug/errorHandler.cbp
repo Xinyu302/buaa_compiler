@@ -114,6 +114,12 @@
 		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/ParseToken.h">
 			<Option target="errorHandler"/>
 		</Unit>
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/RegPool.cpp">
+			<Option target="errorHandler"/>
+		</Unit>
+		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/RegPool.h">
+			<Option target="errorHandler"/>
+		</Unit>
 		<Unit filename="/home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp">
 			<Option target="errorHandler"/>
 		</Unit>

@@ -8,9 +8,6 @@
 #include "SymbolTableItem.h"
 
 extern std::vector<Token>* TokenVecPointer;
-extern std::vector<SymbolTableItem> OuterSymbolTable;
-extern std::map<std::string, std::vector<SymbolTableItem>> allInnerSymbolTable;
-
 
 void genMips();
 void genData();
@@ -18,5 +15,7 @@ void genText();
 void printMips();
 void printMipsCode();
 
+void genSaveTReg();
+void genRestoreTReg();
 
 void genSll(const std::string& result,const std::string& from,int imm);

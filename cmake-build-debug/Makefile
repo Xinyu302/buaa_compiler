@@ -251,6 +251,33 @@ ParseToken.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/errorHandler.dir/build.make CMakeFiles/errorHandler.dir/ParseToken.cpp.s
 .PHONY : ParseToken.cpp.s
 
+RegPool.o: RegPool.cpp.o
+
+.PHONY : RegPool.o
+
+# target to build an object file
+RegPool.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/errorHandler.dir/build.make CMakeFiles/errorHandler.dir/RegPool.cpp.o
+.PHONY : RegPool.cpp.o
+
+RegPool.i: RegPool.cpp.i
+
+.PHONY : RegPool.i
+
+# target to preprocess a source file
+RegPool.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/errorHandler.dir/build.make CMakeFiles/errorHandler.dir/RegPool.cpp.i
+.PHONY : RegPool.cpp.i
+
+RegPool.s: RegPool.cpp.s
+
+.PHONY : RegPool.s
+
+# target to generate assembly for a file
+RegPool.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/errorHandler.dir/build.make CMakeFiles/errorHandler.dir/RegPool.cpp.s
+.PHONY : RegPool.cpp.s
+
 SymbolTableItem.o: SymbolTableItem.cpp.o
 
 .PHONY : SymbolTableItem.o
@@ -380,6 +407,9 @@ help:
 	@echo "... ParseToken.o"
 	@echo "... ParseToken.i"
 	@echo "... ParseToken.s"
+	@echo "... RegPool.o"
+	@echo "... RegPool.i"
+	@echo "... RegPool.s"
 	@echo "... SymbolTableItem.o"
 	@echo "... SymbolTableItem.i"
 	@echo "... SymbolTableItem.s"

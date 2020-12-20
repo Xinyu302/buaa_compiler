@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/errorHandler.dir/MipsCode.cpp.o"
   "CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o"
   "CMakeFiles/errorHandler.dir/ParseToken.cpp.o"
+  "CMakeFiles/errorHandler.dir/RegPool.cpp.o"
   "CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o"
   "CMakeFiles/errorHandler.dir/Token.cpp.o"
   "CMakeFiles/errorHandler.dir/Utils.cpp.o"

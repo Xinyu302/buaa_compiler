@@ -9,6 +9,7 @@ CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../MidCode.h
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../MipsCode.cpp
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../MipsCode.h
+CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/MipsCode.cpp.o: ../Utils.h
@@ -27,6 +28,13 @@ CMakeFiles/errorHandler.dir/ParseToken.cpp.o: ../ErrorOutputControl.h
 CMakeFiles/errorHandler.dir/ParseToken.cpp.o: ../ParseToken.cpp
 CMakeFiles/errorHandler.dir/ParseToken.cpp.o: ../ParseToken.h
 CMakeFiles/errorHandler.dir/ParseToken.cpp.o: ../Token.h
+
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../MidCode.h
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../RegPool.cpp
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../RegPool.h
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../SymbolTableItem.h
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../Token.h
+CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../Utils.h
 
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../MidCode.h
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.cpp

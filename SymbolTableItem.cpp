@@ -3,6 +3,7 @@
 //
 
 #include "SymbolTableItem.h"
+#include "Utils.h"
 #include <string>
 extern SyntaxSymbolTable symbolTable;
 
@@ -38,6 +39,9 @@ SymbolTableItem::SymbolTableItem() {}
 FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name),varNum(0) {
     if (name != "#global") {
         varInfo["$ra"] = itemInfo(LOCALVAR,varNum++);
+        for (int i = 2; i <= 9; i++) {
+            varInfo["$t" + int2string(i)] = itemInfo(LOCALVAR, varNum++);
+        }
     }
 }
 

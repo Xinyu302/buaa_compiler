@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/yxy/study/compiler/design/buaa_compiler/MipsCode.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/MipsCode.cpp.o"
   "/home/yxy/study/compiler/design/buaa_compiler/ParseSyntax.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o"
   "/home/yxy/study/compiler/design/buaa_compiler/ParseToken.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/ParseToken.cpp.o"
+  "/home/yxy/study/compiler/design/buaa_compiler/RegPool.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/RegPool.cpp.o"
   "/home/yxy/study/compiler/design/buaa_compiler/SymbolTableItem.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o"
   "/home/yxy/study/compiler/design/buaa_compiler/Token.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/Token.cpp.o"
   "/home/yxy/study/compiler/design/buaa_compiler/Utils.cpp" "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug/CMakeFiles/errorHandler.dir/Utils.cpp.o"

@@ -1,0 +1,38 @@
+/usr/local/clion-2020.2.4/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=/usr/bin/clang++ "-DCMAKE_CXX_FLAGS=-fprofile-instr-generate -fcoverage-mapping" "-DCMAKE_C_FLAGS=-fprofile-instr-generate -fcoverage-mapping" -G "CodeBlocks - Unix Makefiles" /home/yxy/study/compiler/design/buaa_compiler
+-- The C compiler identification is GNU 10.2.0
+-- The CXX compiler identification is Clang 11.0.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc - broken
+CMake Error at /usr/local/clion-2020.2.4/bin/cmake/linux/share/cmake-3.17/Modules/CMakeTestCCompiler.cmake:60 (message):
+  The C compiler
+
+    "/usr/bin/cc"
+
+  is not able to compile a simple test program.
+
+  It fails with the following output:
+
+    Change Dir: /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp
+    
+    Run Build Command(s):/usr/bin/gmake cmTC_f0430/fast && /usr/bin/gmake  -f CMakeFiles/cmTC_f0430.dir/build.make CMakeFiles/cmTC_f0430.dir/build
+    gmake[1]: Entering directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+    Building C object CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o
+    /usr/bin/cc   -fprofile-instr-generate -fcoverage-mapping    -o CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o   -c /home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp/testCCompiler.c
+    cc: error: unrecognized command-line option ‘-fprofile-instr-generate’; did you mean ‘-fprofile-generate’?
+    cc: error: unrecognized command-line option ‘-fcoverage-mapping’
+    gmake[1]: *** [CMakeFiles/cmTC_f0430.dir/build.make:86: CMakeFiles/cmTC_f0430.dir/testCCompiler.c.o] Error 1
+    gmake[1]: Leaving directory '/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeTmp'
+    gmake: *** [Makefile:141: cmTC_f0430/fast] Error 2
+    
+    
+
+  
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:2 (project)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeOutput.log".
+See also "/home/yxy/study/compiler/design/buaa_compiler/cmake-build-debug-coverage/CMakeFiles/CMakeError.log".

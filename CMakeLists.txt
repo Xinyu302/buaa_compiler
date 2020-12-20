@@ -4,6 +4,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_GLIBCXX_DEBUG")
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES symbolAnalysis.cpp Token.h Token.cpp ParseSyntax.cpp ParseSyntax.h ParseToken.cpp ParseToken.h ErrorInfo.h ErrorOutputControl.h SymbolTableItem.cpp SymbolTableItem.h MidCode.cpp MidCode.h MipsCode.cpp MipsCode.h Utils.cpp Utils.h)
+set(SOURCE_FILES symbolAnalysis.cpp Token.h Token.cpp ParseSyntax.cpp ParseSyntax.h ParseToken.cpp ParseToken.h ErrorInfo.h ErrorOutputControl.h SymbolTableItem.cpp SymbolTableItem.h MidCode.cpp MidCode.h MipsCode.cpp MipsCode.h Utils.cpp Utils.h RegPool.h RegPool.cpp)
 add_executable(errorHandler ${SOURCE_FILES})
 
