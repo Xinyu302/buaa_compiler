@@ -110,7 +110,9 @@ inline void enterFunc(const std::string& funcName) {
     if (nowFuncSymbolTable != globalSymbolTable && !nowFuncSymbolTable->getIsLeaf()) {
         genMoveVarToMem("$ra", "$ra");
     }
-    genSaveTReg();
+    if (nowFuncSymbolTable != globalSymbolTable) {
+        genSaveTReg();
+    }
     tRegPool = new TRegPool();
 //    if (nowFuncSymbolTable == globalSymbolTable) {
 //        ;;
@@ -158,9 +160,12 @@ void genCalMips(CalMidCode* calMidCode) {
     bool isValue1const = false;
     std::string regLeft;
     std::string regRight;
-    std::string regResult = (tRegPool->hasFreeReg()) ? tRegPool->allocReg(calMidCode->result) : "$t0";
+    std::string regResult = /*(tRegPool->hasFreeReg()) ? tRegPool->allocReg(calMidCode->result) :*/ "$t0";
     std::string l = "$t0";
     std::string r = "$t1";
+    if (nowFuncSymbolTable->isTmpValue(calMidCode->result) && tRegPool->hasFreeReg()) {
+        regResult = tRegPool->allocReg(calMidCode->result);
+    }
     MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
     if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
         isValue1const = true;

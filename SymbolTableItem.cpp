@@ -40,7 +40,7 @@ FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name)
     if (name != "#global") {
         varInfo["$ra"] = itemInfo(LOCALVAR,varNum++);
         for (int i = 2; i <= 9; i++) {
-            varInfo["$t" + int2string(i)] = itemInfo(LOCALVAR, varNum++);
+            varInfo["$t" + int2string(i)] = itemInfo(LOCALVAR, 4*varNum++);
         }
     }
 }
@@ -157,5 +157,16 @@ void FunctionSymbolTable::setIsLeaf(bool isLeaf) {
 
 bool FunctionSymbolTable::getIsLeaf() {
     return isLeaf;
+}
+
+bool FunctionSymbolTable::isTmpValue(const std::string &name) {
+    auto it = varInfo.find(name);
+    if (it != varInfo.end()) {
+        if (it->second.type == TEMPVAR) {
+            return true;
+        }
+        return false;
+    }
+    return false;
 }
 

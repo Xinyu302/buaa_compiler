@@ -40,6 +40,7 @@ CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../MidCode.h
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.cpp
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../Token.h
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../Utils.h
 
 CMakeFiles/errorHandler.dir/Token.cpp.o: ../Token.cpp
 CMakeFiles/errorHandler.dir/Token.cpp.o: ../Token.h

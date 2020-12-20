@@ -103,6 +103,8 @@ public:
     int getParaOffsetByIndex(int index);
     int getSubOffset();
     bool isConstValue(const std::string& name,int &value);
+
+    bool isTmpValue(const std::string &name);
     int getRetOffset();
 
     void setIsLeaf(bool isLeaf);
