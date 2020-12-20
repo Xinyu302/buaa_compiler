@@ -43,6 +43,7 @@ std::vector<std::string>* TRegPool::reg2store() {
     std::vector<std::string>* regs = new std::vector<std::string>;
     for (int i = 0; i < 8; i++) {
         if (this->use[i]) {
+//            printf("%d\n", i);
             regs->push_back("$t" + int2string(i + 2));
         }
     }
