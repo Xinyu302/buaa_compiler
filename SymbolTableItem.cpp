@@ -5,6 +5,9 @@
 #include "SymbolTableItem.h"
 #include "Utils.h"
 #include <string>
+#include <map>
+#include <algorithm>
+
 extern SyntaxSymbolTable symbolTable;
 
 bool SymbolTableItem::compareParaListNum(const std::vector<ItemReturnType> &paraListTypeIn) const {
@@ -41,8 +44,10 @@ FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name)
         varInfo["$ra"] = itemInfo(LOCALVAR,varNum++);
         for (int i = 2; i <= 9; i++) {
             varInfo["$t" + int2string(i)] = itemInfo(LOCALVAR, 4*varNum++);
+            varInfo["$s" + int2string(i - 2)] = itemInfo(LOCALVAR, 4 * varNum++);
         }
     }
+    this->sRegPool = new SRegPool();
 }
 
 void FunctionSymbolTable::appendConst(const std::string &name,int value) {
@@ -168,5 +173,30 @@ bool FunctionSymbolTable::isTmpValue(const std::string &name) {
         return false;
     }
     return false;
+}
+
+void FunctionSymbolTable::addTimes(const std::string &name, int time) {
+    if (this == globalSymbolTable) return;
+    times[name] += time;
+}
+
+bool cmp(const std::pair<std::string, int> &a, const std::pair<std::string, int> &b) {
+    return a.second > b.second;
+}
+
+SRegPool *FunctionSymbolTable::getSRegPool() {
+    std::vector<std::pair<std::string, int>> vec(times.begin(), times.end());
+    std::sort(vec.begin(), vec.end(), cmp);
+    if (times.size() <= 8) {
+        for (int i = 0; i < times.size(); i++) {
+            sRegPool->setReg(vec[i].first, i);
+        }
+    }
+    else {
+        for (int i = 0; i < 8; i++) {
+            sRegPool->setReg(vec[i].first, i);
+        }
+    }
+    return sRegPool;
 }
 

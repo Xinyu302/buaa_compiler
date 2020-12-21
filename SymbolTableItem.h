@@ -8,6 +8,7 @@
 #include <map>
 #include "Token.h"
 #include "MidCode.h"
+#include "RegPool.h"
 #define InnerSymbolTable (*innerSymbolTablePtr)
 
 class SymbolTableItem {
@@ -110,13 +111,19 @@ public:
     void setIsLeaf(bool isLeaf);
     bool getIsLeaf();
 
+    void addTimes(const std::string &name, int time=1);
+
+    SRegPool *getSRegPool();
+
 private:
     int varNum;
     std::string funcName;
     std::map<std::string,itemInfo> varInfo;
     std::map<std::string,arrayItemInfo> arrayInfo;
+    std::map<std::string, int> times;
     std::vector<itemInfo> paraInfo;
     bool isLeaf = true;
+    SRegPool *sRegPool;
 };
 
 

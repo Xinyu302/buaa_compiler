@@ -23,7 +23,8 @@ const std::string tab = "\t";
 extern std::map<std::string,FunctionSymbolTable*> FunctionSymbolTableMap;
 FunctionSymbolTable* nowFuncSymbolTable;
 FunctionSymbolTable* calledFuncSymbolTable;
-TRegPool* tRegPool;
+TRegPool *tRegPool;
+SRegPool *sRegPool;
 std::map<std::string, TRegPool *> TRegPoolCache;
 
 
@@ -107,6 +108,25 @@ inline void genRestoreTReg() {
     delete regs;
 }
 
+inline void genSaveSReg() {
+    std::vector<std::string> *regs = sRegPool->reg2store();
+    for (int i = 0; i < regs->size();i++) {
+//        genMoveVarToMem((*regs)[i], (*regs)[i]);
+        genSw((*regs)[i], "$sp",
+              calledFuncSymbolTable->getOffset((*regs)[i]) - calledFuncSymbolTable->getSubOffset());
+    }
+}
+
+inline void genRestoreSReg() {
+    std::vector<std::string> *regs = sRegPool->reg2store();
+    for (int i = 0; i < regs->size();i++) {
+        genLw((*regs)[i], "$sp",
+              calledFuncSymbolTable->getOffset((*regs)[i]) - calledFuncSymbolTable->getSubOffset());
+//        genMoveVarToMem((*regs)[i], (*regs)[i]);
+    }
+    delete regs;
+}
+
 inline void enterFunc(const std::string& funcName) {
 //    nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
     nowFuncSymbolTable = FunctionSymbolTableMap[funcName];
@@ -114,9 +134,11 @@ inline void enterFunc(const std::string& funcName) {
     if (nowFuncSymbolTable != globalSymbolTable && !nowFuncSymbolTable->getIsLeaf()) {
         genMoveVarToMem("$ra", "$ra");
     }
-    if (nowFuncSymbolTable != globalSymbolTable) {
-        genSaveTReg();
-    }
+//    if (nowFuncSymbolTable != globalSymbolTable) {
+////        genSaveTReg();
+//    }
+    sRegPool = nowFuncSymbolTable->getSRegPool();
+
     tRegPool = new TRegPool();
 //    if (nowFuncSymbolTable == globalSymbolTable) {
 //        ;;
@@ -169,6 +191,9 @@ void genCalMips(CalMidCode* calMidCode) {
     if (nowFuncSymbolTable->isTmpValue(calMidCode->result) && tRegPool->hasFreeReg()) {
         regResult = tRegPool->allocReg(calMidCode->result);
     }
+    else if (sRegPool->getReg(calMidCode->result).length()) {
+        regResult = sRegPool->getReg(calMidCode->result);
+    }
     MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
     if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
         isValue1const = true;
@@ -185,9 +210,15 @@ void genCalMips(CalMidCode* calMidCode) {
         regLeft = tRegPool->checkRegByName(calMidCode->left);
         if (regLeft.length()) {
             l = regLeft;
+
         }
         else {
-            genFetchVarFromMem(calMidCode->left,"$t0");
+            regLeft = sRegPool->getReg(calMidCode->left);
+            if (regLeft.length()) {
+                l = regLeft;
+            } else {
+                genFetchVarFromMem(calMidCode->left,"$t0");
+            }
         }
     }
 
@@ -214,10 +245,15 @@ void genCalMips(CalMidCode* calMidCode) {
             r = regRight;
         }
         else {
-            genFetchVarFromMem(calMidCode->right,"$t1");
+            regRight = sRegPool->getReg(calMidCode->right);
+            if (regRight.length()) {
+                r = regRight;
+            } else {
+                genFetchVarFromMem(calMidCode->right,"$t1");
+            }
         }
         if (isValue1const && anOperator == MidCode::PLUS) {
-            genThreeRegInstr("addiu",regRight,r,int2string(value1));
+            genThreeRegInstr("addiu",regResult,r,int2string(value1));
             goto genCalMipsEnd;
         }
     }
@@ -235,13 +271,13 @@ void genCalMips(CalMidCode* calMidCode) {
             if (constValueIndex == 2 && anOperator == MidCode::DIV) {
                 const std::string &elseId = getNextElseId();
                 const std::string &elseEndId = getNextElseEndId();
-                genThreeRegInstr("blt", l, "zero", elseId);
+                genThreeRegInstr("blt", l, "$zero", elseId);
                 genSrl(regResult, l, log2_B(const4Value));
                 mipscodes.push_back("j" + tab + elseEndId);
                 mipscodes.push_back(elseId + ":");
-                genThreeRegInstr("subu", l, "zero", l);
+                genThreeRegInstr("subu", l, "$zero", l);
                 genSrl(l, l, log2_B(const4Value));
-                genThreeRegInstr("subu", regResult, "zero", l);
+                genThreeRegInstr("subu", regResult, "$zero", l);
                 mipscodes.push_back(elseEndId + ":");
             } else {
                 genTwoRegInstr(op2string[anOperator],l,r);
@@ -269,7 +305,12 @@ void genScanMips(ReadMidCode* readMidCode)
     if (readMidCode->getReadType() == ReadMidCode::CHAR) {
         genSyscallByNum(12);
     }
-    genMoveVarToMem(readMidCode->result, "$v0");
+    const std::string &reg = sRegPool->getReg(readMidCode->result);
+    if (reg.length()) {
+        genMove(reg, "$v0");
+    } else {
+        genMoveVarToMem(readMidCode->result, "$v0");
+    }
 }
 
 void genEnter() {
@@ -288,6 +329,7 @@ void genJump(JumpMidCode* jumpMidCode) {
         genThreeRegInstr("addiu", "$sp", "$sp", int2string(-calledFuncSymbolTable->getSubOffset()));
         mipscodes.push_back(op + tab + jumpMidCode->label);
         genRestoreTReg();
+        genRestoreSReg();
 //        genMoveVarToMem("$ra", "$ra");
     }
     else if (jumpMidCode->getMidCodeOperator() == MidCode::J) {
@@ -312,7 +354,12 @@ void genPrintMips(WriteMidCode* writeMidCode) {
                 genMove("$a0", reg);
             }
             else {
-                genFetchVarFromMem(writeMidCode->num,"$a0");
+                reg = sRegPool->getReg(writeMidCode->num) ;
+                if (reg.length()) {
+                    genMove("$a0", reg);
+                } else {
+                    genFetchVarFromMem(writeMidCode->num,"$a0");
+                }
             }
         }
         if (writeMidCode->getWriteType() == WriteMidCode::INT) {
@@ -326,9 +373,17 @@ void genPrintMips(WriteMidCode* writeMidCode) {
 }
 
 void genAssignMips(AssignMidCode* assignMidCode) {
+    std::string reg = "";
     if (assignMidCode->getAssignType() == AssignMidCode::IMMEDIATE) {
-        genLi("$t0",assignMidCode->leftImmediate);
-        genMoveVarToMem(assignMidCode->result,"$t0");
+        if (nowFuncSymbolTable != globalSymbolTable) {
+            reg = sRegPool->getReg(assignMidCode->result);
+        }
+        if (reg.length()) {
+            genLi(reg, assignMidCode->leftImmediate);
+        } else {
+            genLi("$t0", assignMidCode->leftImmediate);
+            genMoveVarToMem(assignMidCode->result, "$t0");
+        }
     }
     if (assignMidCode->getAssignType() == AssignMidCode::VAL) {
         if (assignMidCode->leftVal == "$v0") { // drectly load $v0 to temp var result
@@ -339,18 +394,41 @@ void genAssignMips(AssignMidCode* assignMidCode) {
                     return;
                 }
             }
-            genMoveVarToMem(assignMidCode->result,"$v0");
+            reg = sRegPool->getReg(assignMidCode->result);
+            if (reg.length()) {
+                genMove(reg, "$v0");
+            } else {
+                genMoveVarToMem(assignMidCode->result,"$v0");
+            }
             return;
         }
         else {
-            std::string reg = tRegPool->checkRegByName(assignMidCode->leftVal);
+            reg = tRegPool->checkRegByName(assignMidCode->leftVal);
+            std::string reg1 = sRegPool->getReg(assignMidCode->result);
             if (reg.length()) {
-                genMoveVarToMem(assignMidCode->result, reg);
+                if (reg1.length()) {
+                    genMove(reg1, reg);
+                } else {
+                    genMoveVarToMem(assignMidCode->result, reg);
+                }
             }
             else {
-                genFetchVarFromMem(assignMidCode->leftVal,"$t1");
+                reg = sRegPool->getReg(assignMidCode->leftVal);
+                if (reg.length()) {
+                    if (reg1.length()) {
+                        genMove(reg1, reg);
+                    } else {
+                        genMoveVarToMem(assignMidCode->result, reg);
+                    }
+                } else {
+                    genFetchVarFromMem(assignMidCode->leftVal,"$t1");
 //            genMove("$t0","$t1");
-                genMoveVarToMem(assignMidCode->result,"$t1");
+                    if (reg1.length()) {
+                        genMove(reg1, "$t1");
+                    } else {
+                        genMoveVarToMem(assignMidCode->result,"$t1");
+                    }
+                }
             }
         }
     }
@@ -375,7 +453,12 @@ void genCompareMips(CompareMidCode* compareMidCode) {
         if (reg.length()) {
             l = reg;
         } else {
-            genFetchVarFromMem(compareMidCode->left, "$t0");
+            std::string reg1 = sRegPool->getReg(compareMidCode->left);
+            if (reg1.length()) {
+                l = reg1;
+            } else {
+                genFetchVarFromMem(compareMidCode->left, "$t0");
+            }
         }
     }
     if (nowFuncSymbolTable->isConstValue(compareMidCode->right,value)) {
@@ -385,7 +468,12 @@ void genCompareMips(CompareMidCode* compareMidCode) {
         if (reg.length()) {
             r = reg;
         } else {
-            genFetchVarFromMem(compareMidCode->right, "$t1");
+            std::string reg2 = sRegPool->getReg(compareMidCode->right);
+            if (reg2.length()) {
+                r = reg2;
+            } else {
+                genFetchVarFromMem(compareMidCode->right, "$t1");
+            }
         }
     }
     genThreeRegInstr(cmpOp, l, r, compareMidCode->result);
@@ -395,6 +483,7 @@ void genCallMips(CallMidCode* callMidCode) {
     calledFuncSymbolTable = FunctionSymbolTableMap[callMidCode->label];
     if (nowFuncSymbolTable != globalSymbolTable) {
         genSaveTReg();
+        genSaveSReg();
     }
 }
 
@@ -408,7 +497,12 @@ void genPushMips(PushMidCode* pushMidCode) {
         if (reg.length()) {
             reg2push = reg;
         } else {
-            genFetchVarFromMem(pushMidCode->exp, "$t0");
+            std::string reg2 = tRegPool->checkRegByName(pushMidCode->exp);
+            if (reg2.length()) {
+                reg2push = reg2;
+            } else {
+                genFetchVarFromMem(pushMidCode->exp, "$t0");
+            }
         }
     }
     genSw(reg2push, "$sp",
@@ -432,7 +526,12 @@ void genAssignRegFromExp(const std::string& reg,const std::string& exp) {
         if (reg1.length()) {
             genMove(reg, reg1);
         } else {
-            genFetchVarFromMem(exp, reg);
+            std::string reg2 = sRegPool->getReg(exp);
+            if (reg2.length()) {
+                genMove(reg, reg2);
+            } else {
+                genFetchVarFromMem(exp, reg);
+            }
         }
     }
 }
@@ -585,7 +684,7 @@ void genInitArray(InitArrayMidCode* initArrayMidCode)
     std::vector<int> *values = initArrayMidCode->values;
     for (int i = 0, j = 0; i < values->size(); i++, j += 4) {
         if ((*values)[i] == 0) {
-            genSw("$zero", base, offset + j);
+            //genSw("$zero", base, offset + j);
         } else {
             genLi("$t0", (*values)[i]);
             genSw("$t0", base, offset + j);

@@ -21,6 +21,7 @@ int nothing;
 int nowLoc = 0;
 int isInner = 0;
 bool isLeaf = true;
+int inLoop = 0;
 int FUNC_TYPE;
 bool FUNC_HAS_RETURN;
 
@@ -82,6 +83,15 @@ std::string applyTmpId(int value) {
     const std::string& tmpId = getNextTmpValId();
     curFuncTable->appendConst(tmpId,value);
     return tmpId;
+}
+
+void addVarTimes(const std::string &name) {
+    if (curFuncTable == globalSymbolTable) return;
+    if (inLoop) {
+        curFuncTable->addTimes(name, 10);
+    } else {
+        curFuncTable->addTimes(name);
+    }
 }
 
 inline int getLastLine()
@@ -663,7 +673,8 @@ bool Handle_EXPRESSION(bool show,int& expType,std::string& VarName)
 	while (Handle_PLUS(show,index) && Handle_TERM(show,isChar,varName2)) {
         std::string nextTmp;
         valueTop = value2 = -1;
-        if (curFuncTable->isConstValue(varNameTop,valueTop) && curFuncTable->isConstValue(varName2,value2)) {
+        bool b1 = curFuncTable->isConstValue(varNameTop, valueTop);
+        if (b1 && curFuncTable->isConstValue(varName2, value2)) {
             if (index == Token::PLUS) nextTmp = applyTmpId(valueTop + value2);
             if (index == Token::MINU) nextTmp = applyTmpId(valueTop - value2);
         }
@@ -774,6 +785,7 @@ bool Handle_FACTOR(bool show,int& ischar,std::string& varName)
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::INT) ischar = EXP_INT;
                 if (symbolTableItemPtr->getReturnType() == SymbolTableItem::CHAR) ischar = EXP_CHAR;
                 varName = idName;
+                addVarTimes(varName);
             }
         }
     }
@@ -1350,6 +1362,7 @@ bool Handle_ASSIGN_STATE(bool show)
 			else {
                 MidCodeFactory(MidCode::ASSIGN,idName,expName);
 			}
+            addVarTimes(idName);
 		}
 		else if (typeEnsure(Token::LBRACK))
 		{
@@ -1418,6 +1431,7 @@ bool Handle_FOR_STATE_PARENT(bool show)
     } else {
 	    MidCodeFactory(MidCode::ASSIGN,idName,expName);
 	}
+    addVarTimes(idName);
 //    MidCodeFactory(MidCode::LABEL, elseBegin);
 	if (!typeEnsure(Token::SEMICN)) {
 	    error(getLastLine(),ErrorInfo::SEMICN_SHOULD_OCCUR);
@@ -1470,6 +1484,7 @@ bool Handle_LOOP_STATE(bool show)
 	bool flag = false;
 	if (typeEnsure(Token::WHILETK))
 	{
+        inLoop++;
         const std::string& loopstart = getNextWhileId();
         const std::string& loopend = getNextWhileEnd();
         const std::string &elseBegin = getNextElseId();
@@ -1493,11 +1508,14 @@ bool Handle_LOOP_STATE(bool show)
         }
         MidCodeFactory(index2MidCode(cIndex), loopstart, L, R);
         MidCodeFactory(MidCode::LABEL,elseBegin);
+        inLoop--;
 
     }
 	else if (typeEnsure(Token::FORTK))
 	{
+        inLoop++;
 		if (!Handle_FOR_STATE_PARENT(show)) return false;
+        inLoop--;
         flag = true;
 //		if (Handle_STATEMENT(show)) flag = true;
 	}

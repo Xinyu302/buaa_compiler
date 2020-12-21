@@ -5,6 +5,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <map>
 
 class TRegPool {
 public:
@@ -21,5 +22,15 @@ public:
 };
 
 class SRegPool {
+public:
+    SRegPool();
+    std::map<int,std::string> regs;
+    std::map<std::string, int> name2reg;
 
+    bool hasReg(const std::string &name);
+
+    std::string getReg(const std::string &name);
+
+    void setReg(const std::string &name, int index);
+    std::vector<std::string>* reg2store();
 };

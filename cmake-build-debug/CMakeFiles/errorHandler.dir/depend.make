@@ -3,6 +3,7 @@
 
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../MidCode.cpp
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../MidCode.h
+CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/MidCode.cpp.o: ../Token.h
 
@@ -19,6 +20,7 @@ CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../ErrorOutputControl.h
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../MidCode.h
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../ParseSyntax.cpp
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../ParseSyntax.h
+CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/ParseSyntax.cpp.o: ../Utils.h
@@ -37,6 +39,7 @@ CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/RegPool.cpp.o: ../Utils.h
 
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../MidCode.h
+CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.cpp
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/SymbolTableItem.cpp.o: ../Token.h
@@ -46,6 +49,7 @@ CMakeFiles/errorHandler.dir/Token.cpp.o: ../Token.cpp
 CMakeFiles/errorHandler.dir/Token.cpp.o: ../Token.h
 
 CMakeFiles/errorHandler.dir/Utils.cpp.o: ../MidCode.h
+CMakeFiles/errorHandler.dir/Utils.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/Utils.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/Utils.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/Utils.cpp.o: ../Utils.cpp
@@ -57,6 +61,7 @@ CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../MidCode.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../MipsCode.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../ParseSyntax.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../ParseToken.h
+CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../RegPool.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../SymbolTableItem.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../Token.h
 CMakeFiles/errorHandler.dir/symbolAnalysis.cpp.o: ../symbolAnalysis.cpp
