@@ -141,7 +141,10 @@ inline void enterFunc(const std::string& funcName) {
 ////        genSaveTReg();
 //    }
     sRegPool = nowFuncSymbolTable->getSRegPool();
-
+    for (auto it = sRegPool->name2global.begin();it != sRegPool->name2global.end();it++) {
+        std::string reg = sRegPool->getReg(it->first);
+        genFetchVarFromMem(it->first, reg);
+    }
     tRegPool = new TRegPool();
 //    if (nowFuncSymbolTable == globalSymbolTable) {
 //        ;;
@@ -171,10 +174,13 @@ inline void outFunc(const std::string &expName = "") {
                 }
             }
         }
-
     }
     if (!nowFuncSymbolTable->getIsLeaf()) {
         genLw("$ra", "$sp", nowFuncSymbolTable->getOffset("$ra"));
+    }
+    for (auto it = sRegPool->name2global.begin();it != sRegPool->name2global.end();it++) {
+        std::string reg = sRegPool->getReg(it->first);
+        genMoveVarToMem(it->first, reg);
     }
     genThreeRegInstr("addiu", "$sp", "$sp", int2string(nowFuncSymbolTable->getSubOffset()));
     mipscodes.push_back("jr" + tab + "$ra");

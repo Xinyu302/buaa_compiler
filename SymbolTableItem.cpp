@@ -182,8 +182,15 @@ bool FunctionSymbolTable::isTmpValue(const std::string &name) {
 void FunctionSymbolTable::addTimes(const std::string &name, int time) {
     if (this == globalSymbolTable) return;
     auto it = varInfo.find(name);
-    if (it == varInfo.end()) return;
-
+    if (it == varInfo.end()) {
+        auto it2 = globalSymbolTable->varInfo.find(name);
+        if (it2 == globalSymbolTable->varInfo.end()) {
+            return;
+        }
+        times[name] += time;
+        globalVarMap[name] = true;
+        return;
+    }
     if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 3) {
         times[name] += time;
     }
@@ -204,11 +211,17 @@ SRegPool *FunctionSymbolTable::getSRegPool() {
     std::sort(vec.begin(), vec.end(), cmp);
     if (times.size() <= 8) {
         for (int i = 0; i < times.size(); i++) {
+            if (globalVarMap.find(vec[i].first) != globalVarMap.end()) {
+                sRegPool->name2global[vec[i].first] = true;
+            }
             sRegPool->setReg(vec[i].first, i);
         }
     }
     else {
         for (int i = 0; i < 8; i++) {
+            if (globalVarMap.find(vec[i].first) != globalVarMap.end()) {
+                sRegPool->name2global[vec[i].first] = true;
+            }
             sRegPool->setReg(vec[i].first, i);
         }
     }

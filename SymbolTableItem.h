@@ -118,11 +118,12 @@ public:
     int findParaIndex(const std::string &name);
 
     std::string getParaName(int index);
+    std::map<std::string,bool> globalVarMap;
+    std::map<std::string,itemInfo> varInfo;
 
 private:
     int varNum;
     std::string funcName;
-    std::map<std::string,itemInfo> varInfo;
     std::map<std::string,arrayItemInfo> arrayInfo;
     std::map<std::string, int> times;
     std::vector<itemInfo> paraInfo;

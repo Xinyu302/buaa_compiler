@@ -28,6 +28,8 @@ public:
     std::map<std::string, int> name2reg;
     std::map<std::string, bool> name2use;
 
+    std::map<std::string, bool> name2global;
+
     bool hasReg(const std::string &name);
 
     std::string getReg(const std::string &name, bool f = true);
