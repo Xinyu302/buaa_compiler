@@ -179,6 +179,7 @@ void FunctionSymbolTable::addTimes(const std::string &name, int time) {
     if (this == globalSymbolTable) return;
     auto it = varInfo.find(name);
     if (it == varInfo.end()) return;
+
     if (it->second.type != LOCALVAR) return;
     times[name] += time;
 }

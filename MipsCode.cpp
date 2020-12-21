@@ -160,7 +160,12 @@ inline void outFunc(const std::string &expName = "") {
             if (reg.length()) {
                 genMove("$v0", reg);
             } else {
-                genFetchVarFromMem(expName,"$v0");
+                reg = sRegPool->getReg(expName);
+                if (reg.length()) {
+                    genMove("$v0", reg);
+                } else {
+                    genFetchVarFromMem(expName,"$v0");
+                }
             }
         }
 
@@ -497,7 +502,7 @@ void genPushMips(PushMidCode* pushMidCode) {
         if (reg.length()) {
             reg2push = reg;
         } else {
-            std::string reg2 = tRegPool->checkRegByName(pushMidCode->exp);
+            std::string reg2 = sRegPool->getReg(pushMidCode->exp);
             if (reg2.length()) {
                 reg2push = reg2;
             } else {

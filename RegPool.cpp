@@ -50,9 +50,12 @@ std::vector<std::string>* TRegPool::reg2store() {
     return regs;
 }
 
-std::string SRegPool::getReg(const std::string &name) {
+std::string SRegPool::getReg(const std::string &name,bool f) {
     auto it = name2reg.find(name);
     if (it != name2reg.end()) {
+        if (f) {
+            name2use[name] = true;
+        }
         return regs[(it->second)];
     }
     return "";
@@ -65,13 +68,16 @@ SRegPool::SRegPool() {
 }
 
 void SRegPool::setReg(const std::string &name,int index) {
+    name2use[name] = false;
     name2reg[name] = index;
 }
 
 std::vector<std::string> *SRegPool::reg2store() {
     std::vector<std::string>* regVec = new std::vector<std::string>;
     for (auto it = name2reg.begin();it != name2reg.end();it++) {
-        regVec->push_back(regs[it->second]);
+        if (name2use[it->first]) {
+            regVec->push_back(regs[it->second]);
+        }
     }
     return regVec;
 }

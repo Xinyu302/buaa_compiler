@@ -26,10 +26,11 @@ public:
     SRegPool();
     std::map<int,std::string> regs;
     std::map<std::string, int> name2reg;
+    std::map<std::string, bool> name2use;
 
     bool hasReg(const std::string &name);
 
-    std::string getReg(const std::string &name);
+    std::string getReg(const std::string &name, bool f = true);
 
     void setReg(const std::string &name, int index);
     std::vector<std::string>* reg2store();

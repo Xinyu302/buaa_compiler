@@ -43,7 +43,7 @@ move	$s0,	$t2
 li	$t1,	999
 blt	$s0,	$t1,	while_0
 else_0:
-lw	$v0,	68($sp)
+move	$v0,	$s0
 addiu	$sp,	$sp,	76
 jr	$ra
 func2:
