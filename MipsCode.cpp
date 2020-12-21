@@ -92,7 +92,7 @@ inline void genTwoRegInstr(const std::string &instr, const std::string &reg1, co
     mipscodes.push_back(instr + tab+ reg1 + "," + tab + reg2);
 }
 
-inline void genSaveTReg() {
+void genSaveTReg() {
     std::vector<std::string> *regs = tRegPool->reg2store();
     for (int i = 0; i < regs->size();i++) {
 //        genMoveVarToMem((*regs)[i], (*regs)[i]);
@@ -101,7 +101,7 @@ inline void genSaveTReg() {
     }
 }
 
-inline void genRestoreTReg() {
+void genRestoreTReg() {
     std::vector<std::string> *regs = tRegPool->reg2store();
     for (int i = 0; i < regs->size();i++) {
         genLw((*regs)[i], "$sp",
@@ -111,18 +111,20 @@ inline void genRestoreTReg() {
     delete regs;
 }
 
-inline void genSaveSReg() {
+void genSaveSReg() {
     std::vector<std::string> *regs = sRegPool->reg2store();
     for (int i = 0; i < regs->size();i++) {
+//        if (sRegPool->name2global.find((*regs)[i]) != sRegPool->name2global.end()) continue;
 //        genMoveVarToMem((*regs)[i], (*regs)[i]);
         genSw((*regs)[i], "$sp",
               calledFuncSymbolTable->getOffset((*regs)[i]) - calledFuncSymbolTable->getSubOffset());
     }
 }
 
-inline void genRestoreSReg() {
+void genRestoreSReg() {
     std::vector<std::string> *regs = sRegPool->reg2store();
     for (int i = 0; i < regs->size();i++) {
+//        if (sRegPool->name2global.find((*regs)[i]) != sRegPool->name2global.end()) continue;
         genLw((*regs)[i], "$sp",
               calledFuncSymbolTable->getOffset((*regs)[i]) - calledFuncSymbolTable->getSubOffset());
 //        genMoveVarToMem((*regs)[i], (*regs)[i]);
@@ -359,6 +361,10 @@ void genJump(JumpMidCode* jumpMidCode) {
         mipscodes.push_back(op + tab + jumpMidCode->label);
         genRestoreTReg();
         genRestoreSReg();
+        for (auto it = sRegPool->name2global.begin();it != sRegPool->name2global.end();it++) {
+            std::string reg = sRegPool->getReg(it->first);
+            genFetchVarFromMem(it->first, reg);
+        }
 //        genMoveVarToMem("$ra", "$ra");
     }
     else if (jumpMidCode->getMidCodeOperator() == MidCode::J) {
@@ -528,6 +534,10 @@ void genCallMips(CallMidCode* callMidCode) {
     if (nowFuncSymbolTable != globalSymbolTable) {
         genSaveTReg();
         genSaveSReg();
+        for (auto it = sRegPool->name2global.begin();it != sRegPool->name2global.end();it++) {
+            std::string reg = sRegPool->getReg(it->first);
+            genMoveVarToMem(it->first, reg);
+        }
     }
 }
 

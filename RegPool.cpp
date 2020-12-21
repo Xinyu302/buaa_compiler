@@ -84,6 +84,9 @@ std::vector<std::string> *SRegPool::reg2store() {
     for (auto it = name2reg.begin();it != name2reg.end();it++) {
 //        printf("%s\n", it->first);
 //        std::cout << it->first << std::endl;
+        if (name2global.find(it->first) != name2global.end()) {
+            continue;
+        }
         if (name2use[it->first]) {
             regVec->push_back(regs[it->second]);
         }

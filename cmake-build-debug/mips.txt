@@ -460,27 +460,27 @@ blt	$s3,	$t1,	while_1
 else_8:
 sw	$s2,	-60($sp)
 sw	$s3,	-52($sp)
-sw	$s7,	-20($sp)
 sw	$s1,	-68($sp)
+sw	$s7,	4012($gp)
 addiu	$sp,	$sp,	-84
 jal	myscanf
 lw	$s2,	-60($sp)
 lw	$s3,	-52($sp)
-lw	$s7,	-20($sp)
 lw	$s1,	-68($sp)
+lw	$s7,	4012($gp)
 move	$s4,	$v0
 sw	$s2,	-60($sp)
 sw	$s3,	-52($sp)
 sw	$s4,	-44($sp)
-sw	$s7,	-20($sp)
 sw	$s1,	-68($sp)
+sw	$s7,	4012($gp)
 addiu	$sp,	$sp,	-84
 jal	myscanf
 lw	$s2,	-60($sp)
 lw	$s3,	-52($sp)
 lw	$s4,	-44($sp)
-lw	$s7,	-20($sp)
 lw	$s1,	-68($sp)
+lw	$s7,	4012($gp)
 move	$s7,	$v0
 li	$t1,	0
 ble	$s4,	$t1,	else_9
@@ -489,15 +489,15 @@ addiu	$s4,	$s4,	-1
 sw	$s2,	-100($sp)
 sw	$s3,	-92($sp)
 sw	$s4,	-84($sp)
-sw	$s7,	-60($sp)
 sw	$s1,	-108($sp)
+sw	$s7,	4012($gp)
 addiu	$sp,	$sp,	-124
 jal	rand
 lw	$s2,	-100($sp)
 lw	$s3,	-92($sp)
 lw	$s4,	-84($sp)
-lw	$s7,	-60($sp)
 lw	$s1,	-108($sp)
+lw	$s7,	4012($gp)
 move	$s0,	$v0
 li	$t1,	300000
 div	$s0,	$t1
@@ -509,19 +509,19 @@ subu	$s5,	$s0,	$t3
 sw	$s2,	-100($sp)
 sw	$s3,	-92($sp)
 sw	$s4,	-84($sp)
-sw	$s7,	-60($sp)
 sw	$s1,	-108($sp)
 sw	$s5,	-76($sp)
 sw	$s0,	-116($sp)
+sw	$s7,	4012($gp)
 addiu	$sp,	$sp,	-124
 jal	rand
 lw	$s2,	-100($sp)
 lw	$s3,	-92($sp)
 lw	$s4,	-84($sp)
-lw	$s7,	-60($sp)
 lw	$s1,	-108($sp)
 lw	$s5,	-76($sp)
 lw	$s0,	-116($sp)
+lw	$s7,	4012($gp)
 move	$s0,	$v0
 blt	$s0,	$zero,	else_14
 srl	$t2,	$s0,	1
@@ -536,11 +536,11 @@ subu	$s6,	$s0,	$t3
 sw	$s2,	-552($sp)
 sw	$s3,	-544($sp)
 sw	$s4,	-536($sp)
-sw	$s7,	-512($sp)
 sw	$s1,	-560($sp)
 sw	$s5,	-528($sp)
 sw	$s6,	-520($sp)
 sw	$s0,	-568($sp)
+sw	$s7,	4012($gp)
 move	$a1,	$s5
 move	$a2,	$s6
 addiu	$sp,	$sp,	-576
@@ -548,11 +548,11 @@ jal	set
 lw	$s2,	-552($sp)
 lw	$s3,	-544($sp)
 lw	$s4,	-536($sp)
-lw	$s7,	-512($sp)
 lw	$s1,	-560($sp)
 lw	$s5,	-528($sp)
 lw	$s6,	-520($sp)
 lw	$s0,	-568($sp)
+lw	$s7,	4012($gp)
 li	$t1,	0
 bgt	$s4,	$t1,	while_2
 else_9:
@@ -595,22 +595,22 @@ else_10:
 sw	$s2,	-60($sp)
 sw	$s3,	-52($sp)
 sw	$s4,	-44($sp)
-sw	$s7,	-20($sp)
 sw	$s1,	-68($sp)
 sw	$s5,	-36($sp)
 sw	$s6,	-28($sp)
 sw	$s0,	-76($sp)
+sw	$s7,	4012($gp)
 move	$a1,	$s1
 addiu	$sp,	$sp,	-84
 jal	myprintf
 lw	$s2,	-60($sp)
 lw	$s3,	-52($sp)
 lw	$s4,	-44($sp)
-lw	$s7,	-20($sp)
 lw	$s1,	-68($sp)
 lw	$s5,	-36($sp)
 lw	$s6,	-28($sp)
 lw	$s0,	-76($sp)
+lw	$s7,	4012($gp)
 lw	$ra,	0($sp)
 sw	$s7,	4012($gp)
 addiu	$sp,	$sp,	196

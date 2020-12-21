@@ -187,11 +187,13 @@ void FunctionSymbolTable::addTimes(const std::string &name, int time) {
         if (it2 == globalSymbolTable->varInfo.end()) {
             return;
         }
-        times[name] += time;
-        globalVarMap[name] = true;
+        if (it2->second.type == LOCALVAR) {
+            times[name] += time;
+            globalVarMap[name] = true;
+        }
         return;
     }
-    if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 3) {
+    else if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 3) {
         times[name] += time;
     }
 }
