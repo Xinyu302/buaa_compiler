@@ -115,6 +115,8 @@ public:
 
     SRegPool *getSRegPool();
 
+    int findParaIndex(const std::string &name);
+
 private:
     int varNum;
     std::string funcName;
@@ -122,6 +124,7 @@ private:
     std::map<std::string,arrayItemInfo> arrayInfo;
     std::map<std::string, int> times;
     std::vector<itemInfo> paraInfo;
+    std::vector<std::string> paraName;
     bool isLeaf = true;
     SRegPool *sRegPool;
 };

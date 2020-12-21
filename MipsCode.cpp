@@ -197,8 +197,8 @@ void genCalMips(CalMidCode* calMidCode) {
     std::string l = "$t0";
     std::string r = "$t1";
     std::string result = calMidCode->result;
-    if (j + 1 < size && midCodeVec[j]->getMidCodeClass()==MidCode::ASSIGNMIDCODE) {
-        AssignMidCode *ass = (AssignMidCode *) midCodeVec[j];
+    if (j + 1 < size && midCodeVec[j+1]->getMidCodeClass()==MidCode::ASSIGNMIDCODE) {
+        AssignMidCode *ass = (AssignMidCode *) midCodeVec[j+1];
         if (ass->leftVal == calMidCode->result) {
             if (sRegPool->getReg(ass->result).length()) {
                 regResult = sRegPool->getReg(ass->result);
@@ -207,7 +207,6 @@ void genCalMips(CalMidCode* calMidCode) {
             }
             j = j + 1;
             goto assend;
-
         }
     }
     if (nowFuncSymbolTable->isTmpValue(calMidCode->result) && tRegPool->hasFreeReg()) {
@@ -516,8 +515,15 @@ void genCallMips(CallMidCode* callMidCode) {
 
 void genPushMips(PushMidCode* pushMidCode) {
     int value;
+    bool regA = false;
     std::string reg2push = "$t0";
+    if (pushMidCode->index < 4) {
+        regA = true;
+    }
     if (nowFuncSymbolTable->isConstValue(pushMidCode->exp,value)) {
+        if (regA) {
+            genLi("$a" + int2string(pushMidCode->index + 1), value);
+        }
         genLi("$t0", value);
     } else {
         std::string reg = tRegPool->checkRegByName(pushMidCode->exp);
@@ -532,8 +538,12 @@ void genPushMips(PushMidCode* pushMidCode) {
             }
         }
     }
-    genSw(reg2push, "$sp",
-          calledFuncSymbolTable->getParaOffsetByIndex(pushMidCode->index) - calledFuncSymbolTable->getSubOffset());
+    if (regA) {
+        genMove("$a" + int2string(pushMidCode->index + 1), reg2push);
+    } else {
+        genSw(reg2push, "$sp",
+              calledFuncSymbolTable->getParaOffsetByIndex(pushMidCode->index) - calledFuncSymbolTable->getSubOffset());
+    }
 }
 
 void genHandleFuncMips(HandleFuncMidCode* handleFuncMidCode) {

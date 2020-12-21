@@ -1,268 +1,30 @@
 .data
 stringEnter:	.asciiz	"\n"
-string0:	.asciiz	"p1 + p2 + p3 = "
-string1:	.asciiz	"17005014\n"
 .text
 #global:
-li	$t0,	1
-sw	$t0,	4024($gp)
-li	$t0,	6
-sw	$t0,	4028($gp)
-li	$t0,	7
-sw	$t0,	4032($gp)
-li	$t0,	8
-sw	$t0,	4036($gp)
-li	$t0,	1
-sw	$t0,	4044($gp)
-li	$t0,	2
-sw	$t0,	4048($gp)
-li	$t0,	3
-sw	$t0,	4052($gp)
-li	$t0,	4
-sw	$t0,	4056($gp)
-li	$t0,	9
-sw	$t0,	4060($gp)
-li	$t0,	8
-sw	$t0,	4064($gp)
-li	$t0,	7
-sw	$t0,	4068($gp)
-li	$t0,	6
-sw	$t0,	4072($gp)
-li	$t0,	5
-sw	$t0,	4076($gp)
-addiu	$sp,	$sp,	-112
+addiu	$sp,	$sp,	-80
 jal	main
 j	PROGRAM_END
-func1:
-li	$s0,	666
-li	$t1,	999
-bge	$s0,	$t1,	else_0
-while_0:
-addiu	$t2,	$s0,	2
-move	$s0,	$t2
-li	$t1,	999
-blt	$s0,	$t1,	while_0
-else_0:
-move	$v0,	$s0
-addiu	$sp,	$sp,	76
-jr	$ra
-func2:
-li	$t0,	0
-lw	$t1,	68($sp)
-subu	$t2,	$t0,	$t1
-move	$a0,	$t2
+print:
+addiu	$a1,	$a1,	1
+move	$a0,	$a1
 li	$v0,	1
 syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-li	$v0,	97
 addiu	$sp,	$sp,	76
-jr	$ra
-func3:
-lw	$t0,	68($sp)
-lw	$t1,	72($sp)
-addu	$t2,	$t0,	$t1
-lw	$t1,	76($sp)
-addu	$t3,	$t2,	$t1
-li	$t1,	100
-bgt	$t3,	$t1,	else_1
-lw	$t0,	68($sp)
-lw	$t1,	72($sp)
-addu	$t2,	$t0,	$t1
-lw	$t1,	76($sp)
-addu	$t3,	$t2,	$t1
-la	$a0,	string0
-li	$v0,	4
-syscall
-move	$a0,	$t3
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-else_1:
-lw	$t0,	68($sp)
-lw	$t1,	72($sp)
-addu	$t2,	$t0,	$t1
-lw	$t1,	76($sp)
-addu	$t3,	$t2,	$t1
-move	$v0,	$t3
-addiu	$sp,	$sp,	104
 jr	$ra
 main:
 sw	$ra,	0($sp)
-la	$a0,	string1
-li	$v0,	4
-syscall
-lw	$a0,	4024($gp)
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-li	$a0,	97
-li	$v0,	11
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-li	$s0,	0
-li	$t1,	6
-bge	$s0,	$t1,	else_2
-for_0:
-move	$t0,	$s0
-sll	$t0,	$t0,	2
-addiu	$t1,	$t0,	0
-addu	$t1,	$t1,	$gp
-move	$t0,	$s0
-sw	$t0,	0($t1)
-move	$t0,	$s0
-sll	$t0,	$t0,	2
-addiu	$t1,	$t0,	0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	72($sp)
-lw	$a0,	72($sp)
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-addiu	$s0,	$s0,	1
-li	$t1,	6
-blt	$s0,	$t1,	for_0
-else_2:
-li	$t0,	0
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	3
-bge	$t0,	$t1,	else_3
-for_1:
-lw	$t0,	4024($gp)
-sll	$t0,	$t0,	2
-addiu	$t1,	$t0,	4028
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	76($sp)
-lw	$a0,	76($sp)
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-lw	$t0,	4024($gp)
-addiu	$t0,	$t0,	1
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	3
-blt	$t0,	$t1,	for_1
-else_3:
-li	$t0,	0
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	-3
-ble	$t0,	$t1,	else_4
-for_2:
-lw	$t0,	4024($gp)
-addiu	$t0,	$t0,	-1
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	-3
-bgt	$t0,	$t1,	for_2
-else_4:
-lw	$t0,	4024($gp)
-addiu	$t2,	$t0,	-924
-move	$a0,	$t2
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-lw	$t0,	4024($gp)
-li	$t1,	0
-blt	$t0,	$t1,	else_5
-j	else_end_5
-else_5:
-addiu	$t1,	$gp,	4076
-li	$t0,	10
-sw	$t0,	0($t1)
-else_end_5:
-li	$t0,	0
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	2
-bge	$t0,	$t1,	else_6
-for_3:
-li	$s0,	0
-li	$t1,	5
-bge	$s0,	$t1,	else_7
-for_4:
-lw	$t0,	4024($gp)
-sll	$t0,	$t0,	2
-li	$t1,	5
-mult	$t0	$t1
-mflo	$t0
-move	$t1,	$s0
-sll	$t1,	$t1,	2
-addiu	$t1,	$t1,	4040
-addu	$t1,	$t1,	$t0
-addu	$t1,	$t1,	$gp
-lw	$t0,	0($t1)
-sw	$t0,	84($sp)
-lw	$a0,	84($sp)
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
-addiu	$s0,	$s0,	1
-li	$t1,	5
-blt	$s0,	$t1,	for_4
-else_7:
-lw	$t0,	4024($gp)
-addiu	$t0,	$t0,	1
-sw	$t0,	4024($gp)
-lw	$t0,	4024($gp)
-li	$t1,	2
-blt	$t0,	$t1,	for_3
-else_6:
+li	$s0,	1
+li	$s1,	3
+addu	$s0,	$s0,	$s1
 sw	$s0,	-68($sp)
+sw	$s1,	-60($sp)
+move	$a1,	$s0
 addiu	$sp,	$sp,	-76
-jal	func1
+jal	print
 lw	$s0,	-68($sp)
-move	$t2,	$v0
-sw	$t2,	-72($sp)
-sw	$s0,	-68($sp)
-li	$t0,	668
-sw	$t0,	-8($sp)
-addiu	$sp,	$sp,	-76
-jal	func2
-lw	$t2,	-72($sp)
-lw	$s0,	-68($sp)
-move	$t3,	$v0
-addu	$t4,	$t2,	$t3
-sw	$t4,	-84($sp)
-sw	$s0,	-96($sp)
-li	$t0,	50
-sw	$t0,	-36($sp)
-li	$t0,	-80
-sw	$t0,	-32($sp)
-li	$t0,	49
-sw	$t0,	-28($sp)
-addiu	$sp,	$sp,	-104
-jal	func3
-lw	$t4,	-84($sp)
-lw	$s0,	-96($sp)
-move	$t2,	$v0
-li	$t1,	917
-mult	$t2,	$t1
-mflo	$t3
-addu	$t2,	$t4,	$t3
-move	$a0,	$t2
-li	$v0,	1
-syscall
-la	$a0,	stringEnter
-li	$v0,	4
-syscall
+lw	$s1,	-60($sp)
 PROGRAM_END:

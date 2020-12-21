@@ -65,10 +65,17 @@ SRegPool::SRegPool() {
     for (int i = 0; i < 8; i++) {
         regs[i] = "$s" + int2string(i);
     }
+    for (int i = 8; i <= 11;i++) {
+        regs[i] = "$a" + int2string(i - 7);
+    }
 }
 
 void SRegPool::setReg(const std::string &name,int index) {
-    name2use[name] = false;
+    if (index >= 8) {
+        name2use[name] = true;
+    } else {
+        name2use[name] = false;
+    }
     name2reg[name] = index;
 }
 

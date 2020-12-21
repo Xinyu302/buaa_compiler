@@ -133,6 +133,7 @@ bool FunctionSymbolTable::isConstValue(const std::string& name, int &value) {
 void FunctionSymbolTable::appendPara(const std::string &name) {
     auto info = itemInfo(PARA,4*varNum++);
     paraInfo.push_back(info);
+    paraName.push_back(name);
     varInfo[name] = info;
 }
 
@@ -180,8 +181,9 @@ void FunctionSymbolTable::addTimes(const std::string &name, int time) {
     auto it = varInfo.find(name);
     if (it == varInfo.end()) return;
 
-    if (it->second.type != LOCALVAR) return;
-    times[name] += time;
+    if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 4) {
+        times[name] += time;
+    }
 }
 
 bool cmp(const std::pair<std::string, int> &a, const std::pair<std::string, int> &b) {
@@ -201,6 +203,17 @@ SRegPool *FunctionSymbolTable::getSRegPool() {
             sRegPool->setReg(vec[i].first, i);
         }
     }
+    for (int i = 0; i < paraName.size();i++) {
+        if (i == 4) break;
+        sRegPool->setReg(paraName[i], i + 8);
+    }
     return sRegPool;
+}
+
+int FunctionSymbolTable::findParaIndex(const std::string &name) {
+    for (int i = 0; i< paraName.size();i++) {
+        if (paraName[i] == name) return i;
+    }
+    return -1;
 }
 

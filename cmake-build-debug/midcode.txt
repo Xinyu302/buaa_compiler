@@ -1,95 +1,16 @@
 enter	#global
-d=1
 call	main
 JAL	main
 J	PROGRAM_END
-enter	func1
-f_b=666
-bge	f_b	f_a	else_0
-while_0:
-@temp1=	f_b	+	@temp0
-f_b=@temp1
-blt	f_b	f_a	while_0
-else_0:
-return	f_b
-enter	func2
-@temp3=	@temp2	-	p
-write		@temp3
-return	@temp4
-enter	func3
-@temp5=	p1	+	p2
-@temp6=	@temp5	+	p3
-bgt	@temp6	@temp7	else_1
-@temp8=	p1	+	p2
-@temp9=	@temp8	+	p3
-write	string0	@temp9
-else_1:
-@temp10=	p1	+	p2
-@temp11=	@temp10	+	p3
-return	@temp11
-enter	main
-write	string1	
-write		d
+enter	print
+@temp1=	a	+	@temp0
 write		a
-i=0
-bge	i	@temp13	else_2
-for_0:
-barray[i]	=	i
-@temp15	=	barray[i]
-write		@temp15
-i=	i	+	@temp14
-blt	i	@temp13	for_0
-else_2:
-d=0
-bge	d	@temp17	else_3
-for_1:
-@temp19	=	earray[d]
-write		@temp19
-d=	d	+	@temp18
-blt	d	@temp17	for_1
-else_3:
-d=0
-ble	d	@temp23	else_4
-for_2:
-d=	d	-	@temp24
-bgt	d	@temp23	for_2
-else_4:
-@temp25=	d	+	hjf
-write		@temp25
-blt	d	@temp26	else_5
-J	else_end_5
-else_5:
-farray[@temp27][@temp28]	=	@temp29
-else_end_5:
-d=0
-bge	d	@temp31	else_6
-for_3:
-i=0
-bge	i	@temp34	else_7
-for_4:
-@temp36	=	farray[d][i]	
-write		@temp36
-i=	i	+	@temp35
-blt	i	@temp34	for_4
-else_7:
-d=	d	+	@temp32
-blt	d	@temp31	for_3
-else_6:
-call	func1
-JAL	func1
-@temp37=$v0
-call	func2
-push	no.0para	@temp39
-JAL	func2
-@temp38=$v0
-@temp40=	@temp37	+	@temp38
-call	func3
-push	no.0para	@temp42
-push	no.1para	@temp45
-push	no.2para	@temp46
-JAL	func3
-@temp41=$v0
-@temp47=	@temp41	*	lqw
-@temp48=	@temp40	+	@temp47
-write		@temp48
+out	print
+enter	main
+a=1
+b=3
+@temp2=	a	+	b
+call	print
+push	no.0para	a
+JAL	print
 PROGRAM_END:
