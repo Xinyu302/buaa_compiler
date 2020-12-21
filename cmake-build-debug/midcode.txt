@@ -1,16 +1,207 @@
 enter	#global
+staticvalue=0
 call	main
 JAL	main
 J	PROGRAM_END
-enter	print
-@temp1=	a	+	@temp0
-write		a
-out	print
+enter	myscanf
+read	n
+return	n
+enter	myprintf
+write		n
+return	
+out	myprintf
+enter	set
+i=10
+v=0
+x[@temp0]	=	@temp1
+@temp3	=	x[@temp4]
+@temp6=	@temp3	*	@temp5
+x[@temp2]	=	@temp6
+@temp8	=	x[@temp9]
+@temp11=	@temp8	*	@temp10
+x[@temp7]	=	@temp11
+@temp13	=	x[@temp14]
+@temp16=	@temp13	*	@temp15
+x[@temp12]	=	@temp16
+@temp18	=	x[@temp19]
+@temp21=	@temp18	*	@temp20
+x[@temp17]	=	@temp21
+@temp23	=	x[@temp24]
+@temp26=	@temp23	*	@temp25
+x[@temp22]	=	@temp26
+@temp28	=	x[@temp29]
+@temp31=	@temp28	*	@temp30
+x[@temp27]	=	@temp31
+@temp33	=	x[@temp34]
+@temp36=	@temp33	*	@temp35
+x[@temp32]	=	@temp36
+@temp38	=	x[@temp39]
+@temp41=	@temp38	*	@temp40
+x[@temp37]	=	@temp41
+@temp43	=	x[@temp44]
+@temp46=	@temp43	*	@temp45
+x[@temp42]	=	@temp46
+@temp48	=	x[@temp49]
+@temp51=	@temp48	*	@temp50
+x[@temp47]	=	@temp51
+bge	i	@temp52	else_0
+while_0:
+@temp54=	i	+	@temp53
+@temp57=	i	-	@temp56
+@temp55	=	x[@temp57]
+@temp59=	@temp55	*	@temp58
+x[i]	=	@temp59
+blt	i	@temp52	while_0
+else_0:
+@temp61=	pos	/	@temp60
+blt	@temp61	@temp62	else_1
+return	@temp63
+else_1:
+@temp66=	pos	/	@temp65
+@temp64	=	a[@temp66]
+@temp69=	pos	/	@temp68
+@temp71=	@temp69	*	@temp70
+@temp72=	pos	-	@temp71
+@temp67	=	x[@temp72]
+@temp73=	@temp64	/	@temp67
+@temp76=	pos	/	@temp75
+@temp74	=	a[@temp76]
+@temp79=	pos	/	@temp78
+@temp81=	@temp79	*	@temp80
+@temp82=	pos	-	@temp81
+@temp77	=	x[@temp82]
+@temp83=	@temp74	/	@temp77
+@temp85=	@temp83	/	@temp84
+@temp87=	@temp85	*	@temp86
+@temp88=	@temp73	-	@temp87
+beq	@temp88	d	else_2
+@temp91=	pos	/	@temp90
+@temp89	=	a[@temp91]
+@temp94=	pos	/	@temp93
+@temp96=	@temp94	*	@temp95
+@temp97=	pos	-	@temp96
+@temp92	=	x[@temp97]
+@temp98=	@temp89	/	@temp92
+@temp101=	pos	/	@temp100
+@temp99	=	a[@temp101]
+@temp104=	pos	/	@temp103
+@temp106=	@temp104	*	@temp105
+@temp107=	pos	-	@temp106
+@temp102	=	x[@temp107]
+@temp108=	@temp99	/	@temp102
+@temp110=	@temp108	/	@temp109
+@temp112=	@temp110	*	@temp111
+@temp113=	@temp98	-	@temp112
+bne	@temp113	@temp114	else_3
+bne	d	@temp115	else_4
+@temp118=	pos	/	@temp117
+@temp120=	@temp118	*	@temp119
+@temp121=	pos	-	@temp120
+@temp116	=	x[@temp121]
+v=@temp116
+else_4:
+else_3:
+@temp124=	pos	/	@temp123
+@temp122	=	a[@temp124]
+@temp127=	pos	/	@temp126
+@temp129=	@temp127	*	@temp128
+@temp130=	pos	-	@temp129
+@temp125	=	x[@temp130]
+@temp131=	@temp122	/	@temp125
+@temp134=	pos	/	@temp133
+@temp132	=	a[@temp134]
+@temp137=	pos	/	@temp136
+@temp139=	@temp137	*	@temp138
+@temp140=	pos	-	@temp139
+@temp135	=	x[@temp140]
+@temp141=	@temp132	/	@temp135
+@temp143=	@temp141	/	@temp142
+@temp145=	@temp143	*	@temp144
+@temp146=	@temp131	-	@temp145
+bne	@temp146	@temp147	else_5
+bne	d	@temp148	else_6
+@temp151=	pos	/	@temp150
+@temp153=	@temp151	*	@temp152
+@temp154=	pos	-	@temp153
+@temp149	=	x[@temp154]
+@temp155=	v	-	@temp149
+else_6:
+else_5:
+else_2:
+@temp157=	pos	/	@temp156
+@temp160=	pos	/	@temp159
+@temp158	=	a[@temp160]
+@temp161=	@temp158	+	v
+a[@temp157]	=	@temp161
+return	@temp162
+enter	rand
+@temp163	=	seed[@temp164]
+@temp165=	staticvalue	*	@temp163
+@temp166	=	seed[@temp167]
+@temp168=	@temp165	+	@temp166
+@temp169	=	seed[@temp170]
+@temp171=	staticvalue	/	@temp169
+@temp172	=	seed[@temp173]
+@temp174=	@temp171	*	@temp172
+@temp175=	staticvalue	-	@temp174
+bge	staticvalue	@temp176	else_7
+@temp177	=	seed[@temp178]
+@temp179=	@temp177	+	staticvalue
+else_7:
+return	staticvalue
 enter	main
-a=1
-b=3
-@temp2=	a	+	b
-call	print
-push	no.0para	a
-JAL	print
+tmp=0
+i=0
+j=0
+bge	j	@temp180	else_8
+while_1:
+a[j]	=	@temp181
+@temp183=	j	+	@temp182
+blt	j	@temp180	while_1
+else_8:
+call	myscanf
+JAL	myscanf
+@temp184=$v0
+call	myscanf
+JAL	myscanf
+@temp185=$v0
+ble	n	@temp186	else_9
+while_2:
+@temp188=	n	-	@temp187
+call	rand
+JAL	rand
+@temp189=$v0
+@temp191=	z	/	@temp190
+@temp193=	@temp191	*	@temp192
+@temp194=	z	-	@temp193
+call	rand
+JAL	rand
+@temp195=$v0
+@temp197=	z	/	@temp196
+@temp199=	@temp197	*	@temp198
+@temp200=	z	-	@temp199
+call	set
+push	no.0para	x
+push	no.1para	y
+JAL	set
+bgt	n	@temp186	while_2
+else_9:
+bge	i	@temp201	else_10
+while_3:
+@temp202	=	a[i]
+@temp203	=	a[i]
+@temp205=	@temp203	/	@temp204
+@temp207=	@temp205	*	@temp206
+@temp208=	@temp202	-	@temp207
+@temp209=	tmp	+	@temp208
+@temp211=	tmp	/	@temp210
+@temp213=	@temp211	*	@temp212
+@temp214=	tmp	-	@temp213
+@temp216=	i	+	@temp215
+blt	i	@temp201	while_3
+else_10:
+call	myprintf
+push	no.0para	tmp
+JAL	myprintf
+return	
 PROGRAM_END:

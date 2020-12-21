@@ -33,5 +33,7 @@ public:
     std::string getReg(const std::string &name, bool f = true);
 
     void setReg(const std::string &name, int index);
+
+//    bool hasReg(const std::string& name);
     std::vector<std::string>* reg2store();
 };

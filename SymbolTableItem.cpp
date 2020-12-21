@@ -46,8 +46,11 @@ FunctionSymbolTable::FunctionSymbolTable(const std::string& name):funcName(name)
             varInfo["$t" + int2string(i)] = itemInfo(LOCALVAR, 4*varNum++);
             varInfo["$s" + int2string(i - 2)] = itemInfo(LOCALVAR, 4 * varNum++);
         }
+        for (int i = 1; i <= 3; i++) {
+            varInfo["$a" + int2string(i)] = itemInfo(LOCALVAR, 4 * varNum++);
+        }
     }
-    this->sRegPool = new SRegPool();
+//    this->sRegPool = new SRegPool();
 }
 
 void FunctionSymbolTable::appendConst(const std::string &name,int value) {
@@ -181,7 +184,7 @@ void FunctionSymbolTable::addTimes(const std::string &name, int time) {
     auto it = varInfo.find(name);
     if (it == varInfo.end()) return;
 
-    if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 4) {
+    if (it->second.type == LOCALVAR || it->second.type == PARA && findParaIndex(name) >= 3) {
         times[name] += time;
     }
 }
@@ -191,6 +194,12 @@ bool cmp(const std::pair<std::string, int> &a, const std::pair<std::string, int>
 }
 
 SRegPool *FunctionSymbolTable::getSRegPool() {
+    if (sRegPool != nullptr) {
+        return sRegPool;
+    }
+    else {
+        sRegPool = new SRegPool();
+    }
     std::vector<std::pair<std::string, int>> vec(times.begin(), times.end());
     std::sort(vec.begin(), vec.end(), cmp);
     if (times.size() <= 8) {
@@ -204,7 +213,7 @@ SRegPool *FunctionSymbolTable::getSRegPool() {
         }
     }
     for (int i = 0; i < paraName.size();i++) {
-        if (i == 4) break;
+        if (i == 3) break;
         sRegPool->setReg(paraName[i], i + 8);
     }
     return sRegPool;
@@ -215,5 +224,9 @@ int FunctionSymbolTable::findParaIndex(const std::string &name) {
         if (paraName[i] == name) return i;
     }
     return -1;
+}
+
+std::string FunctionSymbolTable::getParaName(int index) {
+    return paraName[index];
 }
 

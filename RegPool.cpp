@@ -65,7 +65,7 @@ SRegPool::SRegPool() {
     for (int i = 0; i < 8; i++) {
         regs[i] = "$s" + int2string(i);
     }
-    for (int i = 8; i <= 11;i++) {
+    for (int i = 8; i <= 10;i++) {
         regs[i] = "$a" + int2string(i - 7);
     }
 }
@@ -82,9 +82,12 @@ void SRegPool::setReg(const std::string &name,int index) {
 std::vector<std::string> *SRegPool::reg2store() {
     std::vector<std::string>* regVec = new std::vector<std::string>;
     for (auto it = name2reg.begin();it != name2reg.end();it++) {
+//        printf("%s\n", it->first);
+//        std::cout << it->first << std::endl;
         if (name2use[it->first]) {
             regVec->push_back(regs[it->second]);
         }
     }
+//    std::cout << std::endl;
     return regVec;
 }

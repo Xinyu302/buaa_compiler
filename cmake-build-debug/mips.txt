@@ -2,29 +2,609 @@
 stringEnter:	.asciiz	"\n"
 .text
 #global:
-addiu	$sp,	$sp,	-80
+li	$t0,	19971231
+sw	$t0,	4000($gp)
+li	$t0,	19981013
+sw	$t0,	4004($gp)
+li	$t0,	1000000007
+sw	$t0,	4008($gp)
+li	$t0,	0
+sw	$t0,	4012($gp)
+addiu	$sp,	$sp,	-196
 jal	main
 j	PROGRAM_END
-print:
-addiu	$a1,	$a1,	1
+myscanf:
+li	$v0,	5
+syscall
+move	$s0,	$v0
+move	$v0,	$s0
+addiu	$sp,	$sp,	84
+jr	$ra
+myprintf:
 move	$a0,	$a1
 li	$v0,	1
 syscall
 la	$a0,	stringEnter
 li	$v0,	4
 syscall
-addiu	$sp,	$sp,	76
+addiu	$sp,	$sp,	84
+jr	$ra
+addiu	$sp,	$sp,	84
+jr	$ra
+set:
+li	$s0,	10
+li	$s1,	0
+addiu	$t1,	$sp,	88
+li	$t0,	1
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	88
+lw	$t0,	0($t1)
+sw	$t0,	220($sp)
+lw	$t0,	220($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	92
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	92
+lw	$t0,	0($t1)
+sw	$t0,	228($sp)
+lw	$t0,	228($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	96
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	96
+lw	$t0,	0($t1)
+sw	$t0,	236($sp)
+lw	$t0,	236($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	100
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	100
+lw	$t0,	0($t1)
+sw	$t0,	244($sp)
+lw	$t0,	244($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	104
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	104
+lw	$t0,	0($t1)
+sw	$t0,	252($sp)
+lw	$t0,	252($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	108
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	108
+lw	$t0,	0($t1)
+sw	$t0,	260($sp)
+lw	$t0,	260($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	112
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	112
+lw	$t0,	0($t1)
+sw	$t0,	268($sp)
+lw	$t0,	268($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	116
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	116
+lw	$t0,	0($t1)
+sw	$t0,	276($sp)
+lw	$t0,	276($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	120
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	120
+lw	$t0,	0($t1)
+sw	$t0,	284($sp)
+lw	$t0,	284($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	124
+move	$t0,	$t2
+sw	$t0,	0($t1)
+addiu	$t1,	$sp,	124
+lw	$t0,	0($t1)
+sw	$t0,	292($sp)
+lw	$t0,	292($sp)
+sll	$t2,	$t0,	1
+addiu	$t1,	$sp,	128
+move	$t0,	$t2
+sw	$t0,	0($t1)
+li	$t1,	30
+bge	$s0,	$t1,	else_0
+while_0:
+addiu	$s0,	$s0,	1
+addiu	$t2,	$s0,	-1
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	304($sp)
+lw	$t0,	304($sp)
+sll	$t2,	$t0,	1
+move	$t0,	$s0
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+move	$t0,	$t2
+sw	$t0,	0($t1)
+li	$t1,	30
+blt	$s0,	$t1,	while_0
+else_0:
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	1000
+blt	$t2,	$t1,	else_1
+li	$v0,	0
+addiu	$sp,	$sp,	576
+jr	$ra
+else_1:
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	320($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+mult	$t2,	$t1
+mflo	$t3
+subu	$t2,	$a1,	$t3
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	328($sp)
+lw	$t0,	320($sp)
+lw	$t1,	328($sp)
+div	$t0,	$t1
+mflo	$t2
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	348($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+li	$t1,	30
+mult	$t3,	$t1
+mflo	$t4
+subu	$t3,	$a1,	$t4
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	356($sp)
+lw	$t0,	348($sp)
+lw	$t1,	356($sp)
+div	$t0,	$t1
+mflo	$t3
+blt	$t3,	$zero,	else_11
+srl	$t4,	$t3,	1
+j	else_end_11
+else_11:
+subu	$t3,	$zero,	$t3
+srl	$t3,	$t3,	1
+subu	$t4,	$zero,	$t3
+else_end_11:
+sll	$t3,	$t4,	1
+subu	$t4,	$t2,	$t3
+beq	$t4,	$a2,	else_2
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	388($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+mult	$t2,	$t1
+mflo	$t3
+subu	$t2,	$a1,	$t3
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	396($sp)
+lw	$t0,	388($sp)
+lw	$t1,	396($sp)
+div	$t0,	$t1
+mflo	$t2
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	416($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+li	$t1,	30
+mult	$t3,	$t1
+mflo	$t4
+subu	$t3,	$a1,	$t4
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	424($sp)
+lw	$t0,	416($sp)
+lw	$t1,	424($sp)
+div	$t0,	$t1
+mflo	$t3
+blt	$t3,	$zero,	else_12
+srl	$t4,	$t3,	1
+j	else_end_12
+else_12:
+subu	$t3,	$zero,	$t3
+srl	$t3,	$t3,	1
+subu	$t4,	$zero,	$t3
+else_end_12:
+sll	$t3,	$t4,	1
+subu	$t4,	$t2,	$t3
+li	$t1,	0
+bne	$t4,	$t1,	else_3
+li	$t1,	1
+bne	$a2,	$t1,	else_4
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+mult	$t2,	$t1
+mflo	$t3
+subu	$t2,	$a1,	$t3
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	456($sp)
+lw	$t1,	456($sp)
+move	$s1,	$t1
+else_4:
+else_3:
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	472($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+mult	$t2,	$t1
+mflo	$t3
+subu	$t2,	$a1,	$t3
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	480($sp)
+lw	$t0,	472($sp)
+lw	$t1,	480($sp)
+div	$t0,	$t1
+mflo	$t2
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	500($sp)
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+li	$t1,	30
+mult	$t3,	$t1
+mflo	$t4
+subu	$t3,	$a1,	$t4
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	508($sp)
+lw	$t0,	500($sp)
+lw	$t1,	508($sp)
+div	$t0,	$t1
+mflo	$t3
+blt	$t3,	$zero,	else_13
+srl	$t4,	$t3,	1
+j	else_end_13
+else_13:
+subu	$t3,	$zero,	$t3
+srl	$t3,	$t3,	1
+subu	$t4,	$zero,	$t3
+else_end_13:
+sll	$t3,	$t4,	1
+subu	$t4,	$t2,	$t3
+li	$t1,	1
+bne	$t4,	$t1,	else_5
+li	$t1,	0
+bne	$a2,	$t1,	else_6
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+mult	$t2,	$t1
+mflo	$t3
+subu	$t2,	$a1,	$t3
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	88
+addu	$t1,	$t1,	$sp
+lw	$t0,	0($t1)
+sw	$t0,	540($sp)
+lw	$t1,	540($sp)
+subu	$s1,	$s1,	$t1
+else_6:
+else_5:
+else_2:
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t2
+li	$t1,	30
+div	$a1,	$t1
+mflo	$t3
+move	$t0,	$t3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	564($sp)
+lw	$t0,	564($sp)
+addu	$t3,	$t0,	$s1
+move	$t0,	$t2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+move	$t0,	$t3
+sw	$t0,	0($t1)
+li	$v0,	0
+addiu	$sp,	$sp,	576
+jr	$ra
+rand:
+addiu	$t1,	$gp,	4000
+lw	$t0,	0($t1)
+sw	$t0,	80($sp)
+lw	$t0,	4012($gp)
+lw	$t1,	80($sp)
+mult	$t0,	$t1
+mflo	$t2
+addiu	$t1,	$gp,	4004
+lw	$t0,	0($t1)
+sw	$t0,	88($sp)
+lw	$t1,	88($sp)
+addu	$t0,	$t2,	$t1
+sw	$t0,	4012($gp)
+addiu	$t1,	$gp,	4008
+lw	$t0,	0($t1)
+sw	$t0,	96($sp)
+lw	$t0,	4012($gp)
+lw	$t1,	96($sp)
+div	$t0,	$t1
+mflo	$t2
+addiu	$t1,	$gp,	4008
+lw	$t0,	0($t1)
+sw	$t0,	104($sp)
+lw	$t1,	104($sp)
+mult	$t2,	$t1
+mflo	$t3
+lw	$t0,	4012($gp)
+subu	$t0,	$t0,	$t3
+sw	$t0,	4012($gp)
+lw	$t0,	4012($gp)
+li	$t1,	0
+bge	$t0,	$t1,	else_7
+addiu	$t1,	$gp,	4008
+lw	$t0,	0($t1)
+sw	$t0,	116($sp)
+lw	$t0,	116($sp)
+lw	$t1,	4012($gp)
+addu	$t0,	$t0,	$t1
+sw	$t0,	4012($gp)
+else_7:
+lw	$v0,	4012($gp)
+addiu	$sp,	$sp,	124
 jr	$ra
 main:
 sw	$ra,	0($sp)
-li	$s0,	1
-li	$s1,	3
-addu	$s0,	$s0,	$s1
-sw	$s0,	-68($sp)
-sw	$s1,	-60($sp)
-move	$a1,	$s0
-addiu	$sp,	$sp,	-76
-jal	print
-lw	$s0,	-68($sp)
-lw	$s1,	-60($sp)
+li	$s1,	0
+li	$s2,	0
+li	$s3,	0
+li	$t1,	1000
+bge	$s3,	$t1,	else_8
+while_1:
+move	$t0,	$s3
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+li	$t0,	0
+sw	$t0,	0($t1)
+addiu	$s3,	$s3,	1
+li	$t1,	1000
+blt	$s3,	$t1,	while_1
+else_8:
+sw	$s2,	-60($sp)
+sw	$s3,	-52($sp)
+sw	$s1,	-68($sp)
+addiu	$sp,	$sp,	-84
+jal	myscanf
+lw	$s2,	-60($sp)
+lw	$s3,	-52($sp)
+lw	$s1,	-68($sp)
+move	$s4,	$v0
+sw	$s2,	-60($sp)
+sw	$s3,	-52($sp)
+sw	$s4,	-44($sp)
+sw	$s1,	-68($sp)
+addiu	$sp,	$sp,	-84
+jal	myscanf
+lw	$s2,	-60($sp)
+lw	$s3,	-52($sp)
+lw	$s4,	-44($sp)
+lw	$s1,	-68($sp)
+sw	$v0,	4012($gp)
+li	$t1,	0
+ble	$s4,	$t1,	else_9
+while_2:
+addiu	$s4,	$s4,	-1
+sw	$s2,	-100($sp)
+sw	$s3,	-92($sp)
+sw	$s4,	-84($sp)
+sw	$s1,	-108($sp)
+addiu	$sp,	$sp,	-124
+jal	rand
+lw	$s2,	-100($sp)
+lw	$s3,	-92($sp)
+lw	$s4,	-84($sp)
+lw	$s1,	-108($sp)
+move	$s0,	$v0
+li	$t1,	300000
+div	$s0,	$t1
+mflo	$t2
+li	$t1,	300000
+mult	$t2,	$t1
+mflo	$t3
+subu	$s5,	$s0,	$t3
+sw	$s2,	-100($sp)
+sw	$s3,	-92($sp)
+sw	$s4,	-84($sp)
+sw	$s1,	-108($sp)
+sw	$s5,	-76($sp)
+sw	$s0,	-116($sp)
+addiu	$sp,	$sp,	-124
+jal	rand
+lw	$s2,	-100($sp)
+lw	$s3,	-92($sp)
+lw	$s4,	-84($sp)
+lw	$s1,	-108($sp)
+lw	$s5,	-76($sp)
+lw	$s0,	-116($sp)
+move	$s0,	$v0
+blt	$s0,	$zero,	else_14
+srl	$t2,	$s0,	1
+j	else_end_14
+else_14:
+subu	$s0,	$zero,	$s0
+srl	$s0,	$s0,	1
+subu	$t2,	$zero,	$s0
+else_end_14:
+sll	$t3,	$t2,	1
+subu	$s6,	$s0,	$t3
+sw	$s2,	-552($sp)
+sw	$s3,	-544($sp)
+sw	$s4,	-536($sp)
+sw	$s1,	-560($sp)
+sw	$s5,	-528($sp)
+sw	$s6,	-520($sp)
+sw	$s0,	-568($sp)
+move	$a1,	$s5
+move	$a2,	$s6
+addiu	$sp,	$sp,	-576
+jal	set
+lw	$s2,	-552($sp)
+lw	$s3,	-544($sp)
+lw	$s4,	-536($sp)
+lw	$s1,	-560($sp)
+lw	$s5,	-528($sp)
+lw	$s6,	-520($sp)
+lw	$s0,	-568($sp)
+li	$t1,	0
+bgt	$s4,	$t1,	while_2
+else_9:
+li	$t1,	1000
+bge	$s2,	$t1,	else_10
+while_3:
+move	$t0,	$s2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	156($sp)
+move	$t0,	$s2
+sll	$t0,	$t0,	2
+addiu	$t1,	$t0,	0
+addu	$t1,	$t1,	$gp
+lw	$t0,	0($t1)
+sw	$t0,	160($sp)
+lw	$t0,	160($sp)
+li	$t1,	100000
+div	$t0,	$t1
+mflo	$t2
+li	$t1,	100000
+mult	$t2,	$t1
+mflo	$t3
+lw	$t0,	156($sp)
+subu	$t2,	$t0,	$t3
+addu	$s1,	$s1,	$t2
+li	$t1,	100000
+div	$s1,	$t1
+mflo	$t2
+li	$t1,	100000
+mult	$t2,	$t1
+mflo	$t3
+subu	$s1,	$s1,	$t3
+addiu	$s2,	$s2,	1
+li	$t1,	1000
+blt	$s2,	$t1,	while_3
+else_10:
+sw	$s2,	-60($sp)
+sw	$s3,	-52($sp)
+sw	$s4,	-44($sp)
+sw	$s1,	-68($sp)
+sw	$s5,	-36($sp)
+sw	$s6,	-28($sp)
+sw	$s0,	-76($sp)
+move	$a1,	$s1
+addiu	$sp,	$sp,	-84
+jal	myprintf
+lw	$s2,	-60($sp)
+lw	$s3,	-52($sp)
+lw	$s4,	-44($sp)
+lw	$s1,	-68($sp)
+lw	$s5,	-36($sp)
+lw	$s6,	-28($sp)
+lw	$s0,	-76($sp)
+lw	$ra,	0($sp)
+addiu	$sp,	$sp,	196
+jr	$ra
 PROGRAM_END:

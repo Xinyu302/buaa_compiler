@@ -117,6 +117,8 @@ public:
 
     int findParaIndex(const std::string &name);
 
+    std::string getParaName(int index);
+
 private:
     int varNum;
     std::string funcName;
@@ -126,7 +128,7 @@ private:
     std::vector<itemInfo> paraInfo;
     std::vector<std::string> paraName;
     bool isLeaf = true;
-    SRegPool *sRegPool;
+    SRegPool *sRegPool = nullptr;
 };
 
 
