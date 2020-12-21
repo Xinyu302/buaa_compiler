@@ -7,6 +7,7 @@
 #include "RegPool.h"
 #include <vector>
 #include <fstream>
+#include <set>
 #define midCodeVec (*nowMidCodeVec)
 
 extern FunctionSymbolTable* globalSymbolTable;
@@ -14,6 +15,7 @@ extern FunctionSymbolTable* globalSymbolTable;
 std::vector<MidCode*>* nowMidCodeVec;
 extern std::vector<std::vector<MidCode*>*> FunctionMidCodeVec;
 extern std::map<std::string,std::string> stringMap;
+extern std::set<std::string> stringSet;
 extern std::vector<std::string> FunctionNames;
 
 std::ofstream mipstream("mips.txt");
@@ -26,7 +28,8 @@ FunctionSymbolTable* calledFuncSymbolTable;
 TRegPool *tRegPool;
 SRegPool *sRegPool;
 std::map<std::string, TRegPool *> TRegPoolCache;
-
+static int size;
+static int j;
 
 inline void genLi(const std::string& regTo,int imm) {
     mipscodes.push_back("li" + tab + regTo + "," + tab + int2string(imm));
@@ -193,12 +196,27 @@ void genCalMips(CalMidCode* calMidCode) {
     std::string regResult = /*(tRegPool->hasFreeReg()) ? tRegPool->allocReg(calMidCode->result) :*/ "$t0";
     std::string l = "$t0";
     std::string r = "$t1";
+    std::string result = calMidCode->result;
+    if (j + 1 < size && midCodeVec[j]->getMidCodeClass()==MidCode::ASSIGNMIDCODE) {
+        AssignMidCode *ass = (AssignMidCode *) midCodeVec[j];
+        if (ass->leftVal == calMidCode->result) {
+            if (sRegPool->getReg(ass->result).length()) {
+                regResult = sRegPool->getReg(ass->result);
+            } else {
+                result = ass->result;
+            }
+            j = j + 1;
+            goto assend;
+
+        }
+    }
     if (nowFuncSymbolTable->isTmpValue(calMidCode->result) && tRegPool->hasFreeReg()) {
         regResult = tRegPool->allocReg(calMidCode->result);
     }
     else if (sRegPool->getReg(calMidCode->result).length()) {
         regResult = sRegPool->getReg(calMidCode->result);
     }
+    assend:
     MidCode::MidCodeOperator anOperator = calMidCode->getMidCodeOperator();
     if (nowFuncSymbolTable->isConstValue(calMidCode->left, value1)) {
         isValue1const = true;
@@ -292,7 +310,8 @@ void genCalMips(CalMidCode* calMidCode) {
     }
     genCalMipsEnd:
     if (regResult == "$t0") {
-        genMoveVarToMem(calMidCode->result,"$t0");
+
+        genMoveVarToMem(result, "$t0");
     }
 }
 
@@ -347,6 +366,9 @@ void genPrintMips(WriteMidCode* writeMidCode) {
     if ((writeMidCode->str).length()) {
         mipscodes.push_back("la" + tab + "$a0," + tab + writeMidCode->str);
         genSyscallByNum(4);
+        if ((writeMidCode->num).length() == 0) {
+            return;
+        }
     }
     if ((writeMidCode->num).length()) {
         int value;
@@ -712,7 +734,11 @@ void genData() {
     mipscodes.push_back(".data");
     mipscodes.push_back("stringEnter:\t.asciiz" + tab + quotation + "\\n" + quotation);
     for (std::map<std::string,std::string>::iterator it = stringMap.begin();it != stringMap.end();it++) {
-        mipscodes.push_back(it->first + colon + tab + asciiz + tab + quotation + changeString(it->second) + quotation);
+        if (stringSet.count(it->first)) {
+            mipscodes.push_back(it->first + colon + tab + asciiz + tab + quotation + changeString(it->second) +"\\n" + quotation);
+        } else {
+            mipscodes.push_back(it->first + colon + tab + asciiz + tab + quotation + changeString(it->second) + quotation);
+        }
     }
     /*
     for (int i = 0; i < allStringList.size();i++)
@@ -727,7 +753,9 @@ void genText() {
     for (int i = 0; i < FunctionMidCodeVec.size();i++) {
         nowMidCodeVec = FunctionMidCodeVec[i];
 //        enterFunc(FunctionNames[i]);
-        for (int j = 0; j < midCodeVec.size();j++) {
+
+        size = midCodeVec.size();
+        for (j = 0; j < size;j++) {
             midCodeVec[j]->displayMidCode();
             switch (midCodeVec[j]->getMidCodeClass()) {
                 case MidCode::CALMIDCODE:

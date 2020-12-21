@@ -1,7 +1,7 @@
 .data
 stringEnter:	.asciiz	"\n"
 string0:	.asciiz	"p1 + p2 + p3 = "
-string1:	.asciiz	"17005014"
+string1:	.asciiz	"17005014\n"
 .text
 #global:
 li	$t0,	1
@@ -93,9 +93,6 @@ jr	$ra
 main:
 sw	$ra,	0($sp)
 la	$a0,	string1
-li	$v0,	4
-syscall
-la	$a0,	stringEnter
 li	$v0,	4
 syscall
 lw	$a0,	4024($gp)

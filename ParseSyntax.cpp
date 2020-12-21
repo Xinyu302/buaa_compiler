@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include <vector>
 #include <map>
+#include <set>
 
 #define Tokens (*TokenVecPointer)
 const int INNER = 1;
@@ -53,6 +54,7 @@ SyntaxSymbolTable symbolTable;
 SymbolTableItem *symbolTableItemPtr;
 
 std::map<std::string,std::string> stringMap;
+std::set<std::string> stringSet;
 
 bool notFindSymbolTableItem() {
     return symbolTableItemPtr == nullptr;
@@ -1117,6 +1119,7 @@ bool Handle_PRINTF_STATE(bool show)
 		}
 		else
         {
+            stringSet.insert(strName);
             MidCodeFactory(MidCode::WRITE,"","",strName);
         }
 	}
